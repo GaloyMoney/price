@@ -1,8 +1,6 @@
 import ccxt from 'ccxt'
-const PROTO_PATH = __dirname + '/protos/price.proto';
-
+import { protoDescriptor } from "./grpc";
 const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
 
 const exchange_init = {
   'enableRateLimit': true,
@@ -168,6 +166,7 @@ export const refresh = async (exchange) => {
 
     } catch (err) {
       console.error({err}, `can't refresh ${exchange.id}`)
+      return
     }
 
     const ticker = Object.create(Ticker)
@@ -195,6 +194,7 @@ const loop = async (exchange) => {
         percentage: data.percentage,
         bids: data.bids,
         asks: data.asks,
+        exchange_updated: exchange.id,
       })
 
       // TODO check if this could lead to a stack overflow
@@ -211,20 +211,9 @@ export const main = async () => {
   exchanges.forEach(exchange => loop(exchange))
 }
 
-// Suggested options for similarity to existing grpc.load behavior
-const packageDefinition = protoLoader.loadSync(
-  PROTO_PATH,
-  {keepCase: true,
-   longs: String,
-   enums: String,
-   defaults: true,
-   oneofs: true
-  });
-const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
-// The protoDescriptor object has the full package hierarchy
 
 function getPrice(call, callback) {
-callback(null, data.mid)
+  callback(null, {price: data.mid})
 }
 
 function getServer() {
