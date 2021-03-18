@@ -1,8 +1,12 @@
 import ccxt from 'ccxt'
+const PROTO_PATH = __dirname + '/protos/price.proto';
+
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 
 const exchange_init = {
   'enableRateLimit': true,
-  'rateLimit': 2500,
+  'rateLimit': 1000,
   'timeout': 5000,
 }
 
@@ -131,8 +135,7 @@ export const init = async () => {
   }
 }
 
-export const refresh = async () => {
-  const promises = exchanges.map(async (exchange) => {
+export const refresh = async (exchange) => {
     let bid, ask, percentage, timestamp
 
     try {
@@ -175,19 +178,14 @@ export const refresh = async () => {
     ticker.percentage = percentage
 
     data.exchanges[exchange.id] = ticker
-  })
-
-  //TODO: add timeout after x seconds
-  await Promise.all(promises)
-  console.log({promises})
 }
 
-const loop = async () => {
-  const refresh_time = 5000
+const loop = async (exchange) => {
+  const refresh_time = 1000
 
   try {
     const timeout = setTimeout(async function () {
-      await refresh()
+      await refresh(exchange)
 
       console.log({
         exchanges: data.exchanges,
@@ -199,7 +197,8 @@ const loop = async () => {
         asks: data.asks,
       })
 
-      loop()
+      // TODO check if this could lead to a stack overflow
+      loop(exchange)
 
     }, refresh_time);
   } catch (err) {
@@ -209,6 +208,38 @@ const loop = async () => {
 
 export const main = async () => {
   await init()
-  await loop()
+  exchanges.forEach(exchange => loop(exchange))
 }
+
+// Suggested options for similarity to existing grpc.load behavior
+const packageDefinition = protoLoader.loadSync(
+  PROTO_PATH,
+  {keepCase: true,
+   longs: String,
+   enums: String,
+   defaults: true,
+   oneofs: true
+  });
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
+// The protoDescriptor object has the full package hierarchy
+
+function getPrice(call, callback) {
+callback(null, data.mid)
+}
+
+function getServer() {
+  const server = new grpc.Server();
+  server.addService(protoDescriptor.PriceFeed.service, {
+    getPrice,
+  });
+  return server;
+}
+
+const routeServer = getServer();
+routeServer.bindAsync('0.0.0.0:50051', 
+  grpc.ServerCredentials.createInsecure(), () => {
+    main()
+    routeServer.start();
+});
+
 
