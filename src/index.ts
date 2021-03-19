@@ -46,6 +46,13 @@ const Ticker = {
       console.error({err}, "can't decode input")
       return false
     }
+  },
+  get mid() {
+    try {
+      return (this.ask! + this.bid!) / 2
+    } catch (err) {
+      return 0
+    }
   }
 }
 
@@ -63,7 +70,7 @@ interface Data {
   bids: number[],
 }
 
-const data: Data = {
+export const data: Data = {
   exchanges: {
     bitfinex: Ticker,
     binance: Ticker,
