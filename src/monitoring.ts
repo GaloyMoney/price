@@ -1,6 +1,6 @@
 import { MeterProvider } from '@opentelemetry/metrics';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
-import { data } from ".";
+import { data, logger } from ".";
 
 const prometheusPort = PrometheusExporter.DEFAULT_OPTIONS.port;
 const prometheusEndpoint = PrometheusExporter.DEFAULT_OPTIONS.endpoint;
@@ -11,8 +11,9 @@ const exporter = new PrometheusExporter(
     startServer: true,
   },
   () => {
-    console.log(
-      `prometheus scrape endpoint: http://localhost:${prometheusPort}${prometheusEndpoint}`,
+    logger.info(
+      {endpoint: `http://localhost:${prometheusPort}${prometheusEndpoint}`},
+      `prometheus scrape ready`
     );
   },
 );

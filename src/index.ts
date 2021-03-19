@@ -2,6 +2,8 @@ import ccxt from 'ccxt'
 import { protoDescriptor } from "./grpc";
 const grpc = require('@grpc/grpc-js');
 
+export const logger = require('pino')()
+
 const exchange_init = {
   'enableRateLimit': true,
   'rateLimit': 1000,
@@ -43,7 +45,7 @@ const Ticker = {
     try {
       return new Date().getTime() - this.timestamp! < staleAfter 
     } catch (err) {
-      console.error({err}, "can't decode input")
+      logger.error({err}, "can't decode input")
       return false
     }
   },
@@ -172,7 +174,7 @@ export const refresh = async (exchange) => {
     //   }
 
     } catch (err) {
-      console.error({err}, `can't refresh ${exchange.id}`)
+      logger.warn({err}, `can't refresh ${exchange.id}`)
       return
     }
 
@@ -193,7 +195,7 @@ const loop = async (exchange) => {
     const timeout = setTimeout(async function () {
       await refresh(exchange)
 
-      console.log({
+      console.debug({
         exchanges: data.exchanges,
         totalActive: data.totalActive,
         mid: data.mid,
@@ -209,7 +211,7 @@ const loop = async (exchange) => {
 
     }, refresh_time);
   } catch (err) {
-    console.error({}, "loop error exiting")
+    logger.warn({}, "loop error exiting")
   }
 }
 

@@ -17,7 +17,8 @@
     "@opentelemetry/metrics": "^0.18.0",
     "@opentelemetry/node": "^0.18.0",
     "ccxt": "^1.43.74",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pino": "^6.11.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.21",
