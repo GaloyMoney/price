@@ -19,4 +19,4 @@ COPY --from=BUILD_IMAGE /usr/app/node_modules ./node_modules
 COPY ./package.json ./tsconfig.json ./yarn.lock ./
 COPY "./src/" "./src"
 
-CMD ts-node src/monitoring.ts
+CMD yarn ts-node src/monitoring.ts
