@@ -2,6 +2,7 @@
   "name": "pricebtc",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "monitoring": "ts-node src/monitoring.ts",
     "client": "ts-node src/client_test.ts"
   },
   "version": "1.0.0",
