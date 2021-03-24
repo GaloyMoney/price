@@ -195,7 +195,7 @@ const loop = async (exchange) => {
     const timeout = setTimeout(async function () {
       await refresh(exchange)
 
-      console.debug({
+      logger.debug({
         exchanges: data.exchanges,
         totalActive: data.totalActive,
         mid: data.mid,
