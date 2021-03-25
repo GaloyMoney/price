@@ -6,8 +6,8 @@ export const logger = require('pino')()
 
 const exchange_init = {
   'enableRateLimit': true,
-  'rateLimit': 1000,
-  'timeout': 5000,
+  'rateLimit': 2000,
+  'timeout': 8000,
 }
 
 const exchanges_json = [
@@ -189,7 +189,7 @@ export const refresh = async (exchange) => {
 }
 
 const loop = async (exchange) => {
-  const refresh_time = 1000
+  const refresh_time = 2000
 
   try {
     const timeout = setTimeout(async function () {
