@@ -1,8 +1,12 @@
 import ccxt from 'ccxt'
 import { protoDescriptor } from "./grpc";
-const grpc = require('@grpc/grpc-js');
-
+import { Server, ServerCredentials } from '@grpc/grpc-js';
 export const logger = require('pino')()
+
+export async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 const exchange_init = {
   'enableRateLimit': true,
@@ -51,9 +55,12 @@ const Ticker = {
   },
   get mid() {
     try {
+      if (!this.active) {
+        return NaN
+      }
       return (this.ask! + this.bid!) / 2
     } catch (err) {
-      return 0
+      return NaN
     }
   }
 }
@@ -88,8 +95,8 @@ export const data: Data = {
   },
   get bids() {
     const bids: number[] = []
-    Object.values(this.exchanges).forEach(({bid}) => {
-      if (!!bid) { 
+    Object.values(this.exchanges).forEach(({bid, active}) => {
+      if (!!bid && active) { 
         bids.push(bid!) 
       }
     })
@@ -97,8 +104,8 @@ export const data: Data = {
   },
   get asks() {
     const asks: number[] = []
-    Object.values(this.exchanges).forEach(({ask}) => {
-      if (!!ask) { 
+    Object.values(this.exchanges).forEach(({ask, active}) => {
+      if (!!ask && active) { 
         asks.push(ask!)  
       }
     })
@@ -135,6 +142,10 @@ export const data: Data = {
 
 
 export const init = async () => {
+  // FIXME: if the exchange doesn't initialize properly on the first call
+  // then it seems ccxt will never be able to fetch data back from this exchange
+  // so in case of init failure there should be a loop such that the init keep retrying
+  // until succesful, with some form of a backoff.
   for (const exchange_json of exchanges_json) {
     const exchange = new ccxt[exchange_json.name](exchange_init)
     exchange.pair = exchange_json.pair
@@ -173,11 +184,13 @@ export const refresh = async (exchange) => {
     //     }
     //   }
 
-    } catch (err) {
+  } catch (err) {
       logger.warn({err}, `can't refresh ${exchange.id}`)
+      await sleep(5000)
       return
     }
 
+    // FIXME: the object should be recycled instead of being recrated/replaced
     const ticker = Object.create(Ticker)
 
     ticker.ask = ask
@@ -189,30 +202,25 @@ export const refresh = async (exchange) => {
 }
 
 const loop = async (exchange) => {
+  await refresh(exchange)
+  
   const refresh_time = 2000
 
-  try {
-    const timeout = setTimeout(async function () {
-      await refresh(exchange)
+  logger.info({
+    exchanges: data.exchanges,
+    totalActive: data.totalActive,
+    mid: data.mid,
+    spread: data.spread,
+    percentage: data.percentage,
+    bids: data.bids,
+    asks: data.asks,
+    exchange_updated: exchange.id,
+  })
 
-      logger.debug({
-        exchanges: data.exchanges,
-        totalActive: data.totalActive,
-        mid: data.mid,
-        spread: data.spread,
-        percentage: data.percentage,
-        bids: data.bids,
-        asks: data.asks,
-        exchange_updated: exchange.id,
-      })
-
-      // TODO check if this could lead to a stack overflow
-      loop(exchange)
-
-    }, refresh_time);
-  } catch (err) {
-    logger.warn({}, "loop error exiting")
-  }
+  setTimeout(async function () {
+    // TODO check if this could lead to a stack overflow
+    loop(exchange)
+  }, refresh_time);
 }
 
 export const main = async () => {
@@ -226,7 +234,7 @@ function getPrice(call, callback) {
 }
 
 function getServer() {
-  const server = new grpc.Server();
+  const server = new Server();
   server.addService(protoDescriptor.PriceFeed.service, {
     getPrice,
   });
@@ -235,7 +243,7 @@ function getServer() {
 
 const routeServer = getServer();
 routeServer.bindAsync('0.0.0.0:50051', 
-  grpc.ServerCredentials.createInsecure(), () => {
+  ServerCredentials.createInsecure(), () => {
     main()
     routeServer.start();
 });
