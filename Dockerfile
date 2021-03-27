@@ -19,6 +19,10 @@ COPY --from=BUILD_IMAGE /usr/app/node_modules ./node_modules
 COPY ./package.json ./tsconfig.json ./yarn.lock ./
 COPY "./src/" "./src"
 
+RUN GRPC_HEALTH_PROBE_VERSION=v0.3.6 && \
+    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    chmod +x /bin/grpc_health_probe
+
 EXPOSE 9464
 EXPOSE 50051
 

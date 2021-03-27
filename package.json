@@ -17,8 +17,9 @@
     "@opentelemetry/exporter-prometheus": "^0.18.0",
     "@opentelemetry/metrics": "^0.18.0",
     "@opentelemetry/node": "^0.18.0",
-    "ccxt": "^1.43.74",
+    "ccxt": "^1.44.51",
     "express": "^4.17.1",
+    "grpc-health-check": "^1.8.0",
     "pino": "^6.11.2"
   },
   "devDependencies": {

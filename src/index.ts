@@ -2,6 +2,7 @@ import ccxt from 'ccxt'
 import { protoDescriptor } from "./grpc";
 import { Server, ServerCredentials } from '@grpc/grpc-js';
 export const logger = require('pino')()
+import { healthImpl, healthCheck } from "./health"
 
 export async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -141,11 +142,13 @@ export const data: Data = {
 }
 
 
-export const init = async () => {
+export const init = () => {
   // FIXME: if the exchange doesn't initialize properly on the first call
   // then it seems ccxt will never be able to fetch data back from this exchange
   // so in case of init failure there should be a loop such that the init keep retrying
   // until succesful, with some form of a backoff.
+
+  // look at: https://github.com/ccxt/ccxt/wiki/Manual#market-cache-force-reload
   for (const exchange_json of exchanges_json) {
     const exchange = new ccxt[exchange_json.name](exchange_init)
     exchange.pair = exchange_json.pair
@@ -224,7 +227,9 @@ const loop = async (exchange) => {
 }
 
 export const main = async () => {
-  await init()
+  init()
+  await sleep(500)
+
   exchanges.forEach(exchange => loop(exchange))
 }
 
@@ -238,6 +243,7 @@ function getServer() {
   server.addService(protoDescriptor.PriceFeed.service, {
     getPrice,
   });
+  server.addService(healthCheck.service, healthImpl);
   return server;
 }
 
