@@ -247,9 +247,12 @@ function getServer() {
   return server;
 }
 
+const port = 50051
+
 const routeServer = getServer();
-routeServer.bindAsync('0.0.0.0:50051', 
+routeServer.bindAsync(`0.0.0.0:${port}`, 
   ServerCredentials.createInsecure(), () => {
+    logger.info(`Price server running on port ${port}`)
     main()
     routeServer.start();
 });
