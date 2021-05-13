@@ -1,6 +1,10 @@
 import { MeterProvider } from '@opentelemetry/metrics';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+
+
+// this is starting the main server
 import { data, logger } from ".";
+
 
 const prometheusPort = PrometheusExporter.DEFAULT_OPTIONS.port;
 const prometheusEndpoint = PrometheusExporter.DEFAULT_OPTIONS.endpoint;

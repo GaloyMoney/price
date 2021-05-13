@@ -8,7 +8,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "repository": "git@github.com:GaloyMoney/price.git",
-  "author": "Nicolas Burtey <nicolas.burtey@gmail.com>",
+  "author": "dev@galoy.io",
   "license": "MIT",
   "dependencies": {
     "@grpc/grpc-js": "^1.2.11",

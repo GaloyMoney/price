@@ -2,7 +2,8 @@ import ccxt from 'ccxt'
 import { protoDescriptor } from "./grpc";
 import { Server, ServerCredentials } from '@grpc/grpc-js';
 export const logger = require('pino')()
-import { healthImpl, healthCheck } from "./health"
+export const healthCheck = require('grpc-health-check');
+
 
 export async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -238,11 +239,23 @@ function getPrice(call, callback) {
   callback(null, {price: data.mid})
 }
 
+
+// Define service status map. Key is the service name, value is the corresponding status.
+// By convention, the empty string "" key represents that status of the entire server.
+const statusMap = {
+  "": data.totalActive > 0 ? 1 : 2,
+
+  // 1 is serving
+  // 2 is not serving
+};
+
+// Construct the health service implementation
+export const healthImpl = new healthCheck.Implementation(statusMap);
+
+
 function getServer() {
   const server = new Server();
-  server.addService(protoDescriptor.PriceFeed.service, {
-    getPrice,
-  });
+  server.addService(protoDescriptor.PriceFeed.service, { getPrice });
   server.addService(healthCheck.service, healthImpl);
   return server;
 }
