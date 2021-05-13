@@ -9,6 +9,18 @@ export async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// Define service status map. Key is the service name, value is the corresponding status.
+// By convention, the empty string "" key represents that status of the entire server.
+const statusMap = {
+  "": 2,
+
+  // 1 is serving
+  // 2 is not serving
+};
+
+// Construct the health service implementation
+export const healthImpl = new healthCheck.Implementation(statusMap);
+
 
 const exchange_init = {
   'enableRateLimit': true,
@@ -93,7 +105,9 @@ export const data: Data = {
   //  "ftx": Ticker,
   // }
   get totalActive() {
-    return Object.values(this.exchanges).reduce((total, {active}) => total + (active ? 1 : 0), 0)
+    const total = Object.values(this.exchanges).reduce((total, {active}) => total + (active ? 1 : 0), 0)
+    healthImpl.setStatus('', total > 0 ? 1 : 2);
+    return total
   },
   get bids() {
     const bids: number[] = []
@@ -210,7 +224,7 @@ const loop = async (exchange) => {
   
   const refresh_time = 2000
 
-  logger.info({
+  logger.debug({
     exchanges: data.exchanges,
     totalActive: data.totalActive,
     mid: data.mid,
@@ -238,19 +252,6 @@ export const main = async () => {
 function getPrice(call, callback) {
   callback(null, {price: data.mid})
 }
-
-
-// Define service status map. Key is the service name, value is the corresponding status.
-// By convention, the empty string "" key represents that status of the entire server.
-const statusMap = {
-  "": data.totalActive > 0 ? 1 : 2,
-
-  // 1 is serving
-  // 2 is not serving
-};
-
-// Construct the health service implementation
-export const healthImpl = new healthCheck.Implementation(statusMap);
 
 
 function getServer() {
