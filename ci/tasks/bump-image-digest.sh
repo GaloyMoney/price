@@ -7,9 +7,9 @@ ref=$(cat ./repo/.git/short_ref)
 
 pushd charts-repo
 
-sed -i'' "s/^  digest:.*/  digest: \"${digest}\"/" ./charts/galoy/values.yaml
-old_ref=$(grep '# git_ref' charts/galoy/values.yaml | sed 's/.*://')
-sed -i'' "s/^  # git_ref:.*/  # git_ref: \"${ref}\"/" ./charts/galoy/values.yaml
+sed -i'' "s/^  digest:.*/  digest: \"${digest}\"/" ./charts/galoy/charts/price/values.yaml
+old_ref=$(grep '# git_ref' charts/galoy/charts/price/values.yaml | sed 's/.*://')
+sed -i'' "s/^  # git_ref:.*/  # git_ref: \"${ref}\"/" ./charts/galoy/charts/price/values.yaml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
