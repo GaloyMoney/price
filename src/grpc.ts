@@ -18,8 +18,8 @@ const packageDefinition = protoLoader.loadSync(
   options
 );
 
-export const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 // The protoDescriptor object has the full package hierarchy
+export const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const packageDefinitionHealth = protoLoader.loadSync(
   PROTO_PATH_HEALTH,
