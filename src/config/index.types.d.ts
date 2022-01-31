@@ -1,8 +1,8 @@
-type YamlExchangeConfig = {
+type ExchangeConfig = {
   name: string
   base: string
   quote: string
-  quoteCurrency: string
+  quoteAlias: string
   provider: string
   cron: string
   config: { [key: string]: string | number | boolean }

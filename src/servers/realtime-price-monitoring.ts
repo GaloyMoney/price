@@ -43,7 +43,7 @@ meter.createObservableGauge(
 
     for (const currency of supportedCurrencies) {
       observerResult.observe(realTimeData.mid(currency), { label: `${currency}_median` })
-      for (const exchange of exchanges.filter((e) => e.quoteCurrency === currency)) {
+      for (const exchange of exchanges.filter((e) => e.quoteAlias === currency)) {
         observerResult.observe(realTimeData.exchanges[currency][exchange.name].mid, {
           label: `${currency}_${exchange.name}`,
         })

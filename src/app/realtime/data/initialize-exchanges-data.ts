@@ -2,14 +2,14 @@ import { getExchangesConfig, supportedCurrencies } from "@config"
 import { isExchangeActive } from "@domain/exchanges"
 import { toTimestamp } from "@domain/primitives"
 
-export const initializeExchangesData = () => {
+export const initializeExchangesData = (): ExchangesData => {
   const exchanges: ExchangesData = {}
   const exchangesConfig = getExchangesConfig()
 
   for (const currency of supportedCurrencies) {
     if (!exchanges[currency]) exchanges[currency] = {}
 
-    for (const exchange of exchangesConfig.filter((e) => e.quoteCurrency === currency)) {
+    for (const exchange of exchangesConfig.filter((e) => e.quoteAlias === currency)) {
       exchanges[currency][exchange.name] = getDefaultData()
     }
   }

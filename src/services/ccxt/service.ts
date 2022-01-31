@@ -25,15 +25,6 @@ export const CcxtExchangeService = async ({
 
   await client.loadMarkets()
 
-  const getConfig = (): ExchangeConfig => {
-    return {
-      name: client.name,
-      base,
-      quote,
-      config: config || client.config,
-    }
-  }
-
   const fetchTicker = async (): Promise<Ticker | ServiceError> => {
     try {
       const ticker = await client.fetchTicker(symbol)
@@ -43,7 +34,7 @@ export const CcxtExchangeService = async ({
     }
   }
 
-  return { getConfig, fetchTicker }
+  return { fetchTicker }
 }
 
 const tickerFromRaw = ({

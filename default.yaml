@@ -6,19 +6,22 @@ quotes:
 exchanges:
   - name: "bitfinex2"
     enabled: true
-    quoteCurrency: "USD"
+    quoteAlias: "USD"
+    base: "BTC"
     quote: "USD"
     provider: "ccxt"
-    cron: "*/2 * * * * *"
+    cron: "*/6 * * * * *"
   - name: "ftx"
     enabled: true
-    quoteCurrency: "USD"
+    quoteAlias: "USD"
+    base: "BTC"
     quote: "USD"
     provider: "ccxt"
     cron: "*/2 * * * * *"
   - name: "binance"
     enabled: true
-    quoteCurrency: "USD"
+    quoteAlias: "USD"
+    base: "BTC"
     quote: "USDT"
     provider: "ccxt"
     cron: "*/2 * * * * *"

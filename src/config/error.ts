@@ -1,3 +1,7 @@
-export class ConfigError extends Error {
-  name = this.constructor.name
+export class ConfigError<T> extends Error {
+  data?: T
+  constructor(message?: string, data?: T) {
+    super(message)
+    this.data = data
+  }
 }

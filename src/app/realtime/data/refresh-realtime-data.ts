@@ -9,7 +9,7 @@ export const refreshRealtimeData = async ({
   exchange,
 }: {
   currency: Currency
-  exchange: YamlExchangeConfig
+  exchange: ExchangeConfig
 }): Promise<Ticker | ApplicationError> => {
   const exchangeService = await getExchange(exchange)
   if (exchangeService instanceof Error) {
@@ -34,7 +34,7 @@ export const refreshRealtimeData = async ({
 }
 
 const getExchange = async (
-  config: YamlExchangeConfig,
+  config: ExchangeConfig,
 ): Promise<IExchangeService | ApplicationError> => {
   const provider = config.provider as Provider
   const providerService = getProvider(provider)

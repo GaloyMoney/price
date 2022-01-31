@@ -1,8 +1,8 @@
 import healthCheck from "grpc-health-check"
 
 import { realTimeData, startWatchers } from "@app"
-import { supportedCurrencies } from "@config"
-import { Server, ServerCredentials } from "@grpc/grpc-js"
+import { defaultCurrency, supportedCurrencies } from "@config"
+import * as grpc from "@grpc/grpc-js"
 import { baseLogger } from "@services/logger"
 
 import { protoDescriptor } from "./grpc"
@@ -18,18 +18,27 @@ const statusMap = {
 // Construct the health service implementation
 const healthImpl = new healthCheck.Implementation(statusMap)
 
-function getPrice(call, callback) {
-  callback(null, { price: realTimeData.mid("USD" as Currency) })
+function getPrice({ request }, callback) {
+  const currency = request.currency || defaultCurrency
+  const supportedCurrency = supportedCurrencies.find((c) => c === currency.toUpperCase())
+  if (supportedCurrency) {
+    const price = realTimeData.mid(currency.toUpperCase())
+    return callback(null, { price })
+  }
+  return callback({
+    code: grpc.status.UNIMPLEMENTED,
+    details: `${currency.toUpperCase()} is not supported`,
+  })
 }
 
 export const startServer = () => {
   const port = process.env.PORT || 50051
-  const server = new Server()
+  const server = new grpc.Server()
 
   server.addService(protoDescriptor.PriceFeed.service, { getPrice })
   server.addService(healthCheck.service, healthImpl)
 
-  server.bindAsync(`0.0.0.0:${port}`, ServerCredentials.createInsecure(), () => {
+  server.bindAsync(`0.0.0.0:${port}`, grpc.ServerCredentials.createInsecure(), () => {
     baseLogger.info(`Price server running on port ${port}`)
     startWatchers(() => {
       const isActive = supportedCurrencies

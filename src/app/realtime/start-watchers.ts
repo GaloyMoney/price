@@ -8,7 +8,7 @@ export const startWatchers = (callback?: RefreshDataCallback) => {
   const exchanges = getExchangesConfig()
 
   for (const currency of supportedCurrencies) {
-    const supportedExchanges = exchanges.filter((e) => e.quoteCurrency === currency)
+    const supportedExchanges = exchanges.filter((e) => e.quoteAlias === currency)
     for (const exchange of supportedExchanges) {
       schedule(exchange.cron, async () => {
         const ticker = await refreshRealtimeData({ currency, exchange })
