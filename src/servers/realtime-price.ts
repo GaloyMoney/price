@@ -1,6 +1,6 @@
 import healthCheck from "grpc-health-check"
 
-import { data, startWatchers } from "@app"
+import { realTimeData, startWatchers } from "@app"
 import { supportedCurrencies } from "@config"
 import { Server, ServerCredentials } from "@grpc/grpc-js"
 import { baseLogger } from "@services/logger"
@@ -19,7 +19,7 @@ const statusMap = {
 const healthImpl = new healthCheck.Implementation(statusMap)
 
 function getPrice(call, callback) {
-  callback(null, { price: data.mid("USD" as Currency) })
+  callback(null, { price: realTimeData.mid("USD" as Currency) })
 }
 
 export const startServer = () => {
@@ -33,7 +33,7 @@ export const startServer = () => {
     baseLogger.info(`Price server running on port ${port}`)
     startWatchers(() => {
       const isActive = supportedCurrencies
-        .map((c) => (data.totalActive(c as Currency) > 0 ? 1 : 2))
+        .map((c) => (realTimeData.totalActive(c as Currency) > 0 ? 1 : 2))
         .every((i) => i === 1)
       healthImpl.setStatus("", isActive ? 1 : 2)
     })

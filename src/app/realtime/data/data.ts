@@ -1,8 +1,9 @@
 import { isDefined, median } from "@utils"
 
-const exchanges: ExchangesData = {}
-export const data: Data = {
-  exchanges,
+import { initializeExchangesData } from "./initialize-exchanges-data"
+
+export const realTimeData: Data = {
+  exchanges: initializeExchangesData(),
   totalActive(currency: Currency) {
     return Object.values(this.exchanges[currency]).reduce(
       (total, { active }) => total + (active ? 1 : 0),

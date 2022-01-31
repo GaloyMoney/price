@@ -18,3 +18,13 @@ interface Data {
 }
 
 type Provider = "ccxt"
+
+type RefreshDataCallbackArgs = {
+  exchangeName: string
+  ticker: Ticker
+}
+
+type RefreshDataCallback = (
+  error: ApplicationError | null,
+  data?: RefreshDataCallbackArgs,
+) => void

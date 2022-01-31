@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import { MeterProvider } from "@opentelemetry/sdk-metrics-base"
 import { PrometheusExporter } from "@opentelemetry/exporter-prometheus"
 import { getExchangesConfig, supportedCurrencies } from "@config"
-import { data } from "@app"
+import { realTimeData } from "@app"
 import { baseLogger } from "@services/logger"
 
 import { startServer } from "./realtime-price"
@@ -42,9 +42,9 @@ meter.createObservableGauge(
     const exchanges = getExchangesConfig()
 
     for (const currency of supportedCurrencies) {
-      observerResult.observe(data.mid(currency), { label: `${currency}_median` })
+      observerResult.observe(realTimeData.mid(currency), { label: `${currency}_median` })
       for (const exchange of exchanges.filter((e) => e.quoteCurrency === currency)) {
-        observerResult.observe(data.exchanges[currency][exchange.name].mid, {
+        observerResult.observe(realTimeData.exchanges[currency][exchange.name].mid, {
           label: `${currency}_${exchange.name}`,
         })
       }
