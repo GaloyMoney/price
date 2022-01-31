@@ -1,0 +1,24 @@
+base: "BTC"
+
+quotes:
+  - "USD"
+
+exchanges:
+  - name: "bitfinex2"
+    enabled: true
+    quoteCurrency: "USD"
+    quote: "USD"
+    provider: "ccxt"
+    cron: "*/2 * * * * *"
+  - name: "ftx"
+    enabled: true
+    quoteCurrency: "USD"
+    quote: "USD"
+    provider: "ccxt"
+    cron: "*/2 * * * * *"
+  - name: "binance"
+    enabled: true
+    quoteCurrency: "USD"
+    quote: "USDT"
+    provider: "ccxt"
+    cron: "*/2 * * * * *"

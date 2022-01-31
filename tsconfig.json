@@ -12,7 +12,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
-      "@src/*": ["src/*"]
+      "@app": ["src/app/index"],
+      "@config": ["src/config/index"],
+      "@domain/*": ["src/domain/*"],
+      "@servers/*": ["src/servers/*"],
+      "@services/*": ["src/services/*"],
+      "@utils": ["src/utils/index"]
     }
   },
   "compileOnSave": true,

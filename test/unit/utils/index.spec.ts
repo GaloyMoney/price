@@ -1,4 +1,4 @@
-import { median } from "@src/index"
+import { median } from "@utils"
 
 it("median test", () => {
   expect(median([2, 1, 5])).toBe(2)

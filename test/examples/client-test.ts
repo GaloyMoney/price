@@ -1,7 +1,7 @@
 import pino from "pino"
 import * as grpc from "@grpc/grpc-js"
 
-import { protoDescriptor, protoDescriptorHealth } from "@src/grpc"
+import { protoDescriptor, protoDescriptorHealth } from "@servers/grpc"
 
 const logger = pino({
   level: process.env.LOGLEVEL || "info",

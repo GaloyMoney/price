@@ -1,4 +1,4 @@
-type Ticker = {
+type Ticker1 = {
   bid: number | undefined
   ask: number | undefined
   timestamp: number | undefined
@@ -7,11 +7,11 @@ type Ticker = {
   readonly mid: number
 }
 
-interface Data {
+interface Data1 {
   exchanges: {
-    bitfinex: Ticker
-    binance: Ticker
-    ftx: Ticker
+    bitfinex: Ticker1
+    binance: Ticker1
+    ftx: Ticker1
   }
   readonly totalActive: number
   readonly mid: number

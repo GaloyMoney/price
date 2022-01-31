@@ -1,12 +1,12 @@
 {
   "name": "pricebtc",
   "scripts": {
-    "build": "tsc -p tsconfig-build.json --skipLibCheck && cp -R src/protos lib/ && tscpaths -p tsconfig.json -s ./src -o ./lib",
+    "build": "tsc -p tsconfig-build.json --skipLibCheck && cp -R src/servers/protos lib/servers/ && tscpaths -p tsconfig.json -s ./src -o ./lib",
     "client": "ts-node --files -r tsconfig-paths/register test/examples/client-test.ts",
     "eslint-check": "eslint \"{src,test}/**/*.ts\"",
     "eslint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
-    "monitoring": "ts-node --files -r tsconfig-paths/register src/monitoring.ts",
-    "start": "ts-node --files -r tsconfig-paths/register src/index.ts",
+    "monitoring": "ts-node --files -r tsconfig-paths/register src/servers/realtime-price-monitoring.ts",
+    "start": "ts-node --files -r tsconfig-paths/register src/servers/realtime-price.ts",
     "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
     "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck"
   },
@@ -24,10 +24,14 @@
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/exporter-prometheus": "^0.27.0",
     "@opentelemetry/sdk-metrics-base": "^0.27.0",
+    "@types/node-cron": "^3.0.1",
     "ccxt": "^1.71.40",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "grpc-health-check": "^1.8.0",
+    "js-yaml": "^4.1.0",
+    "lodash.merge": "^4.6.2",
+    "node-cron": "^3.0.0",
     "pino": "^7.6.5"
   },
   "devDependencies": {

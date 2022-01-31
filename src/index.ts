@@ -4,7 +4,9 @@ import dotenv from "dotenv"
 import { Server, ServerCredentials } from "@grpc/grpc-js"
 import healthCheck from "grpc-health-check"
 
-import { protoDescriptor } from "./grpc"
+import { isDefined, median } from "@utils"
+
+import { protoDescriptor } from "./servers/grpc"
 
 dotenv.config()
 
@@ -51,14 +53,7 @@ const exchanges_json = [
 
 const exchanges: Exchange[] = []
 
-export const median = (arr) => {
-  const arr_ = arr.filter((n) => !!n)
-  const mid = Math.floor(arr_.length / 2),
-    nums = [...arr_].sort((a, b) => a - b)
-  return arr_.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2
-}
-
-const ticker: Ticker = {
+const ticker: Ticker1 = {
   bid: undefined,
   ask: undefined,
   timestamp: undefined,
@@ -78,11 +73,7 @@ const ticker: Ticker = {
   },
 }
 
-const isDefined = <T>(item: T | undefined): item is T => {
-  return !!item
-}
-
-export const data: Data = {
+export const data: Data1 = {
   exchanges: {
     bitfinex: Object.create(ticker),
     binance: Object.create(ticker),
