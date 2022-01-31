@@ -1,12 +1,19 @@
-import ccxt from 'ccxt'
-import { protoDescriptor } from "./grpc";
-import { Server, ServerCredentials } from '@grpc/grpc-js';
-export const logger = require('pino')()
-export const healthCheck = require('grpc-health-check');
+import ccxt, { Exchange } from "ccxt"
+import pino from "pino"
+import dotenv from "dotenv"
+import { Server, ServerCredentials } from "@grpc/grpc-js"
+import healthCheck from "grpc-health-check"
 
+import { protoDescriptor } from "./grpc"
 
-export async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+dotenv.config()
+
+export const logger = pino({
+  level: process.env.LOGLEVEL || "info",
+})
+
+export async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 // Define service status map. Key is the service name, value is the corresponding status.
@@ -16,116 +23,90 @@ const statusMap = {
 
   // 1 is serving
   // 2 is not serving
-};
+}
 
 // Construct the health service implementation
-export const healthImpl = new healthCheck.Implementation(statusMap);
-
+const healthImpl = new healthCheck.Implementation(statusMap)
 
 const exchange_init = {
-  'enableRateLimit': true,
-  'rateLimit': 2000,
-  'timeout': 8000,
+  enableRateLimit: true,
+  rateLimit: 2000,
+  timeout: 8000,
 }
 
 const exchanges_json = [
   {
-    name: "bitfinex",
-    pair: "BTC/USD"
+    name: "bitfinex2",
+    pair: "BTC/USD",
   },
   {
     name: "binance",
-    pair: "BTC/USDT"
-  }, 
+    pair: "BTC/USDT",
+  },
   {
     name: "ftx",
-    pair: "BTC/USD"
-  } 
+    pair: "BTC/USD",
+  },
 ]
 
-const exchanges: any[] = []
+const exchanges: Exchange[] = []
 
-export const median = arr => {
-  const arr_ = arr.filter(n => !!n)
+export const median = (arr) => {
+  const arr_ = arr.filter((n) => !!n)
   const mid = Math.floor(arr_.length / 2),
-    nums = [...arr_].sort((a, b) => a - b);
-  return arr_.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
-};
+    nums = [...arr_].sort((a, b) => a - b)
+  return arr_.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2
+}
 
-const Ticker = {
-  bid: undefined, 
-  ask: undefined, 
-  timestamp: undefined, 
+const ticker: Ticker = {
+  bid: undefined,
+  ask: undefined,
+  timestamp: undefined,
   percentage: undefined,
   get active() {
     const staleAfter = 30 * 1000 // value in ms
-  
-    try {
-      return new Date().getTime() - this.timestamp! < staleAfter 
-    } catch (err) {
-      logger.error({err}, "can't decode input")
-      return false
+    if (this.timestamp) {
+      return new Date().getTime() - this.timestamp < staleAfter
     }
+    return false
   },
   get mid() {
-    try {
-      if (!this.active) {
-        return NaN
-      }
-      return (this.ask! + this.bid!) / 2
-    } catch (err) {
-      return NaN
+    if (this.active && this.ask && this.bid) {
+      return (this.ask + this.bid) / 2
     }
-  }
+    return NaN
+  },
 }
 
-interface Data {
-  exchanges: {
-    bitfinex: typeof Ticker,
-    binance: typeof Ticker,
-    ftx: typeof Ticker,
-  }
-  totalActive: number,
-  mid: number,
-  percentage: number
-  spread: number,
-  asks: number[],
-  bids: number[],
+const isDefined = <T>(item: T | undefined): item is T => {
+  return !!item
 }
 
 export const data: Data = {
   exchanges: {
-    bitfinex: Ticker,
-    binance: Ticker,
-    ftx: Ticker,
+    bitfinex: Object.create(ticker),
+    binance: Object.create(ticker),
+    ftx: Object.create(ticker),
   },
-  // exchanges: {
-  //  "bifinex": Ticker,
-  //  "binance": Ticker,
-  //  "ftx": Ticker,
-  // }
   get totalActive() {
-    const total = Object.values(this.exchanges).reduce((total, {active}) => total + (active ? 1 : 0), 0)
-    healthImpl.setStatus('', total > 0 ? 1 : 2);
+    const total = Object.values(this.exchanges).reduce(
+      (total, { active }) => total + (active ? 1 : 0),
+      0,
+    )
+    healthImpl.setStatus("", total > 0 ? 1 : 2)
     return total
   },
   get bids() {
-    const bids: number[] = []
-    Object.values(this.exchanges).forEach(({bid, active}) => {
-      if (!!bid && active) { 
-        bids.push(bid!) 
-      }
-    })
-    return bids
+    return Object.values(this.exchanges)
+      .filter((e) => e.active)
+      .map<number | undefined>((e) => e.bid)
+      .filter(isDefined)
   },
   get asks() {
-    const asks: number[] = []
-    Object.values(this.exchanges).forEach(({ask, active}) => {
-      if (!!ask && active) { 
-        asks.push(ask!)  
-      }
-    })
-    return asks
+    return Object.values(this.exchanges)
+      .filter((e) => e.active)
+      .map<number | undefined>((e) => e.ask)
+      .filter(isDefined)
   },
   get mid() {
     const ask = median(this.asks)
@@ -146,82 +127,49 @@ export const data: Data = {
     // ftx: {
     //   percentage: 0.05661823757027086
     // }
-    const percentages: number[] = []
-    Object.values(this.exchanges).forEach(({percentage}) => {
-      if (!!percentage) { 
-        percentages.push(percentage!)  
-      }
-    })
-    return median(percentages)
-  }
-}
 
+    const percentages = Object.values(this.exchanges)
+      .map<number | unknown>((e) => e.percentage)
+      .filter(isDefined)
+    return median(percentages)
+  },
+}
 
 export const init = () => {
   // FIXME: if the exchange doesn't initialize properly on the first call
   // then it seems ccxt will never be able to fetch data back from this exchange
   // so in case of init failure there should be a loop such that the init keep retrying
-  // until succesful, with some form of a backoff.
+  // until successful, with some form of a backoff.
 
   // look at: https://github.com/ccxt/ccxt/wiki/Manual#market-cache-force-reload
   for (const exchange_json of exchanges_json) {
-    const exchange = new ccxt[exchange_json.name](exchange_init)
+    const exchange: Exchange = new ccxt[exchange_json.name](exchange_init)
     exchange.pair = exchange_json.pair
     exchanges.push(exchange)
   }
 }
 
-export const refresh = async (exchange) => {
-    let bid, ask, percentage, timestamp
-
-    try {
-      ({bid, ask, percentage, timestamp} = await exchange.fetchTicker(exchange.pair))
-
-    //   {
-    //     symbol: 'BTC/USD',
-    //     timestamp: 1616073510751,
-    //     datetime: '2021-03-18T13:18:30.751Z',
-    //     high: undefined,
-    //     low: undefined,
-    //     bid: 57996,
-    //     bidVolume: undefined,
-    //     ask: 57997,
-    //     askVolume: undefined,
-    //     vwap: undefined,
-    //     open: undefined,
-    //     close: 57992,
-    //     last: 57992,
-    //     previousClose: undefined,
-    //     change: undefined,
-    //     percentage: 0.05067120781173572,
-    //     average: undefined,
-    //     baseVolume: undefined,
-    //     quoteVolume: 269803113.9994,
-    //     info: {
-    //       raw response...
-    //     }
-    //   }
-
+export const refresh = async (exchange: Exchange) => {
+  let bid, ask, percentage, timestamp
+  try {
+    ;({ bid, ask, percentage, timestamp } = await exchange.fetchTicker(exchange.pair))
   } catch (err) {
-      logger.warn({err}, `can't refresh ${exchange.id}`)
-      await sleep(5000)
-      return
-    }
+    logger.warn({ name: exchange.id, err }, `can't refresh ${exchange.id}`)
+    await sleep(5000)
+    return
+  }
 
-    // FIXME: the object should be recycled instead of being recrated/replaced
-    const ticker = Object.create(Ticker)
+  const ticker = data.exchanges[exchange.name.toLowerCase()]
 
-    ticker.ask = ask
-    ticker.bid = bid
-    ticker.timestamp = timestamp
-    ticker.percentage = percentage
-
-    data.exchanges[exchange.id] = ticker
+  ticker.ask = ask
+  ticker.bid = bid
+  ticker.timestamp = timestamp
+  ticker.percentage = percentage
 }
 
-const loop = async (exchange) => {
+const loop = async (exchange: Exchange) => {
   await refresh(exchange)
-  
+
   const refresh_time = 2000
 
   logger.debug({
@@ -235,40 +183,39 @@ const loop = async (exchange) => {
     exchange_updated: exchange.id,
   })
 
-  setTimeout(async function () {
+  setTimeout(async () => {
     // TODO check if this could lead to a stack overflow
     loop(exchange)
-  }, refresh_time);
+  }, refresh_time)
 }
 
 export const main = async () => {
   init()
   await sleep(500)
 
-  exchanges.forEach(exchange => loop(exchange))
+  exchanges.forEach((exchange) => loop(exchange))
 }
-
 
 function getPrice(call, callback) {
-  callback(null, {price: data.mid})
+  callback(null, { price: data.mid })
 }
 
+export const startServer = () => {
+  const port = process.env.PORT || 50051
+  const server = new Server()
 
-function getServer() {
-  const server = new Server();
-  server.addService(protoDescriptor.PriceFeed.service, { getPrice });
-  server.addService(healthCheck.service, healthImpl);
-  return server;
-}
+  server.addService(protoDescriptor.PriceFeed.service, { getPrice })
+  server.addService(healthCheck.service, healthImpl)
 
-const port = 50051
-
-const routeServer = getServer();
-routeServer.bindAsync(`0.0.0.0:${port}`, 
-  ServerCredentials.createInsecure(), () => {
+  server.bindAsync(`0.0.0.0:${port}`, ServerCredentials.createInsecure(), () => {
     logger.info(`Price server running on port ${port}`)
     main()
-    routeServer.start();
-});
+    server.start()
+  })
 
+  return server
+}
 
+if (require.main === module) {
+  startServer()
+}

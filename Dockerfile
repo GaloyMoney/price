@@ -1,29 +1,36 @@
-FROM node:14-alpine AS BUILD_IMAGE
+FROM node:16-bullseye AS BUILD_IMAGE
 
-WORKDIR /usr/app
-
-RUN apk update && apk add git
-
-COPY ./package.json ./tsconfig.json ./yarn.lock ./
-
-RUN yarn install --frozen-lockfile
-
-FROM node:14-alpine
-
-RUN apk update && apk add curl
-
-WORKDIR /usr/app
-
-COPY --from=BUILD_IMAGE /usr/app/node_modules ./node_modules
-
-COPY ./package.json ./tsconfig.json ./yarn.lock ./
-COPY "./src/" "./src"
+RUN apt-get update && apt-get install -y \
+  make git curl python3 jq rsync wget ca-certificates gnupg lsb-release
 
 RUN GRPC_HEALTH_PROBE_VERSION=v0.3.6 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
+WORKDIR /app
+COPY ./*.json ./yarn.lock ./
+
+RUN yarn install --frozen-lockfile
+COPY ./src ./src
+RUN yarn build
+
+RUN yarn install --frozen-lockfile --production
+
+FROM node:16-bullseye
+COPY --from=BUILD_IMAGE /app/lib /app/lib
+COPY --from=BUILD_IMAGE /app/node_modules /app/node_modules
+
+WORKDIR /app
+COPY ./*.json ./*.js ./*.yaml ./yarn.lock ./
+
+USER 1000
+
+ARG BUILDTIME
+ARG COMMITHASH
+ENV BUILDTIME ${BUILDTIME}
+ENV COMMITHASH ${COMMITHASH}
+
 EXPOSE 9464
 EXPOSE 50051
 
-CMD yarn ts-node src/monitoring.ts
+CMD ["node", "lib/monitoring.js"]

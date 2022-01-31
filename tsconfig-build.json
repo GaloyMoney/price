@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/monitoring.ts", "src/**/*.d.ts"]
+}
