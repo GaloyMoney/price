@@ -1,4 +1,7 @@
-type Price = number & { readonly brand: unique symbol }
+type ExchangePrice = {
+  exchangeName: string
+  price: Price
+}
 
 type Ticker = {
   bid: Price

@@ -19,6 +19,11 @@ interface Data {
 
 type Provider = "ccxt" | "exchangeratesapi"
 
+type RefreshRealtimeDataArgs = {
+  currency: Currency
+  exchange: ExchangeConfig
+}
+
 type RefreshDataCallbackArgs = {
   exchangeName: string
   ticker: Ticker

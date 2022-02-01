@@ -1,1 +1,1 @@
-export * from "./realtime"
+export * as Realtime from "./realtime"

@@ -2,12 +2,11 @@ import axios from "axios"
 
 import {
   InvalidTickerError,
-  toPrice,
   ExchangeServiceError,
   UnknownExchangeServiceError,
   InvalidExchangeConfigError,
 } from "@domain/exchanges"
-import { toSeconds, toTimestamp } from "@domain/primitives"
+import { toPrice, toSeconds, toTimestamp } from "@domain/primitives"
 import { LocalCacheService } from "@services/cache"
 import { CacheKeys } from "@domain/cache"
 import { baseLogger } from "@services/logger"

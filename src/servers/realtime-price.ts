@@ -1,8 +1,7 @@
 import healthCheck from "grpc-health-check"
-
-import { realTimeData, startWatchers } from "@app"
-import { defaultQuoteCurrency, supportedCurrencies } from "@config"
 import * as grpc from "@grpc/grpc-js"
+
+import { Realtime } from "@app"
 import { baseLogger } from "@services/logger"
 
 import { protoDescriptor } from "./grpc"
@@ -18,17 +17,18 @@ const statusMap = {
 // Construct the health service implementation
 const healthImpl = new healthCheck.Implementation(statusMap)
 
-const getPrice = ({ request }, callback) => {
-  const currency = (request.currency || defaultQuoteCurrency).toUpperCase()
-  const supportedCurrency = supportedCurrencies.find((c) => c === currency)
-  if (supportedCurrency) {
-    const price = realTimeData.mid(currency)
-    return callback(null, { price })
+const getPrice = async ({ request }, callback) => {
+  const currency = request.currency
+  const price = await Realtime.getPrice(currency)
+  if (price instanceof Error) {
+    baseLogger.error({ error: price, currency }, `Error getting price`)
+    return callback({
+      code: grpc.status.UNIMPLEMENTED,
+      details: `${currency} is not supported`,
+    })
   }
-  return callback({
-    code: grpc.status.UNIMPLEMENTED,
-    details: `${currency.toUpperCase()} is not supported`,
-  })
+
+  return callback(null, { price })
 }
 
 export const startServer = () => {
@@ -40,11 +40,9 @@ export const startServer = () => {
 
   server.bindAsync(`0.0.0.0:${port}`, grpc.ServerCredentials.createInsecure(), () => {
     baseLogger.info(`Price server running on port ${port}`)
-    startWatchers(() => {
-      const isActive = supportedCurrencies
-        .map((c) => (realTimeData.totalActive(c as Currency) > 0 ? 1 : 2))
-        .every((i) => i === 1)
-      healthImpl.setStatus("", isActive ? 1 : 2)
+    Realtime.startWatchers(async () => {
+      const status = await Realtime.getStatus()
+      healthImpl.setStatus("", status)
     })
     server.start()
   })

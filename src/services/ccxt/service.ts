@@ -2,12 +2,11 @@ import ccxt from "ccxt"
 
 import {
   InvalidTickerError,
-  toPrice,
   ExchangeServiceError,
   InvalidExchangeIdError,
   UnknownExchangeServiceError,
 } from "@domain/exchanges"
-import { toTimestamp } from "@domain/primitives"
+import { toPrice, toTimestamp } from "@domain/primitives"
 
 import { baseLogger } from "@services/logger"
 

@@ -10,10 +10,7 @@ import { realTimeData } from "./data"
 export const refreshRealtimeData = async ({
   currency,
   exchange,
-}: {
-  currency: Currency
-  exchange: ExchangeConfig
-}): Promise<Ticker | ApplicationError> => {
+}: RefreshRealtimeDataArgs): Promise<Ticker | ApplicationError> => {
   const exchangeService = await getExchange(exchange)
   if (exchangeService instanceof Error) {
     baseLogger.warn(
