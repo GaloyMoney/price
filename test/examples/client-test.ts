@@ -20,6 +20,7 @@ const client2 = new protoDescriptorHealth.grpc.health.v1.Health(
 client.getPrice({}, callback)
 
 client.getPrice({ currency: "CRC" }, callback)
+client.getPrice({ currency: "USD" }, callback)
 
 function callback(err, data) {
   if (err) {

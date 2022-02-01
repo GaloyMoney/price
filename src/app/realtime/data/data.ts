@@ -1,4 +1,4 @@
-import { isDefined, median } from "@utils"
+import { isDefined, median, round } from "@utils"
 
 import { initializeExchangesData } from "./initialize-exchanges-data"
 
@@ -28,7 +28,7 @@ export const realTimeData: Data = {
   mid(currency: Currency) {
     const ask = median(this.asks(currency))
     const bid = median(this.bids(currency))
-    return (ask + bid) / 2
+    return round((ask + bid) / 2)
   },
   spread(currency: Currency) {
     const highAsk = Math.max(...this.asks(currency))

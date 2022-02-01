@@ -9,6 +9,8 @@ import {
 } from "@domain/exchanges"
 import { toTimestamp } from "@domain/primitives"
 
+import { baseLogger } from "@services/logger"
+
 import { CcxtExchangeServiceArgs } from "./index.types"
 
 export const CcxtExchangeService = async ({
@@ -30,6 +32,7 @@ export const CcxtExchangeService = async ({
       const ticker = await client.fetchTicker(symbol)
       return tickerFromRaw(ticker)
     } catch (error) {
+      baseLogger.error({ error }, "Ccxt unknown error")
       return new UnknownExchangeServiceError(error)
     }
   }

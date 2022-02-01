@@ -1,7 +1,9 @@
 base: "BTC"
 
+# the default is the first currency
 quotes:
   - "USD"
+  # - "CRC"
 
 exchanges:
   - name: "bitfinex2"
@@ -25,3 +27,14 @@ exchanges:
     quote: "USDT"
     provider: "ccxt"
     cron: "*/2 * * * * *"
+  - name: "exchangeratesapi"
+    enabled: false
+    quoteAlias: "CRC"
+    base: "USD"
+    quote: "CRC"
+    provider: "exchangeratesapi"
+    cron: "*/2 * * * * *"
+    config:
+      baseUrl: "http://api.exchangeratesapi.io/v1"
+      apiKey: "<your api key>"
+      cacheSeconds: 14400

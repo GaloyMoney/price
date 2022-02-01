@@ -12,3 +12,6 @@ export const median = (arr) => {
 export const assertUnreachable = (x: never): never => {
   throw new Error(`This should never compile with ${x}`)
 }
+
+export const round = (number: number): number =>
+  +(Math.round(Number(number + "e+2")) + "e-2")

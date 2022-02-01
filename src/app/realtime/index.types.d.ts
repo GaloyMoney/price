@@ -17,7 +17,7 @@ interface Data {
   bids(currency: Currency): number[]
 }
 
-type Provider = "ccxt"
+type Provider = "ccxt" | "exchangeratesapi"
 
 type RefreshDataCallbackArgs = {
   exchangeName: string

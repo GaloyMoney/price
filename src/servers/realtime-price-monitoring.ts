@@ -33,21 +33,20 @@ const meter = new MeterProvider({
   interval: 2000,
 }).getMeter("prices-prometheus")
 
-meter.createObservableGauge(
-  "price",
-  {
-    description: "Example of a sync observer with callback",
-  },
-  (observerResult) => {
-    const exchanges = getExchangesConfig()
+const exchanges = getExchangesConfig()
 
-    for (const currency of supportedCurrencies) {
-      observerResult.observe(realTimeData.mid(currency), { label: `${currency}_median` })
+for (const currency of supportedCurrencies) {
+  meter.createObservableGauge(
+    `${currency}_price`,
+    { description: `${currency} prices` },
+    (observerResult) => {
+      observerResult.observe(realTimeData.mid(currency), { label: "median" })
+
       for (const exchange of exchanges.filter((e) => e.quoteAlias === currency)) {
         observerResult.observe(realTimeData.exchanges[currency][exchange.name].mid, {
-          label: `${currency}_${exchange.name}`,
+          label: `${exchange.name}`,
         })
       }
-    }
-  },
-)
+    },
+  )
+}

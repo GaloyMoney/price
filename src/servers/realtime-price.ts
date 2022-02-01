@@ -1,7 +1,7 @@
 import healthCheck from "grpc-health-check"
 
 import { realTimeData, startWatchers } from "@app"
-import { defaultCurrency, supportedCurrencies } from "@config"
+import { defaultQuoteCurrency, supportedCurrencies } from "@config"
 import * as grpc from "@grpc/grpc-js"
 import { baseLogger } from "@services/logger"
 
@@ -18,11 +18,11 @@ const statusMap = {
 // Construct the health service implementation
 const healthImpl = new healthCheck.Implementation(statusMap)
 
-function getPrice({ request }, callback) {
-  const currency = request.currency || defaultCurrency
-  const supportedCurrency = supportedCurrencies.find((c) => c === currency.toUpperCase())
+const getPrice = ({ request }, callback) => {
+  const currency = (request.currency || defaultQuoteCurrency).toUpperCase()
+  const supportedCurrency = supportedCurrencies.find((c) => c === currency)
   if (supportedCurrency) {
-    const price = realTimeData.mid(currency.toUpperCase())
+    const price = realTimeData.mid(currency)
     return callback(null, { price })
   }
   return callback({

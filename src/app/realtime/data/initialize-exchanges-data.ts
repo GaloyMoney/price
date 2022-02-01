@@ -1,6 +1,7 @@
 import { getExchangesConfig, supportedCurrencies } from "@config"
 import { isExchangeActive } from "@domain/exchanges"
 import { toTimestamp } from "@domain/primitives"
+import { round } from "@utils"
 
 export const initializeExchangesData = (): ExchangesData => {
   const exchanges: ExchangesData = {}
@@ -27,7 +28,7 @@ const getDefaultData = () => ({
   },
   get mid() {
     if (this.active && this.ask && this.bid) {
-      return (this.ask + this.bid) / 2
+      return round((this.ask + this.bid) / 2)
     }
     return NaN
   },

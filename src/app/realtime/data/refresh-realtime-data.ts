@@ -1,4 +1,7 @@
+import { defaultBaseCurrency } from "@config"
+import { toCurrency } from "@domain/primitives"
 import { CcxtProviderService } from "@services/ccxt"
+import { ExchangeRatesAPIProviderService } from "@services/exchange-rates-api"
 import { baseLogger } from "@services/logger"
 import { assertUnreachable } from "@utils"
 
@@ -26,10 +29,13 @@ export const refreshRealtimeData = async ({
     return ticker
   }
 
-  realTimeData.exchanges[currency][exchange.name].bid = ticker.bid
-  realTimeData.exchanges[currency][exchange.name].ask = ticker.ask
+  let rate = 1
+  if (defaultBaseCurrency !== exchange.base) {
+    rate = realTimeData.mid(toCurrency(exchange.base))
+  }
+  realTimeData.exchanges[currency][exchange.name].bid = ticker.bid * rate
+  realTimeData.exchanges[currency][exchange.name].ask = ticker.ask * rate
   realTimeData.exchanges[currency][exchange.name].timestamp = ticker.timestamp
-
   return ticker
 }
 
@@ -43,7 +49,7 @@ const getExchange = async (
     name: config.name,
     base: config.base,
     quote: config.quote,
-    exchangeConfig: config.config || exchangeConfig,
+    exchangeConfig: { ...exchangeConfig, ...config.config },
   })
 }
 
@@ -57,6 +63,10 @@ const getDefaultExchangeConfig = (
         rateLimit: 2000,
         timeout: 8000,
       }
+    case "exchangeratesapi":
+      return {
+        timeout: 5000,
+      }
     default:
       return assertUnreachable(provider)
   }
@@ -66,6 +76,8 @@ const getProvider = (provider: Provider): IProviderService => {
   switch (provider) {
     case "ccxt":
       return CcxtProviderService()
+    case "exchangeratesapi":
+      return ExchangeRatesAPIProviderService()
     default:
       return assertUnreachable(provider)
   }

@@ -32,19 +32,18 @@ if (!valid) throw new ConfigError("Invalid yaml configuration", validate.errors)
 export const supportedCurrencies: Currency[] = yamlConfig.quotes.map((q) =>
   q.toUpperCase(),
 )
-export const defaultCurrency: Currency = supportedCurrencies[0]
+export const defaultBaseCurrency: Currency = yamlConfig.base
+export const defaultQuoteCurrency: Currency = supportedCurrencies[0]
 
-export const getExchangesConfig = (): ExchangeConfig[] => {
-  const base = yamlConfig.base
-
-  return yamlConfig.exchanges
+export const getExchangesConfig = (): ExchangeConfig[] =>
+  yamlConfig.exchanges
     .filter((e) => !!e.enabled)
     .map((e) => {
       if (!cron.validate(e.cron))
         throw new ConfigError(`Invalid ${e.name} cron expression`, e)
       return {
         name: e.name,
-        base: (e.base || base).toUpperCase(),
+        base: (e.base || defaultBaseCurrency).toUpperCase(),
         quote: e.quote.toUpperCase(),
         quoteAlias: e.quoteAlias.toUpperCase(),
         provider: e.provider,
@@ -52,4 +51,3 @@ export const getExchangesConfig = (): ExchangeConfig[] => {
         config: e.config,
       }
     })
-}
