@@ -32,10 +32,10 @@ function callback(err, data) {
 
 client2.check({}, healthCallback)
 
-function healthCallback(err, { status }) {
+function healthCallback(err, data) {
   if (err) {
     logger.error({ err })
     return
   }
-  logger.info({ status })
+  logger.info(data)
 }

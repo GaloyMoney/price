@@ -2,14 +2,13 @@
 
 set -eu
 
-digest=$(cat ./edge-image/digest)
-ref=$(cat ./repo/.git/short_ref)
+export digest=$(cat ./edge-image/digest)
+export ref=$(cat ./repo/.git/short_ref)
 
 pushd charts-repo
 
-sed -i'' "s/^  digest:.*/  digest: \"${digest}\"/" ./charts/galoy/charts/price/values.yaml
-old_ref=$(grep '# git_ref' charts/galoy/charts/price/values.yaml | sed 's/.*://')
-sed -i'' "s/^  # git_ref:.*/  # git_ref: \"${ref}\"/" ./charts/galoy/charts/price/values.yaml
+yq -i e '.image.digest = strenv(digest)' ./charts/galoy/charts/price/values.yaml
+yq -i e '.image.git_ref = strenv(ref)' ./charts/galoy/charts/price/values.yaml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
@@ -23,5 +22,5 @@ fi
   git merge --no-edit ${BRANCH}
   git add -A
   git status
-  git commit -m "Bump galoy image to '${digest}'"
+  git commit -m "chore(deps): bump galoy price image to '${digest}'"
 )
