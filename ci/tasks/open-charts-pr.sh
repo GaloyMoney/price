@@ -25,7 +25,7 @@ EOF
 
 gh pr close ${BOT_BRANCH} || true
 gh pr create \
-  --title bump-price-image-${ref} \
+  --title "chore(deps): bump-price-image-${ref}" \
   --body-file ../body.md \
   --base ${BRANCH} \
   --head ${BOT_BRANCH} \
