@@ -1,3 +1,7 @@
+## Compiled JavaScript files
+lib/
+**/*.js.map
+
 # Logs
 logs
 *.log

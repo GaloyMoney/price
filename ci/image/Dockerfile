@@ -1,7 +1,10 @@
-FROM node:14-alpine
+FROM node:16-bullseye
 
-RUN apk update \
-  && apk add bash make git docker curl python jq rsync openssh wget
+RUN apt-get update && apt-get install -y \
+  make git curl python3 jq rsync wget ca-certificates gnupg lsb-release
+
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.17.2/yq_linux_386.tar.gz -O - |\
+  tar xz && mv yq_linux_386 /usr/bin/yq
 
 # Install gcloud
 RUN curl -sSL https://sdk.cloud.google.com | bash

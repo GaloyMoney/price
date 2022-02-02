@@ -1,22 +1,25 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "noImplicitReturns": true,
-    "noUnusedLocals": false, // FIXME
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
     "target": "es2020",
     "noImplicitAny": false,
+    "useUnknownInCatchVariables": false,
     "esModuleInterop": true,
-    "rootDirs": [
-      "src"
-    ],
-    "types": ["jest", "node"],
-    "moduleResolution": "node"
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@app": ["src/app/index"],
+      "@config": ["src/config/index"],
+      "@domain/*": ["src/domain/*"],
+      "@servers/*": ["src/servers/*"],
+      "@services/*": ["src/services/*"],
+      "@utils": ["src/utils/index"]
+    }
   },
   "compileOnSave": true,
-  "include": [
-    "src/index.ts",
-  ]
+  "include": ["src/**/*", "test/**/*"]
 }
