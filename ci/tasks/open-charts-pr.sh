@@ -14,9 +14,9 @@ cat <<EOF >> ../body.md
 # Bump galoy image
 
 The galoy image will be bumped to digest:
-```
+\`\`\`
 ${digest}
-```
+\`\`\`
 
 Code diff contained in this image:
 
