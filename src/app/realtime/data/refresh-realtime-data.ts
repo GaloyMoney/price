@@ -1,5 +1,6 @@
 import { defaultBaseCurrency } from "@config"
-import { toCurrency } from "@domain/primitives"
+import { toCurrency, toSeconds } from "@domain/primitives"
+import { LocalCacheService } from "@services/cache"
 import { CcxtProviderService } from "@services/ccxt"
 import { ExchangeRatesAPIProviderService } from "@services/exchange-rates-api"
 import { baseLogger } from "@services/logger"
@@ -39,14 +40,23 @@ export const refreshRealtimeData = async ({
 const getExchange = async (
   config: ExchangeConfig,
 ): Promise<IExchangeService | ApplicationError> => {
+  const { name, base, quote } = config
   const provider = config.provider as Provider
-  const providerService = getProvider(provider)
-  const exchangeConfig = getDefaultExchangeConfig(provider)
-  return providerService.createExchangeService({
-    name: config.name,
-    base: config.base,
-    quote: config.quote,
-    exchangeConfig: { ...exchangeConfig, ...config.config },
+  const key = `${provider}:${name}:${base}:${quote}`
+
+  return LocalCacheService().getOrSet({
+    key,
+    ttlSecs: toSeconds(3600),
+    fn: async () => {
+      const providerService = getProvider(provider)
+      const exchangeConfig = getDefaultExchangeConfig(provider)
+      return providerService.createExchangeService({
+        name,
+        base,
+        quote,
+        exchangeConfig: { ...exchangeConfig, ...config.config },
+      })
+    },
   })
 }
 
