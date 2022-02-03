@@ -5,7 +5,7 @@ import { supportedCurrencies } from "@config"
 import { Realtime } from "@app"
 import { baseLogger } from "@services/logger"
 
-import { startServer } from "./realtime-price"
+import { startServer } from "./run"
 
 dotenv.config()
 

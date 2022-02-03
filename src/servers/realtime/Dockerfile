@@ -33,4 +33,4 @@ ENV COMMITHASH ${COMMITHASH}
 EXPOSE 9464
 EXPOSE 50051
 
-CMD ["node", "lib/servers/realtime-price-monitoring.js"]
+CMD ["lib/servers/realtime/run-monitoring.js"]

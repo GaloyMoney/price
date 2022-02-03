@@ -4,7 +4,7 @@ import * as grpc from "@grpc/grpc-js"
 import { Realtime } from "@app"
 import { baseLogger } from "@services/logger"
 
-import { protoDescriptor } from "./grpc"
+import { protoDescriptor } from "../grpc"
 
 // Define service status map. Key is the service name, value is the corresponding status.
 // By convention, the empty string "" key represents that status of the entire server.

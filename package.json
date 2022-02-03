@@ -5,8 +5,8 @@
     "client": "ts-node --files -r tsconfig-paths/register test/examples/client-test.ts",
     "eslint-check": "eslint \"{src,test}/**/*.ts\"",
     "eslint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
-    "monitoring": "ts-node --files -r tsconfig-paths/register src/servers/realtime-price-monitoring.ts",
-    "start": "ts-node --files -r tsconfig-paths/register src/servers/realtime-price.ts",
+    "monitoring": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run-monitoring.ts",
+    "start": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run.ts",
     "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
     "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck"
   },
