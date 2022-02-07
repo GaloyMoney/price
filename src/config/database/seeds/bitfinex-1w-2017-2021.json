@@ -1,0 +1,1568 @@
+[
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1483315200000,
+    "price": 915.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1483920000000,
+    "price": 820.74
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1484524800000,
+    "price": 923.72
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1485129600000,
+    "price": 912.55
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1485734400000,
+    "price": 1006.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1486339200000,
+    "price": 996.01
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1486944000000,
+    "price": 1056.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1487548800000,
+    "price": 1178.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1488153600000,
+    "price": 1278.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1488758400000,
+    "price": 1224.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1489363200000,
+    "price": 1016.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1489968000000,
+    "price": 968.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1490572800000,
+    "price": 1107.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1491177600000,
+    "price": 1215.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1491782400000,
+    "price": 1212
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1492387200000,
+    "price": 1355.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1492992000000,
+    "price": 1435
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1493596800000,
+    "price": 1619.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1494201600000,
+    "price": 1827.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1494806400000,
+    "price": 2026.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1495411200000,
+    "price": 2056.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1496016000000,
+    "price": 2488.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1496620800000,
+    "price": 2941.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1497225600000,
+    "price": 2491.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1497830400000,
+    "price": 2483.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1498435200000,
+    "price": 2445.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1499040000000,
+    "price": 2477.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1499644800000,
+    "price": 1925
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1500249600000,
+    "price": 2750.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1500854400000,
+    "price": 2748.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1501459200000,
+    "price": 3232.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1502064000000,
+    "price": 4061.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1502668800000,
+    "price": 4063.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1503273600000,
+    "price": 4332.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1503878400000,
+    "price": 4598.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1504483200000,
+    "price": 4233.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1505088000000,
+    "price": 3666.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1505692800000,
+    "price": 3654.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1506297600000,
+    "price": 4404.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1506902400000,
+    "price": 4611.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1507507200000,
+    "price": 5713.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1508112000000,
+    "price": 5981.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1508716800000,
+    "price": 6150
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1509321600000,
+    "price": 7366.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1509926400000,
+    "price": 5810.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1510531200000,
+    "price": 8052.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1511136000000,
+    "price": 9305.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1511740800000,
+    "price": 11162
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1512345600000,
+    "price": 14901
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1512950400000,
+    "price": 18970
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1513555200000,
+    "price": 13503
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1514160000000,
+    "price": 13759.38180575
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1514764800000,
+    "price": 16215.35727958
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1515369600000,
+    "price": 13558
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1515974400000,
+    "price": 11514
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1516579200000,
+    "price": 11828
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1517184000000,
+    "price": 8185.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1517788800000,
+    "price": 8069.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1518393600000,
+    "price": 10400
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1518998400000,
+    "price": 9583
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1519603200000,
+    "price": 11500
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1520208000000,
+    "price": 9527.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1520812800000,
+    "price": 8200.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1521417600000,
+    "price": 8445
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1522022400000,
+    "price": 6821.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1522627200000,
+    "price": 7023.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1523232000000,
+    "price": 8357.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1523836800000,
+    "price": 8791.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1524441600000,
+    "price": 9400
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1525046400000,
+    "price": 9658.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1525651200000,
+    "price": 8683.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1526256000000,
+    "price": 8523.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1526860800000,
+    "price": 7339.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1527465600000,
+    "price": 7718
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1528070400000,
+    "price": 6758
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1528675200000,
+    "price": 6438.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1529280000000,
+    "price": 6148.0390596
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1529884800000,
+    "price": 6349.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1530489600000,
+    "price": 6707
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1531094400000,
+    "price": 6347.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1531699200000,
+    "price": 7397.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1532304000000,
+    "price": 8221
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1532908800000,
+    "price": 7025.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1533513600000,
+    "price": 6313.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1534118400000,
+    "price": 6485.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1534723200000,
+    "price": 6707
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1535328000000,
+    "price": 7300
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1535932800000,
+    "price": 6239.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1536537600000,
+    "price": 6498.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1537142400000,
+    "price": 6710
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1537747200000,
+    "price": 6622.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1538352000000,
+    "price": 6609.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1538956800000,
+    "price": 6336.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1539561600000,
+    "price": 6590.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1540166400000,
+    "price": 6490.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1540771200000,
+    "price": 6491.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1541376000000,
+    "price": 6447.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1541980800000,
+    "price": 5659.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1542585600000,
+    "price": 4089.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1543190400000,
+    "price": 4173
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1543795200000,
+    "price": 3642.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1544400000000,
+    "price": 3301.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1545004800000,
+    "price": 4071.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1545609600000,
+    "price": 3977.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1546214400000,
+    "price": 4168.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1546819200000,
+    "price": 3591
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1547424000000,
+    "price": 3586.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1548028800000,
+    "price": 3597.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1548633600000,
+    "price": 3501.73867085
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1549238400000,
+    "price": 3747.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1549843200000,
+    "price": 3735.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1550448000000,
+    "price": 3831.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1551052800000,
+    "price": 3885
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1551657600000,
+    "price": 4000
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1552262400000,
+    "price": 4068.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1552867200000,
+    "price": 4041.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1553472000000,
+    "price": 4167.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1554076800000,
+    "price": 5238
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1554681600000,
+    "price": 5194.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1555286400000,
+    "price": 5321.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1555891200000,
+    "price": 5486.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1556496000000,
+    "price": 6041.4021233
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1557100800000,
+    "price": 6983.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1557705600000,
+    "price": 8188.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1558310400000,
+    "price": 8729.87136565
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1558915200000,
+    "price": 8740.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1559520000000,
+    "price": 7633.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1560124800000,
+    "price": 8985.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1560729600000,
+    "price": 10913
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1561334400000,
+    "price": 10809
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1561939200000,
+    "price": 11485
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1562544000000,
+    "price": 10204
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1563148800000,
+    "price": 10569.43491181
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1563753600000,
+    "price": 9519
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1564358400000,
+    "price": 10973
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1564963200000,
+    "price": 11565.357744
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1565568000000,
+    "price": 10332.192078
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1566172800000,
+    "price": 10132
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1566777600000,
+    "price": 9779.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1567382400000,
+    "price": 10415
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1567987200000,
+    "price": 10321
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1568592000000,
+    "price": 10055
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1569196800000,
+    "price": 8090
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1569801600000,
+    "price": 7883
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1570406400000,
+    "price": 8304.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1571011200000,
+    "price": 8260.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1571616000000,
+    "price": 9571.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1572220800000,
+    "price": 9222.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1572825600000,
+    "price": 9069.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1573430400000,
+    "price": 8537.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1574035200000,
+    "price": 6965.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1574640000000,
+    "price": 7450.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1575244800000,
+    "price": 7564.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1575849600000,
+    "price": 7152.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1576454400000,
+    "price": 7535.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1577059200000,
+    "price": 7413.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1577664000000,
+    "price": 7364.6
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1578268800000,
+    "price": 8174.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1578873600000,
+    "price": 8698.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1579478400000,
+    "price": 8621.5
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1580083200000,
+    "price": 9352.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1580688000000,
+    "price": 10151
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1581292800000,
+    "price": 9926.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1581897600000,
+    "price": 9985
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1582502400000,
+    "price": 8556.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1583107200000,
+    "price": 8073.99728926
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1583712000000,
+    "price": 5383.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1584316800000,
+    "price": 5820.09678077
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1584921600000,
+    "price": 5892.7
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1585526400000,
+    "price": 6780.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1586131200000,
+    "price": 6919
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1586736000000,
+    "price": 7133.3
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1587340800000,
+    "price": 7697.9
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1587945600000,
+    "price": 8899.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1588550400000,
+    "price": 8722.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1589155200000,
+    "price": 9668.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1589760000000,
+    "price": 8710.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1590364800000,
+    "price": 9451.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1590969600000,
+    "price": 9747.1
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1591574400000,
+    "price": 9344.75144536
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1592179200000,
+    "price": 9301
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1592784000000,
+    "price": 9125.366022
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1593388800000,
+    "price": 9084.28473392
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1593993600000,
+    "price": 9315.8
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1594598400000,
+    "price": 9231.2
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1595203200000,
+    "price": 9948.4
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1595808000000,
+    "price": 11053.77256233
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1596412800000,
+    "price": 11675.32006989
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1597017600000,
+    "price": 11925
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1597622400000,
+    "price": 11663
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1598227200000,
+    "price": 11730
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1598832000000,
+    "price": 10276
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1599436800000,
+    "price": 10331
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1600041600000,
+    "price": 10934.54183144
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1600646400000,
+    "price": 10803
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1601251200000,
+    "price": 10687
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1601856000000,
+    "price": 11385
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1602460800000,
+    "price": 11518
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1603065600000,
+    "price": 13037
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1603670400000,
+    "price": 13756
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1604275200000,
+    "price": 15500
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1604880000000,
+    "price": 15965
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1605484800000,
+    "price": 18392
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1606089600000,
+    "price": 18195.987488
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1606694400000,
+    "price": 19410
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1607299200000,
+    "price": 19180
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1607904000000,
+    "price": 23427
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1608508800000,
+    "price": 26241
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1609113600000,
+    "price": 32968
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1609718400000,
+    "price": 38200
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1610323200000,
+    "price": 35900
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1610928000000,
+    "price": 32320
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1611532800000,
+    "price": 33138
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1612137600000,
+    "price": 38837
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1612742400000,
+    "price": 48584
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1613347200000,
+    "price": 57376
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1613952000000,
+    "price": 45300
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1614556800000,
+    "price": 51000
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1615161600000,
+    "price": 59000
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1615766400000,
+    "price": 57366
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1616371200000,
+    "price": 55780
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1616976000000,
+    "price": 58240.23918672
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1617580800000,
+    "price": 60032
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1618185600000,
+    "price": 56172
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1618790400000,
+    "price": 49129
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1619395200000,
+    "price": 56605
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1620000000000,
+    "price": 58276
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1620604800000,
+    "price": 46597
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1621209600000,
+    "price": 34747
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1621814400000,
+    "price": 35614
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1622419200000,
+    "price": 35780
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1623024000000,
+    "price": 38998.89297611
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1623628800000,
+    "price": 35631
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1624233600000,
+    "price": 34744
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1624838400000,
+    "price": 35276
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1625443200000,
+    "price": 34244
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1626048000000,
+    "price": 31820
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1626652800000,
+    "price": 35415
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1627257600000,
+    "price": 39867
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1627862400000,
+    "price": 43793
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1628467200000,
+    "price": 47022
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1629072000000,
+    "price": 49266
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1629676800000,
+    "price": 48800
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1630281600000,
+    "price": 51780
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1630886400000,
+    "price": 46038.87431928
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1631491200000,
+    "price": 47239
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1632096000000,
+    "price": 43190
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1632700800000,
+    "price": 48242
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1633305600000,
+    "price": 54691
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1633910400000,
+    "price": 61504
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1634515200000,
+    "price": 60847
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1635120000000,
+    "price": 61330
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1635724800000,
+    "price": 63263
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1636329600000,
+    "price": 65474
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1636934400000,
+    "price": 58691
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1637539200000,
+    "price": 57356
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1638144000000,
+    "price": 49474
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1638748800000,
+    "price": 50123
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1639353600000,
+    "price": 46704
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1639958400000,
+    "price": 50797
+  },
+  {
+    "exchange": "bitfinex",
+    "symbol": "BTC-USD",
+    "timestamp": 1640563200000,
+    "price": 47302
+  }
+]
