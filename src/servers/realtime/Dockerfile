@@ -1,7 +1,6 @@
-FROM node:16-bullseye AS BUILD_IMAGE
+FROM node:16-alpine AS BUILD_IMAGE
 
-RUN apt-get update && apt-get install -y \
-  make git curl python3 jq rsync wget ca-certificates gnupg lsb-release
+RUN apk update && apk add python3 make g++
 
 WORKDIR /app
 COPY ./*.json ./yarn.lock ./
@@ -10,9 +9,10 @@ RUN yarn install --frozen-lockfile
 COPY ./src ./src
 RUN yarn build
 
+RUN rm -rf /app/node_modules
 RUN yarn install --frozen-lockfile --production
 
-FROM node:16-bullseye
+FROM gcr.io/distroless/nodejs:16
 COPY --from=BUILD_IMAGE /app/lib /app/lib
 COPY --from=BUILD_IMAGE /app/node_modules /app/node_modules
 
