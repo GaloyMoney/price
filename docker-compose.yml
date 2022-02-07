@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  integration-deps:
+    image: busybox
+    depends_on:
+    - postgres
+    - otel-agent
+  price-realtime:
+    build:
+      context: .
+      dockerfile: src/servers/realtime/Dockerfile
+    ports:
+      - "9464:9464"
+      - "50051:50051"
+  postgres:
+    container_name: postgres
+    image: postgres:14.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: galoy-price-usr
+      POSTGRES_PASSWORD: galoy-price-pwd
+      POSTGRES_DB: galoy-price
+  otel-agent:
+    image: otel/opentelemetry-collector-contrib:0.37.1
+    command: ["--config=/etc/otel-agent-config.yaml", "--log-level=debug"]
+    environment:
+    - HONEYCOMB_DATASET=${HONEYCOMB_DATASET}
+    - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
+    volumes:
+      - ./dev/otel-agent-config.yaml:/etc/otel-agent-config.yaml
+    ports:
+      - "6831:6831/udp" # Jaeger receiver
+      - "6832:6832/udp" # Jaeger receiver
