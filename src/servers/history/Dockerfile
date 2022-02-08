@@ -30,7 +30,6 @@ ARG COMMITHASH
 ENV BUILDTIME ${BUILDTIME}
 ENV COMMITHASH ${COMMITHASH}
 
-EXPOSE 9464
-EXPOSE 50051
+EXPOSE 50052
 
-CMD ["lib/servers/realtime/run-monitoring.js"]
+CMD ["lib/servers/history/run.js"]

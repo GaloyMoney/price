@@ -4,12 +4,14 @@ import { RealtimePriceRepository } from "@services/realtime-price"
 
 const realtimePriceRepository = RealtimePriceRepository()
 
-export const getPrice = async (currency: string): Promise<Price | ApplicationError> => {
+export const getExchangePrices = async (
+  currency: string,
+): Promise<ExchangePrice[] | ApplicationError> => {
   const checkedCurrency = checkedToCurrency(currency || defaultQuoteCurrency)
   if (checkedCurrency instanceof Error) return checkedCurrency
 
   const supportedCurrency = supportedCurrencies.find((c) => c === checkedCurrency)
   if (!supportedCurrency) return new InvalidCurrencyError()
 
-  return realtimePriceRepository.getPrice(checkedCurrency)
+  return realtimePriceRepository.getExchangePrices(checkedCurrency)
 }

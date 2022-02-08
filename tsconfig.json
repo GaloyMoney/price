@@ -14,6 +14,7 @@
     "paths": {
       "@app": ["src/app/index"],
       "@config": ["src/config/index"],
+      "@app/*": ["src/app/*"],
       "@domain/*": ["src/domain/*"],
       "@servers/*": ["src/servers/*"],
       "@services/*": ["src/services/*"],

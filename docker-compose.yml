@@ -1,10 +1,39 @@
 version: "3.9"
+networks:
+  app-layer:
+    driver: bridge
 services:
-  integration-deps:
+  realtime-deps:
+    image: busybox
+    depends_on:
+    - otel-agent
+  realtime:
+    image: busybox
+    depends_on:
+    - realtime-deps
+    - price-realtime
+  history-deps:
     image: busybox
     depends_on:
     - postgres
     - otel-agent
+  history:
+    image: busybox
+    depends_on:
+    - history-deps
+    - price-history
+  price-history:
+    depends_on:
+      - postgres
+    build:
+      context: .
+      dockerfile: src/servers/history/Dockerfile
+    ports:
+      - "50052:50052"
+    environment:
+      - DB_HOST=postgres
+    networks:
+      - "app-layer"
   price-realtime:
     build:
       context: .
@@ -12,6 +41,8 @@ services:
     ports:
       - "9464:9464"
       - "50051:50051"
+    networks:
+      - "app-layer"
   postgres:
     container_name: postgres
     image: postgres:14.1
@@ -21,6 +52,8 @@ services:
       POSTGRES_USER: galoy-price-usr
       POSTGRES_PASSWORD: galoy-price-pwd
       POSTGRES_DB: galoy-price
+    networks:
+      - "app-layer"
   otel-agent:
     image: otel/opentelemetry-collector-contrib:0.37.1
     command: ["--config=/etc/otel-agent-config.yaml", "--log-level=debug"]
@@ -32,3 +65,5 @@ services:
     ports:
       - "6831:6831/udp" # Jaeger receiver
       - "6832:6832/udp" # Jaeger receiver
+    networks:
+      - "app-layer"

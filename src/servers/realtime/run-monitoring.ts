@@ -30,7 +30,7 @@ startServer()
 
 const meter = new MeterProvider({
   exporter,
-  interval: 2000,
+  interval: 5000,
 }).getMeter("prices-prometheus")
 
 for (const currency of supportedCurrencies) {
@@ -44,7 +44,13 @@ for (const currency of supportedCurrencies) {
       observerResult.observe(price, { label: "median" })
 
       const exchangePrices = await Realtime.getExchangePrices(currency)
-      if (exchangePrices instanceof Error) return
+      if (exchangePrices instanceof Error) {
+        baseLogger.error(
+          { error: exchangePrices, currency },
+          "Error getting exchange price",
+        )
+        return
+      }
 
       for (const { exchangeName, price } of exchangePrices) {
         observerResult.observe(price, { label: `${exchangeName}` })

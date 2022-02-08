@@ -1,6 +1,6 @@
 import { PriceRange, UnknownPriceRepositoryError } from "@domain/price"
 import { toPrice } from "@domain/primitives"
-import { assertUnreachable } from "@utils"
+import { assertUnreachable, unixTimestamp } from "@utils"
 
 import { queryBuilder } from "./query-builder"
 
@@ -14,7 +14,7 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
     const startDate = new Date(getStartDate(range))
     const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
     try {
-      const prices = await queryBuilder(viewName)
+      const prices = await queryBuilder<DbPriceRecord>(viewName)
         .select(["timestamp", "price"])
         .where("exchange", exchange)
         .andWhere("symbol", symbol)
@@ -30,8 +30,8 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
   return { listPrices }
 }
 
-const resultToTick = (result: DbPriceRecord): Tick => ({
-  date: result.timestamp,
+const resultToTick = (result: Pick<DbPriceRecord, "timestamp" | "price">): Tick => ({
+  timestamp: unixTimestamp(result.timestamp),
   price: toPrice(result.price),
 })
 

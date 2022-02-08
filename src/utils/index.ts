@@ -15,3 +15,5 @@ export const assertUnreachable = (x: never): never => {
 
 export const round = (number: number): number =>
   +(Math.round(Number(number + "e+2")) + "e-2")
+
+export const unixTimestamp = (date: Date) => Math.floor(date.getTime() / 1000)

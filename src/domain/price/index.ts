@@ -1,3 +1,5 @@
+import { InvalidPriceRangeError } from "./errors"
+
 export * from "./errors"
 
 export const PriceRange = {
@@ -7,3 +9,10 @@ export const PriceRange = {
   OneYear: "1y",
   FiveYears: "5y",
 } as const
+
+export const checkedToPriceRange = (
+  range: string,
+): PriceRange | InvalidPriceRangeError => {
+  if (PriceRange[range]) return PriceRange[range] as PriceRange
+  return new InvalidPriceRangeError()
+}
