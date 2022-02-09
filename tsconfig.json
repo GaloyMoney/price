@@ -1,26 +1,9 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2020",
-    "noImplicitAny": false,
-    "useUnknownInCatchVariables": false,
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "paths": {
-      "@app": ["src/app/index"],
-      "@config": ["src/config/index"],
-      "@app/*": ["src/app/*"],
-      "@domain/*": ["src/domain/*"],
-      "@servers/*": ["src/servers/*"],
-      "@services/*": ["src/services/*"],
-      "@utils": ["src/utils/index"]
-    }
-  },
-  "compileOnSave": true,
-  "include": ["src/**/*", "test/**/*"]
+  "references": [
+    { "path": "./realtime" },
+    { "path": "./history" }
+  ],
+  "files": [],
+  "include": [],
+  "exclude": ["**/node_modules"]
 }

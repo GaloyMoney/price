@@ -1,0 +1,43 @@
+{
+  "name": "realtime",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/servers/realtime/run-monitoring.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig-build.json --skipLibCheck && cp -R src/servers/protos dist/servers/ && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "client": "ts-node --files -r tsconfig-paths/register test/examples/client-test.ts",
+    "eslint-check": "eslint \"{src,test}/**/*.ts\"",
+    "eslint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "monitoring": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run-monitoring.ts",
+    "start": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run.ts",
+    "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
+    "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck",
+    "watch-compile": "tsc --watch  --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.4",
+    "@grpc/proto-loader": "^0.6.9",
+    "@opentelemetry/api": "^1.1.0",
+    "@opentelemetry/core": "^1.0.1",
+    "@opentelemetry/exporter-jaeger": "^1.0.1",
+    "@opentelemetry/exporter-prometheus": "^0.27.0",
+    "@opentelemetry/instrumentation": "^0.27.0",
+    "@opentelemetry/instrumentation-grpc": "^0.27.0",
+    "@opentelemetry/instrumentation-http": "^0.27.0",
+    "@opentelemetry/resources": "^1.0.1",
+    "@opentelemetry/sdk-metrics-base": "^0.27.0",
+    "@opentelemetry/sdk-trace-base": "^1.0.1",
+    "@opentelemetry/sdk-trace-node": "^1.0.1",
+    "@opentelemetry/semantic-conventions": "^1.0.1",
+    "ajv": "^8.10.0",
+    "axios": "^0.25.0",
+    "ccxt": "^1.72.39",
+    "dotenv": "^16.0.0",
+    "grpc-health-check": "^1.8.0",
+    "js-yaml": "^4.1.0",
+    "lodash.merge": "^4.6.2",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.0",
+    "pino": "^7.6.5"
+  }
+}

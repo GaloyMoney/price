@@ -1,5 +1,8 @@
+**/node_modules
+**/dist
+**/tsconfig.tsbuildinfo
+
 ## Compiled JavaScript files
-lib/
 **/*.js.map
 
 # Logs
