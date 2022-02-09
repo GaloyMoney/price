@@ -3,18 +3,6 @@ networks:
   app-layer:
     driver: bridge
 services:
-  price-history:
-    depends_on:
-      - postgres
-    build:
-      context: .
-      dockerfile: src/servers/history/Dockerfile
-    ports:
-      - "50052:50052"
-    environment:
-      - DB_HOST=postgres
-    networks:
-      - "app-layer"
   postgres:
     container_name: postgres
     image: postgres:14.1
