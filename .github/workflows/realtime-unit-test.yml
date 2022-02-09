@@ -1,9 +1,9 @@
-name: "Unit test"
-
+name: "Realtime Unit test"
 on:
   pull_request:
     branches: [ main ]
-
+    paths:
+      - "realtime/**"
 jobs:
   unit-test:
     name: Unit test
@@ -13,4 +13,5 @@ jobs:
     - uses: actions/setup-node@v2
     - run: yarn install
     - name: Run unit tests
+      working-directory: ./realtime
       run: make unit-in-ci

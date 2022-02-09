@@ -1,7 +1,9 @@
-name: "Check code"
+name: "Realtime Check code"
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - "realtime/**"
 jobs:
   check-code:
     name: Check Code
@@ -11,4 +13,5 @@ jobs:
     - uses: actions/setup-node@v2
     - run: yarn install
     - name: Run check code
+      working-directory: ./realtime
       run: make check-code
