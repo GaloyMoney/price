@@ -1,9 +1,0 @@
-{
-  "references": [
-    { "path": "./realtime" },
-    { "path": "./history" }
-  ],
-  "files": [],
-  "include": [],
-  "exclude": ["**/node_modules"]
-}

@@ -14,15 +14,15 @@ realtime-start-server:
 realtime-start: start-deps realtime-start-server
 
 realtime-watch-compile:
-	yarn workspace realtime watch-compile
+	yarn realtime watch-compile
 
 realtime-check-code:
-	yarn workspace realtime tsc-check
-	yarn workspace realtime eslint-check
-	yarn workspace realtime build
+	yarn realtime tsc-check
+	yarn realtime eslint-check
+	yarn realtime build
 
 realtime-unit-in-ci:
-	yarn workspace realtime ci:test:unit
+	yarn realtime ci:test:unit
 
 history-start-server:
 	. ./.envrc && yarn tsnd --respawn --files -r tsconfig-paths/register -r src/services/tracing.ts \
@@ -31,12 +31,12 @@ history-start-server:
 history-start: start-deps history-start-server
 
 history-watch-compile:
-	yarn workspace history watch-compile
+	yarn history watch-compile
 
 history-check-code:
-	yarn workspace history tsc-check
-	yarn workspace history eslint-check
-	yarn workspace history build
+	yarn history tsc-check
+	yarn history eslint-check
+	yarn history build
 
 history-unit-in-ci:
-	yarn workspace history ci:test:unit
+	yarn history ci:test:unit
