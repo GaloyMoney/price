@@ -1,11 +1,5 @@
 version: "3.9"
 services:
-  price-realtime:
-    build:
-      context: .
-    ports:
-      - "9464:9464"
-      - "50051:50051"
   otel-agent:
     image: otel/opentelemetry-collector-contrib:0.37.1
     command: ["--config=/etc/otel-agent-config.yaml", "--log-level=debug"]

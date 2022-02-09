@@ -2,7 +2,7 @@ clean-deps:
 	docker compose down
 
 start-deps:
-	docker compose up realtime-deps -d
+	docker compose up -d
 	direnv reload
 
 reset-deps: clean-deps start-deps
@@ -12,14 +12,3 @@ start-server:
 		src/servers/realtime/run-monitoring.ts | yarn pino-pretty -c -l
 
 start: start-deps start-server
-
-check-code:
-	yarn tsc-check
-	yarn eslint-check
-	yarn build
-
-watch-compile:
-	yarn tsc --watch  --noEmit --skipLibCheck
-
-unit-in-ci:
-	LOGLEVEL=warn yarn jest --config ./test/jest-unit.config.js --ci --bail

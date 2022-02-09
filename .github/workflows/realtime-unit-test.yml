@@ -3,6 +3,8 @@ on:
   pull_request:
     branches: [ main ]
     paths:
+      - "Makefile"
+      - "*.json"
       - "realtime/**"
 jobs:
   unit-test:
@@ -13,5 +15,4 @@ jobs:
     - uses: actions/setup-node@v2
     - run: yarn install
     - name: Run unit tests
-      working-directory: ./realtime
-      run: make unit-in-ci
+      run: make realtime-unit-in-ci
