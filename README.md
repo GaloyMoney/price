@@ -1,19 +1,26 @@
-# Price
+# Galoy Price
 
-The price service exposes a GRPC endpoint providing a near real-time BTC/USD price index based on the recent median of mid-prices from these exchanges and currency pairs:
+This repository includes the next servers:
 
-- Bitfinex BTC/USD
-- Binance BTC/USDT
-- FTX BTC/USD
+- [realtime price](./realtime): exposes a GRPC endpoint providing a near real-time BTC price
 
-A health check/watch is also available to guard against price staleness.
+## How to run servers commands
 
-The price index is calculated by polling each pair bid-ask price, calculating the mid and taking the median of the collection.
+```bash
+yarn <server> <internal command>
+```
 
-The services are:
+Example:
 
-- Price.GetPrice()
-- Health.Check()
-- Health.Watch()
+```bash
+yarn realtime build
+```
 
-For usage, see the [sample client](./src/client_test.ts)
+## Docker images
+
+To build docker images manually run the next commands from the root folder:
+
+### Realtime
+```bash
+docker build -f ./realtime/Dockerfile -t galoy-price .
+```

@@ -1,12 +1,25 @@
-BIN_DIR=node_modules/.bin
+clean-deps:
+	docker compose down
 
-check-code:
-	yarn tsc-check
-	yarn eslint-check
-	yarn build
+start-deps:
+	docker compose up -d
+	direnv reload
 
-watch-compile:
-	$(BIN_DIR)/tsc --watch  --noEmit --skipLibCheck
+reset-deps: clean-deps start-deps
 
-unit-in-ci:
-	LOGLEVEL=warn $(BIN_DIR)/jest --config ./test/jest-unit.config.js --ci --bail
+realtime-start-server:
+	. ./.envrc && cd realtime && yarn tsnd --respawn --files -r tsconfig-paths/register -r src/services/tracing.ts \
+		src/servers/realtime/run-monitoring.ts | yarn pino-pretty -c -l
+
+realtime-start: start-deps realtime-start-server
+
+realtime-watch-compile:
+	yarn realtime watch-compile
+
+realtime-check-code:
+	yarn realtime tsc-check
+	yarn realtime eslint-check
+	yarn realtime build
+
+realtime-unit-in-ci:
+	yarn realtime ci:test:unit
