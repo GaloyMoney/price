@@ -2,7 +2,6 @@ import fs from "fs"
 
 import yaml from "js-yaml"
 import merge from "lodash.merge"
-import * as cron from "node-cron"
 import Ajv from "ajv"
 
 import { baseLogger } from "@services/logger"
@@ -37,17 +36,15 @@ export const defaultQuoteCurrency: Currency = supportedCurrencies[0]
 
 export const getExchangesConfig = (): ExchangeConfig[] =>
   yamlConfig.exchanges
-    .filter((e) => !!e.enabled)
-    .map((e) => {
-      if (!cron.validate(e.cron))
-        throw new ConfigError(`Invalid ${e.name} cron expression`, e)
-      return {
-        name: e.name,
-        base: (e.base || defaultBaseCurrency).toUpperCase(),
-        quote: e.quote.toUpperCase(),
-        quoteAlias: e.quoteAlias.toUpperCase(),
-        provider: e.provider,
-        cron: e.cron,
-        config: e.config,
-      }
+    .filter((e) => {
+      const quote = (e.quoteAlias || e.quote).toUpperCase()
+      return !!e.enabled && supportedCurrencies.includes(quote)
     })
+    .map((e) => ({
+      name: e.name,
+      base: (e.base || defaultBaseCurrency).toUpperCase(),
+      quote: e.quote.toUpperCase(),
+      quoteAlias: e.quoteAlias.toUpperCase(),
+      provider: e.provider,
+      config: e.config,
+    }))

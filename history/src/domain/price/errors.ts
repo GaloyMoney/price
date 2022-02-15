@@ -5,4 +5,5 @@ export class PriceError extends Error {
 export class InvalidPriceRangeError extends PriceError {}
 
 export class PriceRepositoryError extends PriceError {}
+export class LastPriceEmptyRepositoryError extends PriceError {}
 export class UnknownPriceRepositoryError extends PriceRepositoryError {}

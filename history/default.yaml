@@ -12,28 +12,24 @@ exchanges:
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
-    cron: "*/10 * * * * *"
   - name: "ftx"
-    enabled: true
+    enabled: false
     quoteAlias: "USD"
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
-    cron: "*/5 * * * * *"
   - name: "binance"
-    enabled: true
+    enabled: false
     quoteAlias: "USD"
     base: "BTC"
     quote: "USDT"
     provider: "ccxt"
-    cron: "*/5 * * * * *"
   - name: "exchangeratesapi"
     enabled: false
     quoteAlias: "CRC"
     base: "USD"
     quote: "CRC"
     provider: "exchangeratesapi"
-    cron: "*/5 * * * * *"
     config:
       baseUrl: "http://api.exchangeratesapi.io/v1"
       apiKey: "<your api key>"

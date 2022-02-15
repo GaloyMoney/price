@@ -1,22 +1,54 @@
-import { PriceRange, UnknownPriceRepositoryError } from "@domain/price"
-import { toPrice } from "@domain/primitives"
+import {
+  getStartDateByRange,
+  LastPriceEmptyRepositoryError,
+  PriceRange,
+  UnknownPriceRepositoryError,
+} from "@domain/price"
+import { toPrice, toTimestamp } from "@domain/primitives"
 import { assertUnreachable, unixTimestamp } from "@utils"
 
 import { queryBuilder } from "./query-builder"
 
 export const PriceRepository = (exchange: string): IPriceRepository => {
+  const exchangeAlias = exchange === "bitfinex2" ? "bitfinex" : exchange
+
+  const getLastPrice = async ({
+    base,
+    quote,
+    range,
+  }: GetLastPriceArgs): Promise<Tick | PriceRepositoryError> => {
+    const viewName = getViewName(range)
+    const startDate = new Date(getStartDateByRange(range))
+    const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
+    try {
+      const lastPrice = await queryBuilder<DbPriceRecord>(viewName)
+        .select(["timestamp", "price"])
+        .where("exchange", exchangeAlias)
+        .andWhere("symbol", symbol)
+        .andWhere("timestamp", ">=", startDate)
+        .orderBy("timestamp", "desc")
+        .first()
+
+      if (!lastPrice) return new LastPriceEmptyRepositoryError()
+
+      return resultToTick(lastPrice)
+    } catch (err) {
+      return new UnknownPriceRepositoryError(err)
+    }
+  }
+
   const listPrices = async ({
     base,
     quote,
     range,
   }: ListPricesArgs): Promise<Tick[] | PriceRepositoryError> => {
     const viewName = getViewName(range)
-    const startDate = new Date(getStartDate(range))
+    const startDate = new Date(getStartDateByRange(range))
     const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
     try {
       const prices = await queryBuilder<DbPriceRecord>(viewName)
         .select(["timestamp", "price"])
-        .where("exchange", exchange)
+        .where("exchange", exchangeAlias)
         .andWhere("symbol", symbol)
         .andWhere("timestamp", ">=", startDate)
 
@@ -27,11 +59,37 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
       return new UnknownPriceRepositoryError(err)
     }
   }
-  return { listPrices }
+
+  const updatePrices = async ({
+    base,
+    quote,
+    prices,
+  }: UpdatePricesArgs): Promise<number | PriceRepositoryError> => {
+    const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
+    try {
+      const data = prices.map(({ timestamp, price }) => ({
+        exchange: exchangeAlias,
+        symbol,
+        timestamp: new Date(timestamp),
+        price,
+      }))
+
+      const result = await queryBuilder("prices")
+        .insert(data)
+        .onConflict(["exchange", "symbol", "timestamp"])
+        .ignore()
+
+      return result && result["rowCount"]
+    } catch (err) {
+      return new UnknownPriceRepositoryError(err)
+    }
+  }
+
+  return { getLastPrice, listPrices, updatePrices }
 }
 
 const resultToTick = (result: Pick<DbPriceRecord, "timestamp" | "price">): Tick => ({
-  timestamp: unixTimestamp(result.timestamp),
+  timestamp: toTimestamp(unixTimestamp(result.timestamp)),
   price: toPrice(result.price),
 })
 
@@ -47,29 +105,6 @@ const getViewName = (range: PriceRange) => {
       return "vw_prices_by_week"
     case PriceRange.FiveYears:
       return "vw_prices_by_month"
-    default:
-      return assertUnreachable(range)
-  }
-}
-
-const getStartDate = (range: PriceRange): number => {
-  const startDate = new Date(Date.now())
-  const resetHours = (date: Date) => date.setHours(0, 0, 0, 0)
-  switch (range) {
-    case PriceRange.OneDay:
-      return startDate.setHours(startDate.getHours() - 24)
-    case PriceRange.OneWeek:
-      startDate.setHours(startDate.getHours() - 24 * 7)
-      return resetHours(startDate)
-    case PriceRange.OneMonth:
-      startDate.setMonth(startDate.getMonth() - 1)
-      return resetHours(startDate)
-    case PriceRange.OneYear:
-      startDate.setMonth(startDate.getMonth() - 12)
-      return resetHours(startDate)
-    case PriceRange.FiveYears:
-      startDate.setMonth(startDate.getMonth() - 60)
-      return resetHours(startDate)
     default:
       return assertUnreachable(range)
   }

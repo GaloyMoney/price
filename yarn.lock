@@ -1554,6 +1554,11 @@ ccxt@^1.72.39:
   resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.72.72.tgz#bb76b54883435d47302c7e2d63e5f2366fadb1de"
   integrity sha512-vcty0SKG3s4w8uegC2bNVTJr8Wxj7jkXvmKpHLrDpf7BqJvZW6/lWE0g81Siz0h+7E+FqW72RKaFq9+cFyDTdA==
 
+ccxt@^1.73.8:
+  version "1.73.8"
+  resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.73.8.tgz#a3715b8dbea794b2d7c5c9a2247075c6ae528d1e"
+  integrity sha512-QDKQ9ZrzQU8VqjTLeWGhFjDCjxjf2Jv86rqG5cJYlwn1JXPsLhKEK/NtmRsve2G9hL4wzgxYtyVmgq+I4dfdpQ==
+
 chalk@2.4.2, chalk@^2.0.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"

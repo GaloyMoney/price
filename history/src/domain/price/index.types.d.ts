@@ -4,8 +4,14 @@ type PriceRange =
   typeof import("./index").PriceRange[keyof typeof import("./index").PriceRange]
 
 type Tick = {
-  readonly timestamp: number
+  readonly timestamp: Timestamp
   readonly price: Price
+}
+
+type GetLastPriceArgs = {
+  base: string
+  quote: string
+  range: PriceRange
 }
 
 type ListPricesArgs = {
@@ -14,6 +20,14 @@ type ListPricesArgs = {
   range: PriceRange
 }
 
+type UpdatePricesArgs = {
+  base: string
+  quote: string
+  prices: Tick[]
+}
+
 interface IPriceRepository {
+  getLastPrice(args: GetLastPriceArgs): Promise<Tick | PriceRepositoryError>
   listPrices(args: ListPricesArgs): Promise<Tick[] | PriceRepositoryError>
+  updatePrices(args: UpdatePricesArgs): Promise<number | PriceRepositoryError>
 }

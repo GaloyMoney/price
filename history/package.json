@@ -10,14 +10,15 @@
     "eslint-check": "eslint \"{src,test}/**/*.ts\"",
     "eslint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "start": "ts-node --files -r tsconfig-paths/register src/servers/history/run.ts",
+    "cron": "ts-node --files -r tsconfig-paths/register src/servers/history/cron.ts",
     "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
     "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck",
     "watch-compile": "tsc --watch  --noEmit --skipLibCheck",
-    "db:create": ". ./.envrc && knex --knexfile ./src/config/database.ts migrate:make -x ts",
-    "db:migrate": ". ./.envrc && knex --knexfile ./src/config/database.ts migrate:latest",
-    "db:rollback": ". ./.envrc && knex --knexfile ./src/config/database.ts migrate:rollback",
-    "db:create:seed": ". ./.envrc && knex --knexfile ./src/config/database.ts seed:make -x ts",
-    "db:seed": ". ./.envrc && knex --knexfile ./src/config/database.ts seed:run"
+    "db:create": "knex --knexfile ./src/config/database.ts migrate:make -x ts",
+    "db:migrate": "knex --knexfile ./src/config/database.ts migrate:latest",
+    "db:rollback": "knex --knexfile ./src/config/database.ts migrate:rollback",
+    "db:create:seed": "knex --knexfile ./src/config/database.ts seed:make -x ts",
+    "db:seed": "knex --knexfile ./src/config/database.ts seed:run"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.5.4",
@@ -35,6 +36,7 @@
     "@opentelemetry/sdk-trace-node": "^1.0.1",
     "@opentelemetry/semantic-conventions": "^1.0.1",
     "ajv": "^8.10.0",
+    "ccxt": "^1.73.8",
     "dotenv": "^16.0.0",
     "grpc-health-check": "^1.8.0",
     "js-yaml": "^4.1.0",
