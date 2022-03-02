@@ -3,8 +3,6 @@ import { checkedToPriceRange, PriceRange } from "@domain/price"
 import { checkedToCurrency, InvalidCurrencyError } from "@domain/primitives"
 import { PriceRepository } from "@services/database"
 
-const priceRepository = PriceRepository("bitfinex")
-
 export const getPriceHistory = async ({
   currency,
   range,
@@ -18,7 +16,7 @@ export const getPriceHistory = async ({
   const supportedCurrency = supportedCurrencies.find((c) => c === quote)
   if (!supportedCurrency) return new InvalidCurrencyError()
 
-  return priceRepository.listPrices({
+  return PriceRepository().listPrices({
     base: defaultBaseCurrency,
     quote,
     range: priceRange,

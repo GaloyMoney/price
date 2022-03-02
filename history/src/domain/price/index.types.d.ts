@@ -9,6 +9,7 @@ type Tick = {
 }
 
 type GetLastPriceArgs = {
+  exchange: string
   base: string
   quote: string
   range: PriceRange
@@ -21,6 +22,7 @@ type ListPricesArgs = {
 }
 
 type UpdatePricesArgs = {
+  exchange: string
   base: string
   quote: string
   prices: Tick[]

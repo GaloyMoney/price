@@ -5,14 +5,13 @@ import {
   UnknownPriceRepositoryError,
 } from "@domain/price"
 import { toPrice, toTimestamp } from "@domain/primitives"
-import { assertUnreachable, unixTimestamp } from "@utils"
+import { assertUnreachable, notEmpty, unixTimestamp } from "@utils"
 
 import { queryBuilder } from "./query-builder"
 
-export const PriceRepository = (exchange: string): IPriceRepository => {
-  const exchangeAlias = exchange === "bitfinex2" ? "bitfinex" : exchange
-
+export const PriceRepository = (): IPriceRepository => {
   const getLastPrice = async ({
+    exchange,
     base,
     quote,
     range,
@@ -23,15 +22,15 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
     try {
       const lastPrice = await queryBuilder<DbPriceRecord>(viewName)
         .select(["timestamp", "price"])
-        .where("exchange", exchangeAlias)
+        .where("exchange", resolveExchangeName(exchange))
         .andWhere("symbol", symbol)
         .andWhere("timestamp", ">=", startDate)
         .orderBy("timestamp", "desc")
         .first()
 
-      if (!lastPrice) return new LastPriceEmptyRepositoryError()
+      if (!lastPrice || !lastPrice.price) return new LastPriceEmptyRepositoryError()
 
-      return resultToTick(lastPrice)
+      return dbRecordToTick(lastPrice)
     } catch (err) {
       return new UnknownPriceRepositoryError(err)
     }
@@ -47,20 +46,22 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
     const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
     try {
       const prices = await queryBuilder<DbPriceRecord>(viewName)
-        .select(["timestamp", "price"])
-        .where("exchange", exchangeAlias)
-        .andWhere("symbol", symbol)
+        .select("timestamp")
+        .avg({ price: "price" })
+        .where("symbol", symbol)
         .andWhere("timestamp", ">=", startDate)
+        .groupBy("timestamp")
 
       if (!prices || !prices.length) return []
 
-      return prices.map(resultToTick)
+      return prices.map(resultToTick).filter(notEmpty)
     } catch (err) {
       return new UnknownPriceRepositoryError(err)
     }
   }
 
   const updatePrices = async ({
+    exchange,
     base,
     quote,
     prices,
@@ -68,7 +69,7 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
     const symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
     try {
       const data = prices.map(({ timestamp, price }) => ({
-        exchange: exchangeAlias,
+        exchange: resolveExchangeName(exchange),
         symbol,
         timestamp: new Date(timestamp),
         price,
@@ -88,7 +89,22 @@ export const PriceRepository = (exchange: string): IPriceRepository => {
   return { getLastPrice, listPrices, updatePrices }
 }
 
-const resultToTick = (result: Pick<DbPriceRecord, "timestamp" | "price">): Tick => ({
+const resolveExchangeName = (exchange: string) => {
+  return exchange === "bitfinex2" ? "bitfinex" : exchange
+}
+
+const resultToTick = ({
+  timestamp,
+  price,
+}: {
+  timestamp: Date
+  price?: number
+}): Tick | null => {
+  if (!price) return null
+  return dbRecordToTick({ timestamp, price })
+}
+
+const dbRecordToTick = (result: Pick<DbPriceRecord, "timestamp" | "price">): Tick => ({
   timestamp: toTimestamp(unixTimestamp(result.timestamp)),
   price: toPrice(result.price),
 })
