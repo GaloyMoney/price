@@ -1,5 +1,5 @@
-class PrimitivesError extends Error {
-  name = this.constructor.name
-}
+import { DomainError } from "@domain/errors"
+
+class PrimitivesError extends DomainError {}
 
 export class InvalidCurrencyError extends PrimitivesError {}

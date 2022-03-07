@@ -1,6 +1,6 @@
-export class PriceError extends Error {
-  name = this.constructor.name
-}
+import { DomainError } from "@domain/errors"
+
+export class PriceError extends DomainError {}
 
 export class InvalidPriceRangeError extends PriceError {}
 

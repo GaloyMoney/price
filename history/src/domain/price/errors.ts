@@ -1,9 +1,11 @@
-export class PriceError extends Error {
-  name = this.constructor.name
-}
+import { DomainError, ErrorLevel } from "@domain/errors"
+
+export class PriceError extends DomainError {}
 
 export class InvalidPriceRangeError extends PriceError {}
 
 export class PriceRepositoryError extends PriceError {}
 export class LastPriceEmptyRepositoryError extends PriceError {}
-export class UnknownPriceRepositoryError extends PriceRepositoryError {}
+export class UnknownPriceRepositoryError extends PriceRepositoryError {
+  level = ErrorLevel.Critical
+}

@@ -56,7 +56,7 @@ export const PriceRepository = (): IPriceRepository => {
 
       return prices.map(resultToTick).filter(notEmpty)
     } catch (err) {
-      return new UnknownPriceRepositoryError(err)
+      return new UnknownPriceRepositoryError(err.message)
     }
   }
 
