@@ -14,6 +14,7 @@
     "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
     "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck",
     "watch-compile": "tsc --watch  --noEmit --skipLibCheck",
+    "db:status": "knex --knexfile ./src/config/database.ts migrate:status",
     "db:create": "knex --knexfile ./src/config/database.ts migrate:make -x ts",
     "db:migrate": "knex --knexfile ./src/config/database.ts migrate:latest",
     "db:rollback": "knex --knexfile ./src/config/database.ts migrate:rollback",
