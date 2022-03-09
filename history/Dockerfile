@@ -15,6 +15,7 @@ RUN yarn install --frozen-lockfile --production
 
 FROM node:16-alpine
 COPY --from=BUILD_IMAGE /app/history/dist /app
+COPY --from=BUILD_IMAGE /app/history/scripts /app/scripts
 COPY --from=BUILD_IMAGE /app/node_modules /app/node_modules
 COPY --from=BUILD_IMAGE /app/history/node_modules /app/node_modules
 
