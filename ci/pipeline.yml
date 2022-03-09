@@ -105,7 +105,7 @@ jobs:
         DOCKERFILE: "repo/history/Dockerfile"
       run:
         path: build
-  - put: edge-image
+  - put: history-edge-image
     params:
       image: image/image.tar
 
@@ -127,7 +127,6 @@ jobs:
       - name: image
       params:
         CONTEXT: repo
-        BUILD_ARGS_FILE: repo/.env
         DOCKERFILE: "repo/history/Dockerfile-migrate"
       run:
         path: build
