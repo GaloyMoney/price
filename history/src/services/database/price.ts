@@ -1,4 +1,5 @@
 import {
+  DbConnectionError,
   getStartDateByRange,
   LastPriceEmptyRepositoryError,
   PriceRange,
@@ -32,7 +33,7 @@ export const PriceRepository = (): IPriceRepository => {
 
       return dbRecordToTick(lastPrice)
     } catch (err) {
-      return new UnknownPriceRepositoryError(err)
+      return parseError(err)
     }
   }
 
@@ -56,7 +57,7 @@ export const PriceRepository = (): IPriceRepository => {
 
       return prices.map(resultToTick).filter(notEmpty)
     } catch (err) {
-      return new UnknownPriceRepositoryError(err.message)
+      return parseError(err)
     }
   }
 
@@ -82,7 +83,7 @@ export const PriceRepository = (): IPriceRepository => {
 
       return result && result["rowCount"]
     } catch (err) {
-      return new UnknownPriceRepositoryError(err)
+      return parseError(err)
     }
   }
 
@@ -125,3 +126,20 @@ const getViewName = (range: PriceRange) => {
       return assertUnreachable(range)
   }
 }
+
+const parseError = (err) => {
+  switch (err.code) {
+    case KnownDbErrorDetails.InvalidDatabase:
+    case KnownDbErrorDetails.InvalidConnection:
+    case KnownDbErrorDetails.InvalidCredentials:
+      return new DbConnectionError(err.message)
+    default:
+      return new UnknownPriceRepositoryError(err.message || err)
+  }
+}
+
+const KnownDbErrorDetails = {
+  InvalidConnection: "ECONNREFUSED",
+  InvalidCredentials: "28P01",
+  InvalidDatabase: "3D000",
+} as const

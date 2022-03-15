@@ -1,6 +1,10 @@
 import { getExchangesConfig } from "@config"
 import { getLimitByRange, getTimeframeByRange } from "@domain/exchanges"
-import { getStartDateByRange, PriceRange } from "@domain/price"
+import {
+  getStartDateByRange,
+  LastPriceEmptyRepositoryError,
+  PriceRange,
+} from "@domain/price"
 import { toTimestamp } from "@domain/primitives"
 import { PriceRepository } from "@services/database"
 import { ExchangeFactory } from "@services/exchanges"
@@ -19,7 +23,12 @@ export const updatePriceHistory = async (): Promise<boolean | ApplicationError> 
       const result = await queryByRange({ range: PriceRange[range], exchange })
       if (result instanceof Error) {
         baseLogger.error(
-          { error: result, range: PriceRange[range], exchange: name },
+          {
+            error: result,
+            message: result.message,
+            range: PriceRange[range],
+            exchange: name,
+          },
           "Could not query price history",
         )
         return result
@@ -39,7 +48,7 @@ export const updatePriceHistory = async (): Promise<boolean | ApplicationError> 
     })
     if (result instanceof Error) {
       baseLogger.error(
-        { error: result, exchange: name },
+        { error: result, message: result.message, exchange: name },
         "Could not update price history",
       )
       return result
@@ -69,6 +78,8 @@ const queryByRange = async ({
     quote,
     range,
   })
+  const isLastPriceEmpty = lastPrice instanceof LastPriceEmptyRepositoryError
+  if (lastPrice instanceof Error && !isLastPriceEmpty) return lastPrice
 
   const timeframe = getTimeframeByRange(range)
   const since =
