@@ -11,8 +11,8 @@ pushd charts-repo
 
 yq -i e '.image.digest = strenv(digest)' ./charts/galoy/charts/price/values.yaml
 yq -i e '.image.git_ref = strenv(ref)' ./charts/galoy/charts/price/values.yaml
-yq -i e '.historyImage.digest = strenv(history_digest)' ./charts/galoy/charts/price/values.yaml
-yq -i e '.historyMigrateImage.digest = strenv(history_migrate_digest)' ./charts/galoy/charts/price/values.yaml
+yq -i e '.history.image.digest = strenv(history_digest)' ./charts/galoy/charts/price/values.yaml
+yq -i e '.history.migrateImage.digest = strenv(history_migrate_digest)' ./charts/galoy/charts/price/values.yaml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
