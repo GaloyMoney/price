@@ -1,0 +1,18 @@
+name: "History Check code"
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "Makefile"
+      - "*.json"
+      - "history/**"
+jobs:
+  check-code:
+    name: Check Code
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    - run: yarn install
+    - name: Run check code
+      run: make history-check-code

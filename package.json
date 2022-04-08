@@ -1,11 +1,12 @@
 {
   "name": "galoy-price",
   "private": true,
-  "workspaces": [ "realtime" ],
+  "workspaces": [ "realtime", "history" ],
   "version": "1.0.0",
   "scripts": {
-    "clean": "rm -rf realtime/dist",
-    "realtime": "yarn workspace realtime"
+    "clean": "rm -rf history/dist realtime/dist",
+    "history": ". ./.envrc && yarn workspace history",
+    "realtime": ". ./.envrc && yarn workspace realtime"
   },
   "repository": "git@github.com:GaloyMoney/price.git",
   "author": "dev@galoy.io",

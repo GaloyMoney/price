@@ -1,5 +1,16 @@
 version: "3.9"
+
 services:
+  postgres:
+    container_name: postgres
+    image: postgres:14.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: galoy-price-usr
+      POSTGRES_PASSWORD: galoy-price-pwd
+      POSTGRES_DB: galoy-price
+
   otel-agent:
     image: otel/opentelemetry-collector-contrib:0.37.1
     command: ["--config=/etc/otel-agent-config.yaml", "--log-level=debug"]

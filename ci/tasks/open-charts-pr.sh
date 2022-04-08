@@ -2,7 +2,9 @@
 
 set -eu
 
-digest=$(cat ./edge-image/digest)
+export digest=$(cat ./edge-image/digest)
+export history_digest=$(cat ./history-edge-image/digest)
+export history_migrate_digest=$(cat ./history-migrate-edge-image/digest)
 
 pushd charts-repo
 
@@ -11,11 +13,21 @@ git checkout ${BRANCH}
 old_ref=$(yq e '.image.git_ref' charts/galoy/charts/price/values.yaml)
 
 cat <<EOF >> ../body.md
-# Bump galoy image
+# Bump galoy price images
 
-The galoy image will be bumped to digest:
+The galoy price image will be bumped to digest:
 \`\`\`
 ${digest}
+\`\`\`
+
+The galoy price-history image will be bumped to digest:
+\`\`\`
+${history_digest}
+\`\`\`
+
+The galoy price-history-migrate image will be bumped to digest:
+\`\`\`
+${history_migrate_digest}
 \`\`\`
 
 Code diff contained in this image:

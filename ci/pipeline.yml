@@ -8,6 +8,14 @@
 #@   return data.values.docker_registry + "/price"
 #@ end
 
+#@ def galoy_history_image():
+#@   return data.values.docker_registry + "/price-history"
+#@ end
+
+#@ def galoy_history_migrate_image():
+#@   return data.values.docker_registry + "/price-history-migrate"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:
@@ -20,6 +28,8 @@ groups:
 - name: price
   jobs:
   - build-edge-image
+  - build-history-edge-image
+  - build-history-migrate-edge-image
   - bump-image-in-chart
 
 jobs:
@@ -61,6 +71,69 @@ jobs:
     params:
       image: image/image.tar
 
+- name: build-history-edge-image
+  serial: true
+  plan:
+  - in_parallel:
+    - { get: repo, trigger: true }
+    - { get: pipeline-tasks }
+  - task: prepare-docker-build
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: pipeline-tasks/ci/tasks/prepare-docker-build.sh
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: repo
+      outputs:
+      - name: image
+      params:
+        CONTEXT: repo
+        DOCKERFILE: "repo/history/Dockerfile"
+      run:
+        path: build
+  - put: history-edge-image
+    params:
+      image: image/image.tar
+
+- name: build-history-migrate-edge-image
+  serial: true
+  plan:
+  - { get: repo, trigger: true }
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: repo
+      outputs:
+      - name: image
+      params:
+        CONTEXT: repo
+        DOCKERFILE: "repo/history/Dockerfile-migrate"
+      run:
+        path: build
+  - put: history-migrate-edge-image
+    params:
+      image: image/image.tar
+
 - name: bump-image-in-chart
   plan:
   - in_parallel:
@@ -68,10 +141,20 @@ jobs:
       trigger: true
       passed: [build-edge-image]
       params: { skip_download: true }
+    - get: history-edge-image
+      trigger: true
+      passed: [build-history-edge-image]
+      params: { skip_download: true }
+    - get: history-migrate-edge-image
+      trigger: true
+      passed: [build-history-migrate-edge-image]
+      params: { skip_download: true }
     - get: repo
       trigger: true
       passed:
       - build-edge-image
+      - build-history-edge-image
+      - build-history-migrate-edge-image
     - get: charts-repo
       params: { skip_download: true }
     - get: pipeline-tasks
@@ -82,6 +165,8 @@ jobs:
       inputs:
       - name: repo
       - name: edge-image
+      - name: history-edge-image
+      - name: history-migrate-edge-image
       - name: pipeline-tasks
       - name: charts-repo
       outputs:
@@ -101,6 +186,8 @@ jobs:
       inputs:
       - name: pipeline-tasks
       - name: edge-image
+      - name: history-edge-image
+      - name: history-migrate-edge-image
       - name: charts-repo
       params:
         GH_TOKEN: #@ data.values.github_token
@@ -139,6 +226,22 @@ resources:
     username: #@ data.values.docker_registry_user
     password: #@ data.values.docker_registry_password
     repository: #@ galoy_image()
+
+- name: history-edge-image
+  type: registry-image
+  source:
+    tag: edge
+    username: #@ data.values.docker_registry_user
+    password: #@ data.values.docker_registry_password
+    repository: #@ galoy_history_image()
+
+- name: history-migrate-edge-image
+  type: registry-image
+  source:
+    tag: edge
+    username: #@ data.values.docker_registry_user
+    password: #@ data.values.docker_registry_password
+    repository: #@ galoy_history_migrate_image()
 
 - name: pipeline-tasks
   type: git

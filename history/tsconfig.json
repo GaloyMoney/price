@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "dist",
+    "paths": {
+      "@app": ["src/app/index"],
+      "@config": ["src/config/index"],
+      "@app/*": ["src/app/*"],
+      "@domain/*": ["src/domain/*"],
+      "@servers/*": ["src/servers/*"],
+      "@services/*": ["src/services/*"],
+      "@utils": ["src/utils/index"]
+    }
+  },
+  "include": ["src/**/*", "test/**/*"]
+}
