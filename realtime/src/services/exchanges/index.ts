@@ -1,6 +1,7 @@
 import { InvalidExchangeProviderError } from "@domain/exchanges"
 
 import { CcxtExchangeService } from "./ccxt"
+import { CurrencyscoopExchangeService } from "./currencyscoop"
 import { ExchangeRatesAPIExchangeService } from "./exchange-rates-api"
 
 const exchanges: { [key: string]: IExchangeService } = {}
@@ -20,6 +21,9 @@ export const ExchangeFactory = (): ExchangeFactory => {
       case "ccxt":
         service = await createCcxt(config)
         break
+      case "currencyscoop":
+        service = await createCurrencyscoop(config)
+        break
       case "exchangeratesapi":
         service = await createExchangeRatesAPI(config)
         break
@@ -38,6 +42,16 @@ const createCcxt = async (config: ExchangeConfig) => {
   const defaultConfig = { enableRateLimit: true, rateLimit: 2000, timeout: 8000 }
   return CcxtExchangeService({
     exchangeId: name,
+    base: base,
+    quote: quote,
+    config: { ...defaultConfig, ...config.config },
+  })
+}
+
+const createCurrencyscoop = async (config: ExchangeConfig) => {
+  const { base, quote } = config
+  const defaultConfig = { timeout: 5000 }
+  return CurrencyscoopExchangeService({
     base: base,
     quote: quote,
     config: { ...defaultConfig, ...config.config },

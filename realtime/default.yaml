@@ -27,6 +27,17 @@ exchanges:
     quote: "USDT"
     provider: "ccxt"
     cron: "*/5 * * * * *"
+  - name: "currencyscoop"
+    enabled: false
+    quoteAlias: "CRC"
+    base: "USD"
+    quote: "CRC"
+    provider: "currencyscoop"
+    cron: "*/5 * * * * *"
+    config:
+      baseUrl: "https://api.currencyscoop.com/v1"
+      apiKey: "<your api key>"
+      cacheSeconds: 14400
   - name: "exchangeratesapi"
     enabled: false
     quoteAlias: "CRC"

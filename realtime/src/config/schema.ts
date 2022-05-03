@@ -17,7 +17,10 @@ export const configSchema = {
           quoteAlias: { type: "string", default: "USD" },
           base: { type: "string", default: "BTC" },
           quote: { type: "string", default: "USD" },
-          provider: { type: "string", enum: ["ccxt", "exchangeratesapi"] },
+          provider: {
+            type: "string",
+            enum: ["ccxt", "exchangeratesapi", "currencyscoop"],
+          },
           cron: { type: "string" },
           config: { type: "object" },
         },
