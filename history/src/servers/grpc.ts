@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const PROTO_PATH_PRICE = __dirname + "/protos/price.proto"
+const PROTO_PATH_PRICE = __dirname + "/protos/price_history.proto"
 const PROTO_PATH_HEALTH = __dirname + "/protos/health.proto"
 
 const grpc = require("@grpc/grpc-js")
