@@ -24,7 +24,12 @@ export const CcxtExchangeService = async ({
 
   const client: ccxt.Exchange = new ccxt[exchangeId](config)
 
-  await client.loadMarkets()
+  try {
+    await client.loadMarkets()
+  } catch (error) {
+    baseLogger.error({ error }, "Ccxt unknown error")
+    return new UnknownExchangeServiceError(error.message || error)
+  }
 
   const fetchTicker = async (): Promise<Ticker | ServiceError> => {
     try {
@@ -32,7 +37,7 @@ export const CcxtExchangeService = async ({
       return tickerFromRaw(ticker)
     } catch (error) {
       baseLogger.error({ error }, "Ccxt unknown error")
-      return new UnknownExchangeServiceError(error)
+      return new UnknownExchangeServiceError(error.message || error)
     }
   }
 
