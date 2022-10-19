@@ -1,7 +1,10 @@
 {
   "name": "galoy-price",
   "private": true,
-  "workspaces": [ "realtime", "history" ],
+  "workspaces": [
+    "realtime",
+    "history"
+  ],
   "version": "1.0.0",
   "scripts": {
     "clean": "rm -rf history/dist realtime/dist",
@@ -17,7 +20,7 @@
   "devDependencies": {
     "@types/eslint": "^8.4.1",
     "@types/jest": "^27.4.0",
-    "@types/node": "16.11.7",
+    "@types/node": "^18.11.2",
     "@types/node-cron": "^3.0.1",
     "@types/prettier": "^2.4.3",
     "@typescript-eslint/eslint-plugin": "^5.11.0",

@@ -1,4 +1,4 @@
-FROM node:16-bullseye
+FROM node:18-bullseye
 
 RUN apt-get update && apt-get install -y \
   make git curl python3 jq rsync wget ca-certificates gnupg lsb-release
