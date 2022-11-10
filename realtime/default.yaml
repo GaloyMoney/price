@@ -13,7 +13,7 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/10 * * * * *"
-  - name: "ftx"
+  - name: "okcoin"
     enabled: true
     quoteAlias: "USD"
     base: "BTC"
