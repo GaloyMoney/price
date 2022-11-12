@@ -19,7 +19,7 @@ exchanges:
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
-    cron: "*/5 * * * * *"
+    cron: "*/10 * * * * *"
   - name: "binance"
     enabled: true
     quoteAlias: "USD"
