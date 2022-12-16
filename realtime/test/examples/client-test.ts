@@ -17,6 +17,7 @@ const client2 = new protoDescriptorHealth.grpc.health.v1.Health(
   grpc.credentials.createInsecure(),
 )
 
+client.listCurrencies({}, callback)
 client.getPrice({}, callback)
 
 client.getPrice({ currency: "CRC" }, callback)

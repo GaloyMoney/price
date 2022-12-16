@@ -33,11 +33,24 @@ const getPrice = async ({ request }, callback) => {
   return callback(null, { price })
 }
 
+const listCurrencies = async (_, callback) => {
+  const currencies = await Realtime.listCurrencies()
+  if (currencies instanceof Error) {
+    baseLogger.error({ error: currencies }, "Error getting currencies")
+    return callback({
+      code: grpc.status.UNKNOWN,
+      details: `Unexpected error listing currencies`,
+    })
+  }
+
+  return callback(null, { currencies })
+}
+
 export const startServer = () => {
   const port = process.env.PORT || 50051
   const server = new grpc.Server()
 
-  server.addService(protoDescriptorPrice.PriceFeed.service, { getPrice })
+  server.addService(protoDescriptorPrice.PriceFeed.service, { getPrice, listCurrencies })
   server.addService(healthCheck.service, healthImpl)
 
   server.bindAsync(
