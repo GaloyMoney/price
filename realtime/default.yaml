@@ -20,11 +20,11 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/10 * * * * *"
-  - name: "binance"
+  - name: "binanceus"
     enabled: true
     quoteAlias: "USD"
     base: "BTC"
-    quote: "USDT"
+    quote: "USD"
     provider: "ccxt"
     cron: "*/5 * * * * *"
   - name: "exchangeratesapi"
