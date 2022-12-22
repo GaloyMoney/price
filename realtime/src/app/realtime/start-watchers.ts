@@ -11,9 +11,9 @@ export const startWatchers = async (
   const start: Promise<ScheduledTask>[] = []
 
   for (const currency of supportedCurrencies) {
-    const supportedExchanges = exchanges.filter((e) => e.quoteAlias === currency)
+    const supportedExchanges = exchanges.filter((e) => e.quoteAlias === currency.code)
     for (const exchange of supportedExchanges) {
-      start.push(startWatcher({ currency, exchange, callback }))
+      start.push(startWatcher({ currency: currency.code, exchange, callback }))
     }
   }
   return Promise.all(start)
@@ -24,7 +24,7 @@ const startWatcher = async ({
   exchange,
   callback,
 }: {
-  currency: Currency
+  currency: CurrencyCode
   exchange: ExchangeConfig
   callback?: RefreshDataCallback
 }): Promise<ScheduledTask> => {

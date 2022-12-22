@@ -8,17 +8,19 @@ type Tick = {
 
 type UpdateRealtimePriceArgs = {
   exchangeName: string
-  currency: Currency
+  currency: CurrencyCode
   timestamp: number
   bid: number
   ask: number
 }
 
 interface IRealtimePriceRepository {
-  getPrice(currency: Currency): Promise<Price | RealtimePriceRepositoryError>
+  getPrice(currency: CurrencyCode): Promise<Price | RealtimePriceRepositoryError>
   getExchangePrices(
-    currency: Currency,
+    currency: CurrencyCode,
   ): Promise<ExchangePrice[] | RealtimePriceRepositoryError>
-  hasActiveExchanges(currency: Currency): Promise<boolean | RealtimePriceRepositoryError>
+  hasActiveExchanges(
+    currency: CurrencyCode,
+  ): Promise<boolean | RealtimePriceRepositoryError>
   update(args: UpdateRealtimePriceArgs): Promise<true | RealtimePriceRepositoryError>
 }

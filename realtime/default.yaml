@@ -2,8 +2,7 @@ base: "BTC"
 
 # the default is the first currency
 quotes:
-  - "USD"
-  # - "CRC"
+  - { code: "USD", symbol: "$", name: "US Dollar", flag: "🇺🇸" }
 
 exchanges:
   - name: "bitfinex2"
@@ -19,7 +18,7 @@ exchanges:
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
-    cron: "*/10 * * * * *"
+    cron: "*/15 * * * * *"
   - name: "binanceus"
     enabled: true
     quoteAlias: "USD"

@@ -10,9 +10,9 @@ type ExchangesData = { [currency: string]: { [exchange: string]: ExchangeTickerD
 
 interface Data {
   exchanges: ExchangesData
-  totalActive(currency: Currency): number
-  mid(currency: Currency): number
-  spread(currency: Currency): number
-  asks(currency: Currency): number[]
-  bids(currency: Currency): number[]
+  totalActive(currency: CurrencyCode): number
+  mid(currency: CurrencyCode): number
+  spread(currency: CurrencyCode): number
+  asks(currency: CurrencyCode): number[]
+  bids(currency: CurrencyCode): number[]
 }

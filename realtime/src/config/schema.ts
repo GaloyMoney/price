@@ -6,7 +6,21 @@ export const configSchema = {
   type: "object",
   properties: {
     base: { type: "string" },
-    quotes: { type: "array", items: { type: "string" }, uniqueItems: true },
+    quotes: {
+      type: "array",
+      uniqueItems: true,
+      items: {
+        type: "object",
+        properties: {
+          code: { type: "string" },
+          symbol: { type: "string" },
+          name: { type: "string" },
+          flag: { type: "string", default: "" },
+        },
+        required: ["code", "symbol", "name"],
+        additionalProperties: false,
+      },
+    },
     exchanges: {
       type: "array",
       items: {
