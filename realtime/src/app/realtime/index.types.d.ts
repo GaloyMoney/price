@@ -1,5 +1,5 @@
 type RefreshRealtimeDataArgs = {
-  currency: Currency
+  currency: CurrencyCode
   exchange: ExchangeConfig
 }
 

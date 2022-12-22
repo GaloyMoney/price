@@ -35,15 +35,15 @@ const meter = new MeterProvider({
 
 for (const currency of supportedCurrencies) {
   meter.createObservableGauge(
-    `${currency}_price`,
-    { description: `${currency} prices` },
+    `${currency.code}_price`,
+    { description: `${currency.code} prices` },
     async (observerResult) => {
-      const price = await Realtime.getPrice(currency)
+      const price = await Realtime.getPrice(currency.code)
       if (price instanceof Error) return
 
       observerResult.observe(price, { label: "median" })
 
-      const exchangePrices = await Realtime.getExchangePrices(currency)
+      const exchangePrices = await Realtime.getExchangePrices(currency.code)
       if (exchangePrices instanceof Error) {
         baseLogger.error(
           { error: exchangePrices, currency },

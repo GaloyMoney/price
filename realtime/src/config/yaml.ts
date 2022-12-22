@@ -29,11 +29,14 @@ const validate = ajv.compile<ConfigSchema>(configSchema)
 const valid = validate(yamlConfig)
 if (!valid) throw new ConfigError("Invalid yaml configuration", validate.errors)
 
-export const supportedCurrencies: Currency[] = yamlConfig.quotes.map((q) =>
-  q.toUpperCase(),
-)
-export const defaultBaseCurrency: Currency = yamlConfig.base
-export const defaultQuoteCurrency: Currency = supportedCurrencies[0]
+export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => ({
+  code: q.code,
+  symbol: q.symbol,
+  name: q.name,
+  flag: q.flag,
+}))
+export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
+export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
 
 export const getExchangesConfig = (): ExchangeConfig[] =>
   yamlConfig.exchanges

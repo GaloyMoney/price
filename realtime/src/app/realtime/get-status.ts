@@ -6,7 +6,9 @@ const realtimePriceRepository = RealtimePriceRepository()
 
 export const getStatus = async (): Promise<ServiceStatus | ApplicationError> => {
   for (const currency of supportedCurrencies) {
-    const hasActiveExchanges = await realtimePriceRepository.hasActiveExchanges(currency)
+    const hasActiveExchanges = await realtimePriceRepository.hasActiveExchanges(
+      currency.code,
+    )
     if (hasActiveExchanges instanceof Error) return hasActiveExchanges
     if (!hasActiveExchanges) return ServiceStatus.NOT_SERVING
   }

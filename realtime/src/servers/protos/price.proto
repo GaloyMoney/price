@@ -16,5 +16,12 @@ message PriceQuery {
 message ListCurrenciesQuery { }
 
 message ListCurrenciesResponse {
-  repeated string currencies = 1;
+  repeated Currency currencies = 1;
+}
+
+message Currency {
+  string code = 1;
+  string symbol = 2;
+  string name = 3;
+  string flag = 4;
 }

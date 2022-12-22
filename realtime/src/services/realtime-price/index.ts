@@ -9,7 +9,7 @@ import { realTimeData } from "./data"
 
 export const RealtimePriceRepository = (): IRealtimePriceRepository => {
   const getPrice = async (
-    currency: Currency,
+    currency: CurrencyCode,
   ): Promise<Price | RealtimePriceRepositoryError> => {
     const price = realTimeData.mid(currency)
     if (price > 0) return toPrice(price)
@@ -17,7 +17,7 @@ export const RealtimePriceRepository = (): IRealtimePriceRepository => {
   }
 
   const getExchangePrices = async (
-    currency: Currency,
+    currency: CurrencyCode,
   ): Promise<ExchangePrice[] | RealtimePriceRepositoryError> => {
     if (!realTimeData.exchanges[currency]) return new CurrencyNotInitializedError()
 
@@ -35,7 +35,7 @@ export const RealtimePriceRepository = (): IRealtimePriceRepository => {
   }
 
   const hasActiveExchanges = async (
-    currency: Currency,
+    currency: CurrencyCode,
   ): Promise<boolean | RealtimePriceRepositoryError> => {
     if (!realTimeData.exchanges[currency]) return new CurrencyNotInitializedError()
     return realTimeData.totalActive(currency) > 0

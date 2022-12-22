@@ -24,10 +24,12 @@ const initializeExchangesData = (): ExchangesData => {
   const exchangesConfig = getExchangesConfig()
 
   for (const currency of supportedCurrencies) {
-    if (!exchanges[currency]) exchanges[currency] = {}
+    if (!exchanges[currency.code]) exchanges[currency.code] = {}
 
-    for (const exchange of exchangesConfig.filter((e) => e.quoteAlias === currency)) {
-      exchanges[currency][exchange.name] = getDefaultData()
+    for (const exchange of exchangesConfig.filter(
+      (e) => e.quoteAlias === currency.code,
+    )) {
+      exchanges[currency.code][exchange.name] = getDefaultData()
     }
   }
 
@@ -36,33 +38,33 @@ const initializeExchangesData = (): ExchangesData => {
 
 export const realTimeData: Data = {
   exchanges: initializeExchangesData(),
-  totalActive(currency: Currency) {
+  totalActive(currency: CurrencyCode) {
     if (!this.exchanges[currency]) return 0
     return Object.values(this.exchanges[currency]).reduce(
       (total, { active }) => total + (active ? 1 : 0),
       0,
     )
   },
-  bids(currency: Currency) {
+  bids(currency: CurrencyCode) {
     if (!this.exchanges[currency]) return []
     return Object.values(this.exchanges[currency])
       .filter((e) => e.active)
       .map<number | undefined>((e) => e.bid)
       .filter(isDefined)
   },
-  asks(currency: Currency) {
+  asks(currency: CurrencyCode) {
     if (!this.exchanges[currency]) return []
     return Object.values(this.exchanges[currency])
       .filter((e) => e.active)
       .map<number | undefined>((e) => e.ask)
       .filter(isDefined)
   },
-  mid(currency: Currency) {
+  mid(currency: CurrencyCode) {
     const ask = median(this.asks(currency))
     const bid = median(this.bids(currency))
     return round((ask + bid) / 2)
   },
-  spread(currency: Currency) {
+  spread(currency: CurrencyCode) {
     const highAsk = Math.max(...this.asks(currency))
     const lowBid = Math.min(...this.bids(currency))
     const spread = (highAsk - lowBid) / lowBid
