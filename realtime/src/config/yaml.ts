@@ -30,7 +30,7 @@ const valid = validate(yamlConfig)
 if (!valid) throw new ConfigError("Invalid yaml configuration", validate.errors)
 
 export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => ({
-  code: q.code,
+  code: q.code.toUpperCase(),
   symbol: q.symbol,
   name: q.name,
   flag: q.flag,
@@ -38,8 +38,8 @@ export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => 
 export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
 export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
 
-export const getExchangesConfig = (): ExchangeConfig[] =>
-  yamlConfig.exchanges
+export const getExchangesConfig = (): ExchangeConfig[] => {
+  const rawExchangesConfig: ExchangeConfig[] = yamlConfig.exchanges
     .filter((e) => !!e.enabled)
     .map((e) => {
       if (!cron.validate(e.cron))
@@ -54,3 +54,17 @@ export const getExchangesConfig = (): ExchangeConfig[] =>
         config: e.config,
       }
     })
+
+  const exchangesConfig: ExchangeConfig[] = []
+  for (const config of rawExchangesConfig) {
+    let newConfigs = [config]
+    if (config.quote === "*" || config.quoteAlias === "*") {
+      newConfigs = supportedCurrencies
+        .filter((e) => e.code !== config.base)
+        .map((c) => ({ ...config, quoteAlias: c.code, quote: c.code }))
+    }
+    exchangesConfig.push(...newConfigs)
+  }
+
+  return exchangesConfig
+}
