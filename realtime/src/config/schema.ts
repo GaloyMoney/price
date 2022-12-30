@@ -33,7 +33,7 @@ export const configSchema = {
           quote: { type: "string", default: "USD" },
           provider: {
             type: "string",
-            enum: ["ccxt", "currencybeacon", "exchangeratesapi"],
+            enum: ["ccxt", "free-currency-rates", "currencybeacon", "exchangeratesapi"],
           },
           cron: { type: "string" },
           config: { type: "object" },
