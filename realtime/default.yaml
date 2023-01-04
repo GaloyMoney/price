@@ -26,6 +26,17 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/5 * * * * *"
+  - name: "currencybeacon"
+    enabled: false
+    quoteAlias: "*"
+    base: "USD"
+    quote: "*"
+    provider: "currencybeacon"
+    cron: "*/5 * * * * *"
+    config:
+      baseUrl: "https://api.currencybeacon.com/v1"
+      apiKey: "<your api key>"
+      cacheSeconds: 900
   - name: "exchangeratesapi"
     enabled: false
     quoteAlias: "CRC"
