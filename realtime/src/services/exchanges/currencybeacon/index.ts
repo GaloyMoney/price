@@ -25,9 +25,9 @@ export const CurrencyBeaconExchangeService = async ({
   const url = baseUrl || "https://api.currencybeacon.com/v1"
   const cacheKey = `${CacheKeys.CurrentTicker}:currencybeacon:${base}:*`
 
-  const getCachedRates = async (): Promise<CurrencyBeaconRates | null> => {
+  const getCachedRates = async (): Promise<CurrencyBeaconRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<CurrencyBeaconRates>(cacheKey)
-    if (cachedTickers instanceof Error) return null
+    if (cachedTickers instanceof Error) return undefined
     return cachedTickers
   }
 
