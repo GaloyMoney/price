@@ -40,25 +40,21 @@ export const CurrencyBeaconExchangeService = async ({
       const cachedRates = await getCachedRates()
       if (cachedRates) return tickerFromRaw({ rate: cachedRates[quote], timestamp })
 
-      const response = await axios.get(`${url}/latest`, {
-        timeout: Number(timeout || 5000),
-        params: {
-          api_key: apiKey,
-          base,
-          ...params,
+      const { status, data } = await axios.get<GetCurrencyBeaconRatesResponse>(
+        `${url}/latest`,
+        {
+          timeout: Number(timeout || 5000),
+          params: {
+            api_key: apiKey,
+            base,
+            ...params,
+          },
         },
-      })
-      if (
-        response.status > 400 ||
-        !response.data.response ||
-        !response.data.response.rates ||
-        !Object.keys(response.data.response.rates).length
       )
-        return new UnknownExchangeServiceError(
-          `Invalid response. Error ${response.status}`,
-        )
 
-      const rates = response.data.response.rates
+      const rates = data?.response?.rates
+      if (status >= 400 || !isRatesObjectValid(rates))
+        return new UnknownExchangeServiceError(`Invalid response. Error ${status}`)
 
       await LocalCacheService().set<CurrencyBeaconRates>({
         key: cacheKey,
@@ -69,11 +65,25 @@ export const CurrencyBeaconExchangeService = async ({
       return tickerFromRaw({ rate: rates[quote], timestamp })
     } catch (error) {
       baseLogger.error({ error }, "CurrencyBeacon unknown error")
-      return new UnknownExchangeServiceError(error)
+      return new UnknownExchangeServiceError(error.message || error)
     }
   }
 
   return { fetchTicker }
+}
+
+const isRatesObjectValid = (rates: unknown): rates is CurrencyBeaconRates => {
+  if (!rates || typeof rates !== "object") return false
+
+  let keyCount = 0
+  for (const key in rates) {
+    if (typeof key !== "string" || typeof rates[key] !== "number") {
+      return false
+    }
+    keyCount++
+  }
+
+  return !!keyCount
 }
 
 const tickerFromRaw = ({
