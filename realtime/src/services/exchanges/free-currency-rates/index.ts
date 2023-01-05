@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios"
+import axios from "axios"
 
 import {
   InvalidTickerError,
@@ -26,9 +26,9 @@ export const FreeCurrencyRatesExchangeService = async ({
     baseUrl || "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
   const cacheKey = `${CacheKeys.CurrentTicker}:freecurrencyrates:${base}:*`
 
-  const getCachedRates = async (): Promise<FreeCurrencyRatesRates | null> => {
+  const getCachedRates = async (): Promise<FreeCurrencyRatesRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<FreeCurrencyRatesRates>(cacheKey)
-    if (cachedTickers instanceof Error) return null
+    if (cachedTickers instanceof Error) return undefined
     return cachedTickers
   }
 
@@ -53,17 +53,8 @@ export const FreeCurrencyRatesExchangeService = async ({
         timeout: Number(timeout || 5000),
       }
 
-      const response = await getWithFallback({ urls, params })
-      if (response instanceof Error) return response
-
-      if (
-        !response ||
-        !response[baseCurrency] ||
-        !Object.keys(response[baseCurrency]).length
-      )
-        return new UnknownExchangeServiceError("Invalid response.")
-
-      const rates = response[baseCurrency]
+      const rates = await getWithFallback({ baseCurrency, urls, params })
+      if (rates instanceof Error) return rates
 
       await LocalCacheService().set<FreeCurrencyRatesRates>({
         key: cacheKey,
@@ -100,19 +91,35 @@ const tickerFromRaw = ({
 }
 
 const getWithFallback = async ({
+  baseCurrency,
   urls,
   params,
 }: {
+  baseCurrency: string
   urls: string[]
   params: { [key: string]: string | number | boolean }
-}) => {
-  let response: AxiosResponse | undefined
+}): Promise<FreeCurrencyRatesRates | ExchangeServiceError> => {
   for (const url of urls) {
     try {
-      response = await axios.get(url, params)
-      if (response && response.status === 200) return response.data
+      const { status, data } = await axios.get(url, params)
+      const rates = data ? data[baseCurrency] : undefined
+      if (status === 200 && isRatesObjectValid(rates)) return rates
     } catch {}
   }
 
-  return new UnknownExchangeServiceError(`Invalid response. Error ${response?.status}`)
+  return new UnknownExchangeServiceError(`Invalid response.`)
+}
+
+const isRatesObjectValid = (rates: unknown): rates is FreeCurrencyRatesRates => {
+  if (!rates || typeof rates !== "object") return false
+
+  let keyCount = 0
+  for (const key in rates) {
+    if (typeof key !== "string" || typeof rates[key] !== "number") {
+      return false
+    }
+    keyCount++
+  }
+
+  return !!keyCount
 }
