@@ -58,3 +58,10 @@ for (const currency of supportedCurrencies) {
     },
   )
 }
+
+const shutdown = async () => {
+  await meter.shutdown()
+  await exporter.shutdown()
+}
+process.on("SIGINT", shutdown)
+process.on("SIGTERM", shutdown)

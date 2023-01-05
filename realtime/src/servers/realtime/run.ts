@@ -46,10 +46,10 @@ const listCurrencies = async (_, callback) => {
   return callback(null, { currencies })
 }
 
-export const startServer = () => {
-  const port = process.env.PORT || 50051
-  const server = new grpc.Server()
+const port = process.env.PORT || 50051
+const server = new grpc.Server()
 
+export const startServer = () => {
   server.addService(protoDescriptorPrice.PriceFeed.service, { getPrice, listCurrencies })
   server.addService(healthCheck.service, healthImpl)
 
@@ -70,10 +70,20 @@ export const startServer = () => {
       server.start()
     },
   )
+}
 
-  return server
+const shutdown = () => {
+  server.tryShutdown((error) => {
+    if (error) {
+      baseLogger.error({ error }, "Error shutting down server")
+    }
+    process.exit(error ? 1 : 0)
+  })
 }
 
 if (require.main === module) {
   startServer()
 }
+
+process.on("SIGINT", shutdown)
+process.on("SIGTERM", shutdown)
