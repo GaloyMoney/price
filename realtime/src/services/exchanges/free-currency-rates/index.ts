@@ -41,8 +41,10 @@ export const FreeCurrencyRatesExchangeService = async ({
 
     try {
       const cachedRates = await getCachedRates()
-      if (cachedRates)
+      if (cachedRates) {
         return tickerFromRaw({ rate: cachedRates[quoteCurrency], timestamp })
+      }
+
       const urls = [
         `${url}/${baseCurrency}.min.json`,
         `${url}/${baseCurrency}.json`,
