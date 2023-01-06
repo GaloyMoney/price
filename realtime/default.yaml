@@ -3,6 +3,7 @@ base: "BTC"
 # the default is the first currency
 quotes:
   - { code: "USD", symbol: "$", name: "US Dollar", flag: "🇺🇸" }
+  - { code: "EUR", symbol: "€", name: "Euro", flag: "🇪🇺" }
 
 exchanges:
   - name: "bitfinex2"
@@ -26,6 +27,17 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/5 * * * * *"
+  - name: "free-currency-rates-usd"
+    enabled: true
+    quoteAlias: "*"
+    base: "USD"
+    quote: "*"
+    provider: "free-currency-rates"
+    cron: "*/5 * * * * *"
+    config:
+      baseUrl: "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
+      fallbackUrl: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/latest/currencies/"
+      cacheSeconds: 1800
   - name: "currencybeacon"
     enabled: false
     quoteAlias: "*"
