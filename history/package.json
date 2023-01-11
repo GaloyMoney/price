@@ -41,7 +41,7 @@
     "dotenv": "^16.0.0",
     "grpc-health-check": "^1.8.0",
     "js-yaml": "^4.1.0",
-    "knex": "^1.0.2",
+    "knex": "^2.4.0",
     "lodash.merge": "^4.6.2",
     "node-cron": "^3.0.0",
     "pg": "^8.7.3",
