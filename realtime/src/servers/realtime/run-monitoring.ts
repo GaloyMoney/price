@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { MeterProvider } from "@opentelemetry/sdk-metrics-base"
+import { MeterProvider } from "@opentelemetry/sdk-metrics"
 import { PrometheusExporter } from "@opentelemetry/exporter-prometheus"
 import { supportedCurrencies } from "@config"
 import { Realtime } from "@app"
@@ -28,20 +28,21 @@ const exporter = new PrometheusExporter(
 
 startServer()
 
-const meter = new MeterProvider({
-  exporter,
-  interval: 5000,
-}).getMeter("prices-prometheus")
+const meterProvider = new MeterProvider()
+meterProvider.addMetricReader(exporter)
+
+const meter = meterProvider.getMeter("prices-prometheus")
 
 for (const currency of supportedCurrencies) {
-  meter.createObservableGauge(
-    `${currency.code}_price`,
-    { description: `${currency.code} prices` },
-    async (observerResult) => {
+  meter
+    .createObservableGauge(`${currency.code}_price`, {
+      description: `${currency.code} prices`,
+    })
+    .addCallback(async (observableResult) => {
       const price = await Realtime.getPrice(currency.code)
       if (price instanceof Error) return
 
-      observerResult.observe(price, { label: "median" })
+      observableResult.observe(price, { label: "median" })
 
       const exchangePrices = await Realtime.getExchangePrices(currency.code)
       if (exchangePrices instanceof Error) {
@@ -53,14 +54,13 @@ for (const currency of supportedCurrencies) {
       }
 
       for (const { exchangeName, price } of exchangePrices) {
-        observerResult.observe(price, { label: `${exchangeName}` })
+        observableResult.observe(price, { label: `${exchangeName}` })
       }
-    },
-  )
+    })
 }
 
 const shutdown = async () => {
-  await meter.shutdown()
+  await meterProvider.shutdown()
   await exporter.shutdown()
 }
 process.on("SIGINT", shutdown)

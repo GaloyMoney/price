@@ -1,3 +1,6 @@
+/* eslint @typescript-eslint/ban-ts-comment: "off" */
+// @ts-nocheck
+
 import {
   SemanticAttributes,
   SemanticResourceAttributes,
@@ -14,11 +17,16 @@ import {
   trace,
   context,
   propagation,
-  SpanAttributes,
   SpanOptions,
   TimeInput,
+  Context,
+  Attributes,
+  Exception,
+  SpanStatusCode,
+  Span,
 } from "@opentelemetry/api"
 import { tracingConfig } from "@config"
+import { ErrorLevel, RankedErrorLevel } from "@domain/errors"
 
 propagation.setGlobalPropagator(new W3CTraceContextPropagator())
 
@@ -45,7 +53,7 @@ const provider = new NodeTracerProvider({
 })
 
 class SpanProcessorWrapper extends SimpleSpanProcessor {
-  onStart(span: SdkSpan) {
+  onStart(span: SdkSpan, parentContext: Context) {
     const ctx = context.active()
     if (ctx) {
       const baggage = propagation.getBaggage(ctx)
@@ -55,7 +63,7 @@ class SpanProcessorWrapper extends SimpleSpanProcessor {
         })
       }
     }
-    super.onStart(span)
+    super.onStart(span, parentContext)
   }
 }
 provider.addSpanProcessor(
@@ -73,7 +81,7 @@ export const tracer = trace.getTracer(
   tracingConfig.tracingServiceName,
   process.env.COMMITHASH || "dev",
 )
-export const addAttributesToCurrentSpan = (attributes: SpanAttributes) => {
+export const addAttributesToCurrentSpan = (attributes: Attributes) => {
   const span = trace.getSpan(context.active())
   if (span) {
     for (const [key, value] of Object.entries(attributes)) {
@@ -86,7 +94,7 @@ export const addAttributesToCurrentSpan = (attributes: SpanAttributes) => {
 
 export const addEventToCurrentSpan = (
   name: string,
-  attributesOrStartTime?: SpanAttributes | TimeInput | undefined,
+  attributesOrStartTime?: Attributes | TimeInput | undefined,
   startTime?: TimeInput | undefined,
 ) => {
   const span = trace.getSpan(context.active())
@@ -95,18 +103,60 @@ export const addEventToCurrentSpan = (
   }
 }
 
+const updateErrorForSpan = ({
+  span,
+  errorLevel,
+}: {
+  span: Span
+  errorLevel: ErrorLevel
+}): boolean => {
+  const spanErrorRank = RankedErrorLevel.indexOf(span.attributes["error.level"])
+  const errorRank = RankedErrorLevel.indexOf(errorLevel)
+
+  return errorRank >= spanErrorRank
+}
+
+const recordException = (span: Span, exception: Exception, level?: ErrorLevel) => {
+  const errorLevel = level || exception["level"] || ErrorLevel.Warn
+
+  // Write error attributes if update checks pass
+  if (updateErrorForSpan({ span, errorLevel })) {
+    span.setAttribute("error.level", errorLevel)
+    span.setAttribute("error.name", exception["name"])
+    span.setAttribute("error.message", exception["message"])
+  }
+
+  // Append error with next index
+  let nextIdx = 0
+  while (span.attributes[`error.${nextIdx}.level`] !== undefined) {
+    nextIdx++
+  }
+  span.setAttribute(`error.${nextIdx}.level`, errorLevel)
+  span.setAttribute(`error.${nextIdx}.name`, exception["name"])
+  span.setAttribute(`error.${nextIdx}.message`, exception["message"])
+
+  span.recordException(exception)
+  span.setStatus({ code: SpanStatusCode.ERROR })
+}
+
 export const asyncRunInSpan = <F extends () => ReturnType<F>>(
   spanName: string,
-  attributes: SpanAttributes,
+  options: SpanOptions,
   fn: F,
 ) => {
-  const ret = tracer.startActiveSpan(spanName, { attributes }, async (span) => {
-    const ret = await Promise.resolve(fn())
-    if ((ret as unknown) instanceof Error) {
-      span.recordException(ret)
+  const ret = tracer.startActiveSpan(spanName, options, async (span) => {
+    try {
+      const ret = await Promise.resolve(fn())
+      if ((ret as unknown) instanceof Error) {
+        recordException(span, ret as Error)
+      }
+      span.end()
+      return ret
+    } catch (error) {
+      recordException(span, error, ErrorLevel.Critical)
+      span.end()
+      throw error
     }
-    span.end()
-    return ret
   })
   return ret
 }
@@ -116,11 +166,13 @@ const resolveFunctionSpanOptions = ({
   functionName,
   functionArgs,
   spanAttributes,
+  root,
 }: {
   namespace: string
   functionName: string
   functionArgs: Array<unknown>
-  spanAttributes: SpanAttributes
+  spanAttributes?: Attributes
+  root?: boolean
 }): SpanOptions => {
   const attributes = {
     [SemanticAttributes.CODE_FUNCTION]: functionName,
@@ -131,12 +183,16 @@ const resolveFunctionSpanOptions = ({
     const params =
       typeof functionArgs[0] === "object" ? functionArgs[0] : { "0": functionArgs[0] }
     for (const key in params) {
-      attributes[`${SemanticAttributes.CODE_FUNCTION}.params.${key}`] = params[key]
+      // @ts-ignore-next-line no-implicit-any error
+      const value = params[key]
+      attributes[`${SemanticAttributes.CODE_FUNCTION}.params.${key}`] = value
       attributes[`${SemanticAttributes.CODE_FUNCTION}.params.${key}.null`] =
-        params[key] === null
+        value === null
+      attributes[`${SemanticAttributes.CODE_FUNCTION}.params.${key}.undefined`] =
+        value === undefined
     }
   }
-  return { attributes }
+  return { attributes, root }
 }
 
 export const wrapToRunInSpan = <
