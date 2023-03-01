@@ -24,5 +24,4 @@ message Currency {
   string symbol = 2;
   string name = 3;
   string flag = 4;
-  int32 fractionDigits = 5;
 }

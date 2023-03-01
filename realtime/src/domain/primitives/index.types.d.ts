@@ -8,5 +8,4 @@ type FiatCurrency = {
   readonly symbol: string
   readonly name: string
   readonly flag: string
-  readonly fractionDigits: number
 }
