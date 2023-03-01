@@ -16,6 +16,7 @@ export const configSchema = {
           symbol: { type: "string" },
           name: { type: "string" },
           flag: { type: "string", default: "" },
+          fractionDigits: { type: "integer", minimum: 0, maximum: 4, default: 2 },
         },
         required: ["code", "symbol", "name"],
         additionalProperties: false,

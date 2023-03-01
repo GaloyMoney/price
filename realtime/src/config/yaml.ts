@@ -34,6 +34,7 @@ export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => 
   symbol: q.symbol,
   name: q.name,
   flag: q.flag,
+  fractionDigits: q.fractionDigits >= 0 ? q.fractionDigits : 2,
 }))
 export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
 export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
