@@ -29,9 +29,18 @@ export const configSchema = {
         properties: {
           name: { type: "string" },
           enabled: { type: "boolean", default: false },
-          quoteAlias: { type: "string", default: "USD" },
+          quoteAlias: {
+            anyOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
+            default: "*",
+          },
           base: { type: "string", default: "BTC" },
-          quote: { type: "string", default: "USD" },
+          quote: {
+            anyOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
+            default: "*",
+          },
+          excludedQuotes: {
+            anyOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
+          },
           provider: {
             type: "string",
             enum: ["ccxt", "free-currency-rates", "currencybeacon", "exchangeratesapi"],
