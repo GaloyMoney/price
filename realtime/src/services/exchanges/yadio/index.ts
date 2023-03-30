@@ -5,6 +5,7 @@ import {
   ExchangeServiceError,
   UnknownExchangeServiceError,
   InvalidExchangeConfigError,
+  InvalidExchangeResponseError,
 } from "@domain/exchanges"
 import { toPrice, toSeconds, toTimestamp } from "@domain/primitives"
 import { LocalCacheService } from "@services/cache"
@@ -49,7 +50,7 @@ export const YadioExchangeService = async ({
 
       const rates = data && data[base]
       if (status >= 400 || !isRatesObjectValid(rates))
-        return new UnknownExchangeServiceError(`Invalid response. Error ${status}`)
+        return new InvalidExchangeResponseError(`Invalid response. Error ${status}`)
 
       await LocalCacheService().set<YadioRates>({
         key: cacheKey,
