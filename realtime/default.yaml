@@ -32,7 +32,7 @@ exchanges:
     quoteAlias: "*"
     base: "USD"
     quote: "*"
-    excludedQuotes: ["ARS", "LBP"]
+    excludedQuotes: []
     provider: "free-currency-rates"
     cron: "*/5 * * * * *"
     config:
@@ -44,7 +44,7 @@ exchanges:
     quoteAlias: "*"
     base: "USD"
     quote: "*"
-    excludedQuotes: ["ARS", "LBP"]
+    excludedQuotes: []
     provider: "currencybeacon"
     cron: "*/5 * * * * *"
     config:
