@@ -47,7 +47,7 @@ export const getExchangesConfig = (): ExchangeConfig[] => {
         throw new ConfigError(`Invalid ${e.name} cron expression`, e)
 
       const quote = coerceToStringArray(e.quote)
-      const quoteAlias = coerceToStringArray(e.quoteAlias)
+      const quoteAlias = coerceToStringArray(e.quoteAlias || e.quote)
       if (quoteAlias && quoteAlias.length > 0 && quote.length !== quoteAlias.length)
         throw new ConfigError(`Invalid ${e.name} quote and quoteAlias values`, e)
 

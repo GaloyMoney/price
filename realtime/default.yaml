@@ -13,7 +13,7 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/10 * * * * *"
-  - name: "okcoin"
+  - name: "kraken"
     enabled: true
     quoteAlias: "USD"
     base: "BTC"
@@ -32,6 +32,7 @@ exchanges:
     quoteAlias: "*"
     base: "USD"
     quote: "*"
+    excludedQuotes: ["ARS", "LBP"]
     provider: "free-currency-rates"
     cron: "*/5 * * * * *"
     config:
@@ -43,11 +44,21 @@ exchanges:
     quoteAlias: "*"
     base: "USD"
     quote: "*"
+    excludedQuotes: ["ARS", "LBP"]
     provider: "currencybeacon"
     cron: "*/5 * * * * *"
     config:
       baseUrl: "https://api.currencybeacon.com/v1"
       apiKey: "<your api key>"
+      cacheSeconds: 900
+  - name: "yadio-btc"
+    enabled: false
+    base: "BTC"
+    quote: ["ARS", "LBP"]
+    provider: "yadio"
+    cron: "*/5 * * * * *"
+    config:
+      baseUrl: "https://api.yadio.io/exrates"
       cacheSeconds: 900
   - name: "exchangeratesapi"
     enabled: false
