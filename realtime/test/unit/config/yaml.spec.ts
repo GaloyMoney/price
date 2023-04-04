@@ -1,4 +1,4 @@
-import { coerceToStringArray, ConfigError } from "@config"
+import { coerceToStringArray, ConfigError, getFractionDigits } from "@config"
 
 describe("coerceToStringArray", () => {
   it("returns an empty array if the input is falsy", () => {
@@ -20,5 +20,38 @@ describe("coerceToStringArray", () => {
     expect(() => coerceToStringArray(21)).toThrow(ConfigError)
     expect(() => coerceToStringArray({ attr: "value" })).toThrow(ConfigError)
     expect(() => coerceToStringArray(["usd", 21])).toThrow(ConfigError)
+  })
+})
+
+describe("getFractionDigits", () => {
+  const USD = "USD" as CurrencyCode
+  const JPY = "JPY" as CurrencyCode
+
+  test("returns correct fraction digits for a valid currency", () => {
+    const resultUsd = getFractionDigits({ currency: USD })
+    expect(resultUsd).toBe(2)
+    const resultJpy = getFractionDigits({ currency: JPY })
+    expect(resultJpy).toBe(0)
+  })
+
+  test("returns provided fraction digits for a valid currency", () => {
+    const currency = USD
+    const fractionDigits = 3
+    const result = getFractionDigits({ currency, fractionDigits })
+    expect(result).toBe(fractionDigits)
+  })
+
+  test("returns provided fraction digits for a non-standard currency", () => {
+    const currency = "ARSp" as CurrencyCode
+    const fractionDigits = 3
+    const result = getFractionDigits({ currency, fractionDigits })
+    expect(result).toBe(fractionDigits)
+  })
+
+  test("throws ConfigError for an invalid currency", () => {
+    const currency = "INVALID" as CurrencyCode
+    const expectedErrorMessage = `Invalid currency. If ${currency} is a custom currency please add fractionDigits`
+    expect(() => getFractionDigits({ currency })).toThrow(ConfigError)
+    expect(() => getFractionDigits({ currency })).toThrowError(expectedErrorMessage)
   })
 })
