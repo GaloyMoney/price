@@ -29,13 +29,40 @@ const validate = ajv.compile<ConfigSchema>(configSchema)
 const valid = validate(yamlConfig)
 if (!valid) throw new ConfigError("Invalid yaml configuration", validate.errors)
 
-export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => ({
-  code: q.code.toUpperCase(),
-  symbol: q.symbol,
-  name: q.name,
-  flag: q.flag,
-  fractionDigits: q.fractionDigits >= 0 ? q.fractionDigits : 2,
-}))
+export const getFractionDigits = ({
+  currency,
+  fractionDigits,
+}: {
+  currency: CurrencyCode
+  fractionDigits?: number
+}): number => {
+  if (fractionDigits !== undefined && fractionDigits >= 0) {
+    return fractionDigits
+  }
+  try {
+    const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency })
+    const { minimumFractionDigits } = formatter.resolvedOptions()
+    return minimumFractionDigits
+  } catch {
+    throw new ConfigError(
+      `Invalid currency. If ${currency} is a custom currency please add fractionDigits`,
+    )
+  }
+}
+
+export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => {
+  const code = q.code.toUpperCase()
+  return {
+    code,
+    symbol: q.symbol,
+    name: q.name,
+    flag: q.flag,
+    fractionDigits: getFractionDigits({
+      currency: code,
+      fractionDigits: q.fractionDigits,
+    }),
+  }
+})
 export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
 export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
 
