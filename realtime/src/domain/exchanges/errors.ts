@@ -5,6 +5,7 @@ export class InvalidExchangeProviderError extends ExchangeServiceError {}
 export class InvalidExchangeIdError extends ExchangeServiceError {}
 export class InvalidExchangeConfigError extends ExchangeServiceError {}
 export class InvalidTickerError extends ExchangeServiceError {}
+export class RateLimitExceededError extends ExchangeServiceError {}
 export class InvalidExchangeResponseError extends ExchangeServiceError {
   level = ErrorLevel.Critical
 }

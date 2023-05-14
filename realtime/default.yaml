@@ -39,6 +39,17 @@ exchanges:
       baseUrl: "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
       fallbackUrl: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/latest/currencies/"
       cacheSeconds: 1800
+  - name: "exchangeratehost"
+    enabled: true
+    quoteAlias: "*"
+    base: "USD"
+    quote: "*"
+    excludedQuotes: []
+    provider: "exchangeratehost"
+    cron: "*/5 * * * * *"
+    config:
+      baseUrl: "https://api-us.exchangerate.host"
+      cacheSeconds: 1800
   - name: "currencybeacon"
     enabled: false
     quoteAlias: "*"
