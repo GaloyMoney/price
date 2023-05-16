@@ -48,6 +48,7 @@ export const configSchema = {
               "free-currency-rates",
               "currencybeacon",
               "exchangeratesapi",
+              "exchangeratehost",
               "yadio",
             ],
           },

@@ -2,6 +2,7 @@ import { InvalidExchangeProviderError } from "@domain/exchanges"
 
 import { CcxtExchangeService } from "./ccxt"
 import { YadioExchangeService } from "./yadio"
+import { ExchangeRateHostService } from "./exchangeratehost"
 import { CurrencyBeaconExchangeService } from "./currencybeacon"
 import { ExchangeRatesAPIExchangeService } from "./exchange-rates-api"
 import { FreeCurrencyRatesExchangeService } from "./free-currency-rates"
@@ -31,6 +32,9 @@ export const ExchangeFactory = (): ExchangeFactory => {
         break
       case "exchangeratesapi":
         service = await createExchangeRatesAPI(config)
+        break
+      case "exchangeratehost":
+        service = await createExchangeRateHost(config)
         break
       case "yadio":
         service = await createYadio(config)
@@ -80,6 +84,16 @@ const createExchangeRatesAPI = async (config: ExchangeConfig) => {
   const { base, quote } = config
   const defaultConfig = { timeout: 5000 }
   return ExchangeRatesAPIExchangeService({
+    base: base,
+    quote: quote,
+    config: { ...defaultConfig, ...config.config },
+  })
+}
+
+const createExchangeRateHost = async (config: ExchangeConfig) => {
+  const { base, quote } = config
+  const defaultConfig = { timeout: 5000 }
+  return ExchangeRateHostService({
     base: base,
     quote: quote,
     config: { ...defaultConfig, ...config.config },
