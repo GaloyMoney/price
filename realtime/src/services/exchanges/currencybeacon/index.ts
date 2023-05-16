@@ -24,11 +24,18 @@ export const CurrencyBeaconExchangeService = async ({
 
   const url = baseUrl || "https://api.currencybeacon.com/v1"
   const cacheKey = `${CacheKeys.CurrentTicker}:currencybeacon:${base}:*`
+  const cacheKeyStatus = `${cacheKey}:status`
 
   const getCachedRates = async (): Promise<CurrencyBeaconRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<CurrencyBeaconRates>(cacheKey)
     if (cachedTickers instanceof Error) return undefined
     return cachedTickers
+  }
+
+  const getLastRequestStatus = async (): Promise<number> => {
+    const status = await LocalCacheService().get<number>(cacheKeyStatus)
+    if (status instanceof Error) return 0
+    return status
   }
 
   const fetchTicker = async (): Promise<Ticker | ServiceError> => {
@@ -39,6 +46,13 @@ export const CurrencyBeaconExchangeService = async ({
     try {
       const cachedRates = await getCachedRates()
       if (cachedRates) return tickerFromRaw({ rate: cachedRates[quote], timestamp })
+
+      // avoid cloudflare ban if apiKey is no longer valid
+      const lastCachedStatus = await getLastRequestStatus()
+      if (lastCachedStatus >= 400)
+        return new UnknownExchangeServiceError(
+          `Invalid response. Error ${lastCachedStatus}`,
+        )
 
       const { status, data } = await axios.get<GetCurrencyBeaconRatesResponse>(
         `${url}/latest`,
@@ -51,10 +65,15 @@ export const CurrencyBeaconExchangeService = async ({
           },
         },
       )
-
       const rates = data?.response?.rates
-      if (status >= 400 || !isRatesObjectValid(rates))
+      if (status >= 400 || !isRatesObjectValid(rates)) {
+        await LocalCacheService().set<number>({
+          key: cacheKeyStatus,
+          value: status,
+          ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        })
         return new UnknownExchangeServiceError(`Invalid response. Error ${status}`)
+      }
 
       await LocalCacheService().set<CurrencyBeaconRates>({
         key: cacheKey,
