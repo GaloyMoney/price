@@ -1,4 +1,4 @@
-import ccxt from "ccxt"
+import ccxt, { Exchange, Ticker as CcxtTicker } from "ccxt"
 
 import {
   InvalidTickerError,
@@ -22,7 +22,7 @@ export const CcxtExchangeService = async ({
   const id = ccxt.exchanges.find((e) => e === exchangeId)
   if (!id) return new InvalidExchangeIdError()
 
-  const client: ccxt.Exchange = new ccxt[exchangeId](config)
+  const client: Exchange = new ccxt[exchangeId](config)
 
   try {
     await client.loadMarkets()
@@ -48,7 +48,7 @@ const tickerFromRaw = ({
   bid,
   ask,
   timestamp,
-}: ccxt.Ticker): Ticker | InvalidTickerError => {
+}: CcxtTicker): Ticker | InvalidTickerError => {
   if (bid > 0 && ask > 0 && timestamp > 0) {
     return {
       bid: toPrice(bid),

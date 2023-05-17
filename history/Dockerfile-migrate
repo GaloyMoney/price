@@ -1,11 +1,11 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 COPY ./history/src/config/process.ts ./history/src/config/database.ts ./
 COPY ./history/src/config/database ./database
 COPY ./history/scripts ./scripts
 
-RUN yarn add knex@1.0.3 pg@8.7.3 typescript@4.5.5 ts-node@10.5.0 @types/node@16.11.7
+RUN yarn add knex@2.4.2 pg@8.11.0 typescript@4.9.5 ts-node@10.9.1 @types/node@20.1.7
 
 USER 1000
 
