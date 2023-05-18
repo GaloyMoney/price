@@ -1,4 +1,4 @@
-import ccxt from "ccxt"
+import ccxt, { Exchange, OHLCV } from "ccxt"
 
 import {
   ExchangeServiceError,
@@ -22,7 +22,7 @@ export const CcxtExchangeService = async ({
   const id = ccxt.exchanges.find((e) => e === exchangeId)
   if (!id) return new InvalidExchangeIdError()
 
-  const client: ccxt.Exchange = new ccxt[exchangeId](config)
+  const client: Exchange = new ccxt[exchangeId](config)
 
   await client.loadMarkets()
 
@@ -32,7 +32,7 @@ export const CcxtExchangeService = async ({
     limit = 100,
   }: ExchangeListPricesArgs): Promise<ExchangePrice[] | ServiceError> => {
     try {
-      if (!client.hasFetchOHLCV) return new OHLCVNotSupportedExchangeServiceError()
+      if (!client.has.fetchOHLCV) return new OHLCVNotSupportedExchangeServiceError()
 
       const ohlc = await client.fetchOHLCV(symbol, timeframe, since, limit)
       if (!ohlc || !ohlc.length) return []
@@ -47,7 +47,7 @@ export const CcxtExchangeService = async ({
   return { listPrices }
 }
 
-const exchangePriceFromRaw = ([timestamp, , , close]: ccxt.OHLCV): ExchangePrice => ({
+const exchangePriceFromRaw = ([timestamp, , , close]: OHLCV): ExchangePrice => ({
   timestamp: toTimestamp(timestamp),
   price: toPrice(close),
 })
