@@ -11,7 +11,7 @@ import { HttpInstrumentation } from "@opentelemetry/instrumentation-http"
 import { GrpcInstrumentation } from "@opentelemetry/instrumentation-grpc"
 import { registerInstrumentations } from "@opentelemetry/instrumentation"
 import { SimpleSpanProcessor, Span as SdkSpan } from "@opentelemetry/sdk-trace-base"
-import { JaegerExporter } from "@opentelemetry/exporter-jaeger"
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { Resource } from "@opentelemetry/resources"
 import {
   trace,
@@ -68,10 +68,9 @@ class SpanProcessorWrapper extends SimpleSpanProcessor {
 }
 provider.addSpanProcessor(
   new SpanProcessorWrapper(
-    new JaegerExporter({
-      host: tracingConfig.jaegerHost,
-      port: tracingConfig.jaegerPort,
-    }),
+    new OTLPTraceExporter({
+      url: tracingConfig.otelExporterOtlpEndpoint
+    })
   ),
 )
 
