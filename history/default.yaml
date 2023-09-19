@@ -12,12 +12,6 @@ exchanges:
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
-  - name: "ftx"
-    enabled: false
-    quoteAlias: "USD"
-    base: "BTC"
-    quote: "USD"
-    provider: "ccxt"
   - name: "binance"
     enabled: false
     quoteAlias: "USD"

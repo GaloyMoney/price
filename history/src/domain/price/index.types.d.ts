@@ -1,7 +1,7 @@
 type PriceRepositoryError = import("./errors").PriceRepositoryError
 
 type PriceRange =
-  typeof import("./index").PriceRange[keyof typeof import("./index").PriceRange]
+  (typeof import("./index").PriceRange)[keyof typeof import("./index").PriceRange]
 
 type Tick = {
   readonly timestamp: Timestamp

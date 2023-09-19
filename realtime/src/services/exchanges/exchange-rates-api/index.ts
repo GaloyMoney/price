@@ -24,6 +24,7 @@ export const ExchangeRatesAPIExchangeService = async ({
 
   const url = baseUrl || "https://api.exchangeratesapi.io/v1"
   const cacheKey = `${CacheKeys.CurrentTicker}:exchangeratesapi:${base}:${quote}`
+  const cacheTtlSecs = Number(cacheSeconds)
 
   const getCachedRate = async (): Promise<number | null> => {
     const cachedTicker = await LocalCacheService().get<number>(cacheKey)
@@ -58,7 +59,7 @@ export const ExchangeRatesAPIExchangeService = async ({
       await LocalCacheService().set<number>({
         key: cacheKey,
         value: rate,
-        ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
       return tickerFromRaw({ rate, timestamp })

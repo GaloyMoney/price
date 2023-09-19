@@ -25,6 +25,7 @@ export const FreeCurrencyRatesExchangeService = async ({
   const url =
     baseUrl || "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
   const cacheKey = `${CacheKeys.CurrentTicker}:freecurrencyrates:${base}:*`
+  const cacheTtlSecs = Number(cacheSeconds)
 
   const getCachedRates = async (): Promise<FreeCurrencyRatesRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<FreeCurrencyRatesRates>(cacheKey)
@@ -61,7 +62,7 @@ export const FreeCurrencyRatesExchangeService = async ({
       await LocalCacheService().set<FreeCurrencyRatesRates>({
         key: cacheKey,
         value: rates,
-        ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
       return tickerFromRaw({ rate: rates[quoteCurrency], timestamp })

@@ -24,6 +24,7 @@ export const CurrencyBeaconExchangeService = async ({
 
   const url = baseUrl || "https://api.currencybeacon.com/v1"
   const cacheKey = `${CacheKeys.CurrentTicker}:currencybeacon:${base}:*`
+  const cacheTtlSecs = Number(cacheSeconds)
   const cacheKeyStatus = `${cacheKey}:status`
 
   const getCachedRates = async (): Promise<CurrencyBeaconRates | undefined> => {
@@ -70,7 +71,7 @@ export const CurrencyBeaconExchangeService = async ({
         await LocalCacheService().set<number>({
           key: cacheKeyStatus,
           value: status,
-          ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+          ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
         })
         return new UnknownExchangeServiceError(`Invalid response. Error ${status}`)
       }
@@ -78,7 +79,7 @@ export const CurrencyBeaconExchangeService = async ({
       await LocalCacheService().set<CurrencyBeaconRates>({
         key: cacheKey,
         value: rates,
-        ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
       return tickerFromRaw({ rate: rates[quote], timestamp })

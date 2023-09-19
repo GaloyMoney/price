@@ -23,6 +23,7 @@ export const YadioExchangeService = async ({
 
   const url = baseUrl || "https://api.yadio.io/exrates"
   const cacheKey = `${CacheKeys.CurrentTicker}:yadio:${base}:*`
+  const cacheTtlSecs = Number(cacheSeconds)
 
   const getCachedRates = async (): Promise<YadioRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<YadioRates>(cacheKey)
@@ -55,7 +56,7 @@ export const YadioExchangeService = async ({
       await LocalCacheService().set<YadioRates>({
         key: cacheKey,
         value: rates,
-        ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
       return tickerFromRaw({ rate: rates[quote], timestamp })

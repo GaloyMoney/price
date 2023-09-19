@@ -1,7 +1,7 @@
 type ExchangeServiceError = import("./errors").ExchangeServiceError
 
 type ExchangeTimeframe =
-  typeof import("./index").ExchangeTimeframe[keyof typeof import("./index").ExchangeTimeframe]
+  (typeof import("./index").ExchangeTimeframe)[keyof typeof import("./index").ExchangeTimeframe]
 
 type ExchangePrice = {
   timestamp: Timestamp

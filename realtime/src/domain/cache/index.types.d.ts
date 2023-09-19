@@ -1,7 +1,7 @@
 type LocalCacheServiceError = import("./errors").LocalCacheServiceError
 
 type CacheKeys =
-  typeof import("./index").CacheKeys[keyof typeof import("./index").CacheKeys]
+  (typeof import("./index").CacheKeys)[keyof typeof import("./index").CacheKeys]
 
 type LocalCacheSetArgs<T> = {
   key: CacheKeys | string

@@ -23,6 +23,7 @@ export const ExchangeRateHostService = async ({
 
   const url = baseUrl || "https://api.exchangerate.host"
   const cacheKey = `${CacheKeys.CurrentTicker}:exchangeratehost:${base}:*`
+  const cacheTtlSecs = Number(cacheSeconds)
   const cacheKeyStatus = `${cacheKey}:status`
 
   const getCachedRates = async (): Promise<ExchangeRateHostRates | undefined> => {
@@ -71,7 +72,7 @@ export const ExchangeRateHostService = async ({
         await LocalCacheService().set<number>({
           key: cacheKeyStatus,
           value: status,
-          ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+          ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
         })
         return new UnknownExchangeServiceError(`Invalid response. Error ${status}`)
       }
@@ -79,7 +80,7 @@ export const ExchangeRateHostService = async ({
       await LocalCacheService().set<ExchangeRateHostRates>({
         key: cacheKey,
         value: rates,
-        ttlSecs: toSeconds(cacheSeconds > 0 ? Number(cacheSeconds) : 300),
+        ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
       return tickerFromRaw({ rate: rates[quote], timestamp })
