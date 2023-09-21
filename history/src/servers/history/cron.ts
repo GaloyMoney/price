@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 
 import { History } from "@app"
+
 import { closeDbConnections } from "@services/database"
 
 dotenv.config()

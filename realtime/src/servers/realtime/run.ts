@@ -2,9 +2,12 @@ import healthCheck from "grpc-health-check"
 import * as grpc from "@grpc/grpc-js"
 
 import { Realtime } from "@app"
-import { baseLogger } from "@services/logger"
+import { getStatus, startWatchers } from "@app/realtime"
 
 import { ServiceStatus } from "@domain/index"
+
+import { baseLogger } from "@services/logger"
+import { wrapAsyncToRunInSpan } from "@services/tracing"
 
 import { protoDescriptorPrice } from "../grpc"
 
@@ -19,32 +22,45 @@ const statusMap = {
 // Construct the health service implementation
 const healthImpl = new healthCheck.Implementation(statusMap)
 
-const getPrice = async ({ request }, callback) => {
-  const currency = request.currency
-  const price = await Realtime.getPrice(currency)
-  if (price instanceof Error) {
-    baseLogger.error({ error: price, currency }, "Error getting price")
-    return callback({
-      code: grpc.status.UNIMPLEMENTED,
-      details: `${currency} is not supported`,
-    })
-  }
+const getPrice = wrapAsyncToRunInSpan({
+  root: true,
+  namespace: "servers.run",
+  fnName: "getPrice",
+  fn: async (
+    { request }: grpc.ServerUnaryCall<{ currency: string }, unknown>,
+    callback: grpc.sendUnaryData<{ price: Price }>,
+  ) => {
+    const currency = request.currency
+    const price = await Realtime.getPrice(currency)
+    if (price instanceof Error) {
+      baseLogger.error({ error: price, currency }, "Error getting price")
+      return callback({
+        code: grpc.status.UNIMPLEMENTED,
+        details: `${currency} is not supported`,
+      })
+    }
 
-  return callback(null, { price })
-}
+    return callback(null, { price })
+  },
+})
 
-const listCurrencies = async (_, callback) => {
-  const currencies = await Realtime.listCurrencies()
-  if (currencies instanceof Error) {
-    baseLogger.error({ error: currencies }, "Error getting currencies")
-    return callback({
-      code: grpc.status.UNKNOWN,
-      details: `Unexpected error listing currencies`,
-    })
-  }
+const listCurrencies = wrapAsyncToRunInSpan({
+  root: true,
+  namespace: "servers.run",
+  fnName: "listCurrencies",
+  fn: async (_, callback: grpc.sendUnaryData<{ currencies: FiatCurrency[] }>) => {
+    const currencies = await Realtime.listCurrencies()
+    if (currencies instanceof Error) {
+      baseLogger.error({ error: currencies }, "Error getting currencies")
+      return callback({
+        code: grpc.status.UNKNOWN,
+        details: `Unexpected error listing currencies`,
+      })
+    }
 
-  return callback(null, { currencies })
-}
+    return callback(null, { currencies })
+  },
+})
 
 const port = process.env.PORT || 50051
 const server = new grpc.Server()
@@ -58,8 +74,8 @@ export const startServer = () => {
     grpc.ServerCredentials.createInsecure(),
     async () => {
       baseLogger.info(`Price server running on port ${port}`)
-      Realtime.startWatchers(async () => {
-        const status = await Realtime.getStatus()
+      startWatchers(async () => {
+        const status = await getStatus()
         if (status instanceof Error) {
           baseLogger.error({ error: status }, "Error getting status")
           healthImpl.setStatus("", ServiceStatus.NOT_SERVING)
