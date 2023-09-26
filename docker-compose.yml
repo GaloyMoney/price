@@ -12,13 +12,12 @@ services:
       POSTGRES_DB: galoy-price
 
   otel-agent:
-    image: otel/opentelemetry-collector-contrib:0.37.1
-    command: ["--config=/etc/otel-agent-config.yaml", "--log-level=debug"]
+    image: otel/opentelemetry-collector-contrib:0.85.0
+    command: ["--config=/etc/otel-agent-config.yaml"]
     environment:
-    - HONEYCOMB_DATASET=${HONEYCOMB_DATASET}
-    - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
+      - HONEYCOMB_DATASET=${HONEYCOMB_DATASET}
+      - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
     volumes:
-      - ./dev/otel-agent-config.yaml:/etc/otel-agent-config.yaml
+      - ${HOST_PROJECT_PATH:-.}/dev/otel-agent-config.yaml:/etc/otel-agent-config.yaml
     ports:
-      - "6831:6831/udp" # Jaeger receiver
-      - "6832:6832/udp" # Jaeger receiver
+      - "4318:4318" # otlp http receiver

@@ -3,8 +3,11 @@ import * as grpc from "@grpc/grpc-js"
 import healthCheck from "grpc-health-check"
 
 import { History } from "@app"
+
 import { ServiceStatus } from "@domain/index"
+
 import { baseLogger } from "@services/logger"
+import { wrapAsyncToRunInSpan } from "@services/tracing"
 
 import { protoDescriptorPrice } from "../grpc"
 
@@ -16,22 +19,30 @@ const statusMap = {
 }
 const healthImpl = new healthCheck.Implementation(statusMap)
 
-const listPrices = async ({ request }, callback) => {
-  const { currency, range } = request
-  const priceHistory = await History.getPriceHistory({ currency, range })
-  if (priceHistory instanceof Error) {
-    baseLogger.error(
-      { error: priceHistory, currency, range },
-      "Error getting price history",
-    )
-    return callback({
-      code: grpc.status.INTERNAL,
-      details: `${currency} is not supported`,
-    })
-  }
+const listPrices = wrapAsyncToRunInSpan({
+  root: true,
+  namespace: "servers.run",
+  fnName: "listPrices",
+  fn: async (
+    { request }: grpc.ServerUnaryCall<GetPriceHistoryArgs, unknown>,
+    callback: grpc.sendUnaryData<{ priceHistory: Tick[] }>,
+  ) => {
+    const { currency, range } = request
+    const priceHistory = await History.getPriceHistory({ currency, range })
+    if (priceHistory instanceof Error) {
+      baseLogger.error(
+        { error: priceHistory, currency, range },
+        "Error getting price history",
+      )
+      return callback({
+        code: grpc.status.INTERNAL,
+        details: `${currency} is not supported`,
+      })
+    }
 
-  return callback(null, { priceHistory })
-}
+    return callback(null, { priceHistory })
+  },
+})
 
 export const startServer = async () => {
   const port = process.env.PORT || 50052

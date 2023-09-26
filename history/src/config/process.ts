@@ -1,7 +1,7 @@
 export const tracingConfig = {
-  jaegerHost: process.env.JAEGER_HOST || "localhost",
-  jaegerPort: parseInt(process.env.JAEGER_PORT || "6832", 10),
-  tracingServiceName: process.env.TRACING_SERVICE_NAME || "galoy-price-dev",
+  otelExporterOtlpEndpoint:
+    process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://localhost:4318/v1/traces",
+  tracingServiceName: process.env.TRACING_SERVICE_NAME || "galoy-price-history-dev",
 }
 
 export const databaseConfig = {
