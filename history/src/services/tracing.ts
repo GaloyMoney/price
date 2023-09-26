@@ -46,7 +46,7 @@ registerInstrumentations({
 const provider = new NodeTracerProvider({
   resource: Resource.default().merge(
     new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: tracingConfig.tracingServiceName,
+      [SemanticResourceAttributes.SERVICE_NAME]: tracingConfig.otelServiceName,
     }),
   ),
 })
@@ -66,18 +66,12 @@ class SpanProcessorWrapper extends SimpleSpanProcessor {
   }
 }
 
-provider.addSpanProcessor(
-  new SpanProcessorWrapper(
-    new OTLPTraceExporter({
-      url: tracingConfig.otelExporterOtlpEndpoint,
-    }),
-  ),
-)
+provider.addSpanProcessor(new SpanProcessorWrapper(new OTLPTraceExporter()))
 
 provider.register()
 
 export const tracer = trace.getTracer(
-  tracingConfig.tracingServiceName,
+  tracingConfig.otelServiceName,
   process.env.COMMITHASH || "dev",
 )
 export const addAttributesToCurrentSpan = (attributes: Attributes) => {
