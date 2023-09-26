@@ -66,13 +66,7 @@ class SpanProcessorWrapper extends SimpleSpanProcessor {
   }
 }
 
-provider.addSpanProcessor(
-  new SpanProcessorWrapper(
-    new OTLPTraceExporter({
-      url: tracingConfig.otelExporterOtlpEndpoint,
-    }),
-  ),
-)
+provider.addSpanProcessor(new SpanProcessorWrapper(new OTLPTraceExporter()))
 
 provider.register()
 
