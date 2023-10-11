@@ -40,7 +40,7 @@ exchanges:
       fallbackUrl: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/latest/currencies/"
       cacheSeconds: 1800
   - name: "exchangeratehost"
-    enabled: true
+    enabled: false
     quoteAlias: "*"
     base: "USD"
     quote: "*"
@@ -48,7 +48,8 @@ exchanges:
     provider: "exchangeratehost"
     cron: "*/5 * * * * *"
     config:
-      baseUrl: "https://api-us.exchangerate.host"
+      baseUrl: "https://api.exchangerate.host"
+      apiKey: "<your api key>"
       cacheSeconds: 1800
   - name: "currencybeacon"
     enabled: false

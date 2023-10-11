@@ -3,9 +3,9 @@ type ExchangeRateHostRates = { [key: string]: number }
 
 type GetExchangeRateHostRatesResponse = {
   success: boolean
-  base: string
-  date: string
-  rates: unknown
+  source: string
+  timestamp: number
+  quotes: unknown
 }
 
 type ExchangeRateHostServiceArgs = {

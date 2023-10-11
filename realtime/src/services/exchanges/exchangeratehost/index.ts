@@ -5,7 +5,6 @@ import {
   ExchangeServiceError,
   UnknownExchangeServiceError,
   InvalidExchangeConfigError,
-  RateLimitExceededError,
 } from "@domain/exchanges"
 import { toPrice, toSeconds, toTimestamp } from "@domain/primitives"
 import { LocalCacheService } from "@services/cache"
@@ -17,14 +16,15 @@ export const ExchangeRateHostService = async ({
   quote,
   config,
 }: ExchangeRateHostServiceArgs): Promise<IExchangeService | ExchangeServiceError> => {
-  if (!config) return new InvalidExchangeConfigError()
+  if (!config || !config.apiKey) return new InvalidExchangeConfigError()
 
-  const { baseUrl, timeout, cacheSeconds, ...params } = config
+  const { baseUrl, apiKey, timeout, cacheSeconds, ...params } = config
 
   const url = baseUrl || "https://api.exchangerate.host"
   const cacheKey = `${CacheKeys.CurrentTicker}:exchangeratehost:${base}:*`
   const cacheTtlSecs = Number(cacheSeconds)
   const cacheKeyStatus = `${cacheKey}:status`
+  const symbol = `${base}${quote}`
 
   const getCachedRates = async (): Promise<ExchangeRateHostRates | undefined> => {
     const cachedTickers = await LocalCacheService().get<ExchangeRateHostRates>(cacheKey)
@@ -39,13 +39,13 @@ export const ExchangeRateHostService = async ({
   }
 
   const fetchTicker = async (): Promise<Ticker | ServiceError> => {
-    // We cant use response.data.response.date because
-    // ExchangeRateHost does not behave like a bitcoin exchange
-    const timestamp = new Date().getTime()
-
     try {
       const cachedRates = await getCachedRates()
-      if (cachedRates) return tickerFromRaw({ rate: cachedRates[quote], timestamp })
+      if (cachedRates)
+        return tickerFromRaw({
+          rate: cachedRates[symbol],
+          timestamp: new Date().getTime(),
+        })
 
       // avoid cloudflare ban if rate limit is reached
       const lastCachedStatus = await getLastRequestStatus()
@@ -54,21 +54,20 @@ export const ExchangeRateHostService = async ({
           `Invalid response. Error ${lastCachedStatus}`,
         )
 
-      const { status, data, headers } = await axios.get<GetExchangeRateHostRatesResponse>(
-        `${url}/latest`,
+      const { status, data } = await axios.get<GetExchangeRateHostRatesResponse>(
+        `${url}/live`,
         {
           timeout: Number(timeout || 5000),
           params: {
-            base,
+            source: base,
+            access_key: apiKey,
             ...params,
           },
         },
       )
-      const rateLimitRemaining = parseInt(headers["x-ratelimit-remaining"], 10)
-      if (rateLimitRemaining <= 0) return new RateLimitExceededError()
 
-      const { success, rates } = data
-      if (!success || status >= 400 || !isRatesObjectValid(rates)) {
+      const { success, quotes, timestamp } = data
+      if (!success || status >= 400 || !isRatesObjectValid(quotes)) {
         await LocalCacheService().set<number>({
           key: cacheKeyStatus,
           value: status,
@@ -79,11 +78,11 @@ export const ExchangeRateHostService = async ({
 
       await LocalCacheService().set<ExchangeRateHostRates>({
         key: cacheKey,
-        value: rates,
+        value: quotes,
         ttlSecs: toSeconds(cacheTtlSecs > 0 ? cacheTtlSecs : 300),
       })
 
-      return tickerFromRaw({ rate: rates[quote], timestamp })
+      return tickerFromRaw({ rate: quotes[symbol], timestamp })
     } catch (error) {
       baseLogger.error({ error }, "ExchangeRateHost unknown error")
       return new UnknownExchangeServiceError(error.message || error)
