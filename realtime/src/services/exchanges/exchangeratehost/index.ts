@@ -1,4 +1,5 @@
 import axios from "axios"
+import { Mutex } from "async-mutex"
 
 import {
   InvalidTickerError,
@@ -11,6 +12,7 @@ import { LocalCacheService } from "@services/cache"
 import { CacheKeys } from "@domain/cache"
 import { baseLogger } from "@services/logger"
 
+const mutex = new Mutex()
 export const ExchangeRateHostService = async ({
   base,
   quote,
@@ -89,7 +91,9 @@ export const ExchangeRateHostService = async ({
     }
   }
 
-  return { fetchTicker }
+  return {
+    fetchTicker: () => mutex.runExclusive(fetchTicker),
+  }
 }
 
 const isRatesObjectValid = (rates: unknown): rates is ExchangeRateHostRates => {

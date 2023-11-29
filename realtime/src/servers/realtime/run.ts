@@ -1,5 +1,5 @@
-import healthCheck from "grpc-health-check"
 import * as grpc from "@grpc/grpc-js"
+import { HealthImplementation, ServingStatusMap } from "grpc-health-check"
 
 import { Realtime } from "@app"
 import { getStatus, startWatchers } from "@app/realtime"
@@ -13,14 +13,14 @@ import { protoDescriptorPrice } from "../grpc"
 
 // Define service status map. Key is the service name, value is the corresponding status.
 // By convention, the empty string "" key represents that status of the entire server.
-const statusMap = {
-  "": 2,
+const statusMap: ServingStatusMap = {
+  "": "NOT_SERVING",
   // 1 is serving
   // 2 is not serving
 }
 
 // Construct the health service implementation
-const healthImpl = new healthCheck.Implementation(statusMap)
+const healthImpl = new HealthImplementation(statusMap)
 
 const getPrice = wrapAsyncToRunInSpan({
   root: true,
@@ -67,7 +67,7 @@ const server = new grpc.Server()
 
 export const startServer = () => {
   server.addService(protoDescriptorPrice.PriceFeed.service, { getPrice, listCurrencies })
-  server.addService(healthCheck.service, healthImpl)
+  healthImpl.addToServer(server)
 
   server.bindAsync(
     `0.0.0.0:${port}`,

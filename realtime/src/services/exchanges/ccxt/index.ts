@@ -49,6 +49,8 @@ const tickerFromRaw = ({
   ask,
   timestamp,
 }: CcxtTicker): Ticker | InvalidTickerError => {
+  if (!bid || !ask || !timestamp) return new InvalidTickerError()
+
   if (bid > 0 && ask > 0 && timestamp > 0) {
     return {
       bid: toPrice(bid),

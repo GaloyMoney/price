@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import * as grpc from "@grpc/grpc-js"
-import healthCheck from "grpc-health-check"
+import { HealthImplementation, ServingStatusMap } from "grpc-health-check"
 
 import { History } from "@app"
 
@@ -12,12 +12,12 @@ import { wrapAsyncToRunInSpan } from "@services/tracing"
 import { protoDescriptorPrice } from "../grpc"
 
 dotenv.config()
-const statusMap = {
-  "": 2,
+const statusMap: ServingStatusMap = {
+  "": "NOT_SERVING",
   // 1 is serving
   // 2 is not serving
 }
-const healthImpl = new healthCheck.Implementation(statusMap)
+const healthImpl = new HealthImplementation(statusMap)
 
 const listPrices = wrapAsyncToRunInSpan({
   root: true,
@@ -49,7 +49,7 @@ export const startServer = async () => {
   const server = new grpc.Server()
 
   server.addService(protoDescriptorPrice.PriceHistory.service, { listPrices })
-  server.addService(healthCheck.service, healthImpl)
+  healthImpl.addToServer(server)
 
   server.bindAsync(
     `0.0.0.0:${port}`,
