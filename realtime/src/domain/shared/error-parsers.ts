@@ -3,9 +3,9 @@ export const parseErrorFromUnknown = (error: unknown): Error => {
     error instanceof Error
       ? error
       : typeof error === "string"
-      ? new Error(error)
-      : error instanceof Object
-      ? new Error(JSON.stringify(error))
-      : new Error("Unknown error")
+        ? new Error(error)
+        : error instanceof Object
+          ? new Error(JSON.stringify(error))
+          : new Error("Unknown error")
   return err
 }

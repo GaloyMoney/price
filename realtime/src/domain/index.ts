@@ -1,4 +1,4 @@
 export const ServiceStatus = {
-  SERVING: 1,
-  NOT_SERVING: 2,
+  SERVING: "SERVING",
+  NOT_SERVING: "NOT_SERVING",
 } as const

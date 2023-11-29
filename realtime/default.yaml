@@ -20,7 +20,7 @@ exchanges:
     quote: "USD"
     provider: "ccxt"
     cron: "*/20 * * * * *"
-  - name: "bitstamp1"
+  - name: "bitstamp"
     enabled: true
     quoteAlias: "USD"
     base: "BTC"

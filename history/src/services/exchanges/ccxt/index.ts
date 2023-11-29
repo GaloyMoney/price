@@ -37,7 +37,7 @@ export const CcxtExchangeService = async ({
       const ohlc = await client.fetchOHLCV(symbol, timeframe, since, limit)
       if (!ohlc || !ohlc.length) return []
 
-      return ohlc.map(exchangePriceFromRaw)
+      return ohlc.map(exchangePriceFromRaw).filter(isExchangePrice)
     } catch (error) {
       baseLogger.error({ error }, "Ccxt unknown error")
       return new UnknownExchangeServiceError(error)
@@ -47,7 +47,14 @@ export const CcxtExchangeService = async ({
   return { listPrices }
 }
 
-const exchangePriceFromRaw = ([timestamp, , , close]: OHLCV): ExchangePrice => ({
-  timestamp: toTimestamp(timestamp),
-  price: toPrice(close),
-})
+const exchangePriceFromRaw = ([timestamp, , , , close]: OHLCV):
+  | ExchangePrice
+  | undefined => {
+  if (!timestamp || !close) return undefined
+  return {
+    timestamp: toTimestamp(timestamp),
+    price: toPrice(close),
+  }
+}
+
+const isExchangePrice = (item: ExchangePrice | undefined): item is ExchangePrice => !!item
