@@ -1,12 +1,43 @@
-export const NotificationsService = (): INotificationsService => {
-  const priceChanged = async (
-    args: PriceChangedArgs
-  ): Promise<void | NotificationsServiceError> => {
-    const priceChangedEvent = createPriceChangedEvent(args);
+import { notificationsEndpoint } from "@config"
+import {
+  NotificationsServiceError,
+  UnknownNotificationServiceError,
+} from "@domain/notifications"
 
-    // Send event to notification service
-  };
+import { GrpcNotificationsClient } from "./grpc-client"
+import { createPriceChangedEvent } from "./price-changed-event"
+import {
+  HandleNotificationEventRequest,
+  NotificationEvent,
+} from "./proto/notifications_pb"
+
+export const NotificationsService = (): INotificationsService => {
+  const grpcClient = GrpcNotificationsClient({
+    notificationsApi: notificationsEndpoint,
+  })
+
+  const priceChanged = async (
+    args: PriceChangedArgs,
+  ): Promise<void | NotificationsServiceError> => {
+    const priceChangedEvent = createPriceChangedEvent(args)
+
+    try {
+      const req = new HandleNotificationEventRequest()
+      const event = new NotificationEvent()
+
+      // TODO: Create price changed event and configure it
+
+      req.setEvent(event)
+
+      await grpcClient.handleNotificationEvent(req)
+    } catch (err) {
+      if (err instanceof Error) {
+        return new NotificationsServiceError(err.message)
+      }
+      return new UnknownNotificationServiceError(err.toString())
+    }
+  }
   return {
     priceChanged,
-  };
-};
+  }
+}

@@ -12,3 +12,5 @@ export const databaseConfig = {
   poolMax: parseInt(process.env.DB_POOL_MAX || "", 10) || 5,
   debug: process.env.DB_DEBUG === "true",
 }
+
+export const notificationsEndpoint = process.env.notificationsEndpoint || "localhost:6685"

@@ -1,13 +1,11 @@
-type NotificationsServiceError = import("./errors").NotificationsServiceError;
+type NotificationsServiceError = import("./errors").NotificationsServiceError
 
 interface INotificationsService {
-  priceChanged(
-    args: PriceChangedArgs
-  ): Promise<void | NotificationsServiceError>;
+  priceChanged(args: PriceChangedArgs): Promise<void | NotificationsServiceError>
 }
 
 type PriceChangedArgs = {
-  range: PriceRange;
-  initialPrice: Tick;
-  finalPrice: Tick;
-};
+  range: PriceRange
+  initialPrice: Tick
+  finalPrice: Tick
+}
