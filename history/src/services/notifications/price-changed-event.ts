@@ -1,40 +1,28 @@
-const PriceDirection = {
-  Increase: "Increase",
-  Decrease: "Decrease",
-} as const
-
-type PriceDirection = (typeof PriceDirection)[keyof typeof PriceDirection]
-
-type PriceChangedEvent = {
-  currentPriceInUsd: string
-  priceChangeDirection: PriceDirection
-  priceChangeInBips: string
-  timeRange: PriceRange
-  timestamp: number
-}
+import { Money, PriceChangeDirection, PriceChanged } from "./proto/notifications_pb"
 
 export const createPriceChangedEvent = ({
-  range,
   initialPrice,
   finalPrice,
-}: PriceChangedArgs): PriceChangedEvent => {
-  const priceChange = calculatePriceChangeBips(initialPrice.price, finalPrice.price)
+}: PriceChangedArgs) => {
+  const priceChange = calculatePriceChangePercentage(initialPrice.price, finalPrice.price)
 
-  return {
-    currentPriceInUsd: finalPrice.price.toFixed(2),
-    priceChangeDirection: priceChange.changeDirection,
-    priceChangeInBips: priceChange.bipAmount,
-    timeRange: range,
-    timestamp: finalPrice.timestamp,
-  }
+  const priceOfOneBitcoin = new Money()
+  priceOfOneBitcoin.setMinorUnits(usdMajorUnitToMinorUnit(finalPrice.price))
+  priceOfOneBitcoin.setCurrencyCode("USD")
+
+  const priceChangedEvent = new PriceChanged()
+  priceChangedEvent.setPriceOfOneBitcoin(priceOfOneBitcoin)
+  priceChangedEvent.setDirection(priceChange.direction)
+  priceChangedEvent.setPriceChangePercentage(priceChange.percentage)
+  return priceChangedEvent
 }
 
-const calculatePriceChangeBips = (initialPrice: Price, finalPrice: Price) => {
-  const bipAmount = Math.round(
-    ((finalPrice - initialPrice) / initialPrice) * 10000,
-  ).toString()
+const usdMajorUnitToMinorUnit = (usd: number) => usd * 100
 
-  const changeDirection =
-    finalPrice > initialPrice ? PriceDirection.Increase : PriceDirection.Decrease
-  return { bipAmount, changeDirection }
+const calculatePriceChangePercentage = (initialPrice: Price, finalPrice: Price) => {
+  const percentage = ((finalPrice - initialPrice) / initialPrice) * 100
+
+  const direction =
+    finalPrice > initialPrice ? PriceChangeDirection.UP : PriceChangeDirection.DOWN
+  return { percentage, direction }
 }
