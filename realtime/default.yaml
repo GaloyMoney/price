@@ -36,8 +36,8 @@ exchanges:
     provider: "free-currency-rates"
     cron: "*/5 * * * * *"
     config:
-      baseUrl: "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
-      fallbackUrl: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/latest/currencies/"
+      baseUrl: "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies"
+      fallbackUrl: "https://currency-api.pages.dev/v1/currencies"
       cacheSeconds: 1800
   - name: "exchangeratehost"
     enabled: false
