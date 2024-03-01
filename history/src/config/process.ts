@@ -13,4 +13,5 @@ export const databaseConfig = {
   debug: process.env.DB_DEBUG === "true",
 }
 
-export const notificationsEndpoint = process.env.notificationsEndpoint || "localhost:6685"
+export const notificationsEndpoint =
+  process.env.NOTIFICATIONS_ENDPOINT || "localhost:6685"

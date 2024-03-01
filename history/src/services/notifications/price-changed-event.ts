@@ -20,7 +20,7 @@ export const createPriceChangedEvent = ({
 const usdMajorUnitToMinorUnit = (usd: number) => usd * 100
 
 const calculatePriceChangePercentage = (initialPrice: Price, finalPrice: Price) => {
-  const percentage = ((finalPrice - initialPrice) / initialPrice) * 100
+  const percentage = Math.abs(((finalPrice - initialPrice) / initialPrice) * 100)
 
   const direction =
     finalPrice > initialPrice ? PriceChangeDirection.UP : PriceChangeDirection.DOWN
