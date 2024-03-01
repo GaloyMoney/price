@@ -4,7 +4,7 @@ import { checkedToCurrency } from "@domain/primitives"
 import { PriceRepository } from "@services/database"
 import { NotificationsService } from "@services/notifications"
 
-export const notifyPriceChange = async () => {
+export const notifyPriceChange = async (): Promise<boolean | ApplicationError> => {
   const quote = checkedToCurrency("USD")
 
   if (quote instanceof Error) {
@@ -23,7 +23,7 @@ export const notifyPriceChange = async () => {
   }
 
   if (prices.length < 2) {
-    return
+    return false
   }
 
   const notificationsService = NotificationsService()

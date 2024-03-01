@@ -8,7 +8,7 @@ dotenv.config()
 
 const startServer = async () => {
   await History.updatePriceHistory()
-  await History.notifyPriceChange({})
+  await History.notifyPriceChange()
   await closeDbConnections()
 }
 

@@ -1,7 +1,7 @@
 type NotificationsServiceError = import("./errors").NotificationsServiceError
 
 interface INotificationsService {
-  priceChanged(args: PriceChangedArgs): Promise<void | NotificationsServiceError>
+  priceChanged(args: PriceChangedArgs): Promise<true | NotificationsServiceError>
 }
 
 type PriceChangedArgs = {

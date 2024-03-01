@@ -18,7 +18,7 @@ export const NotificationsService = (): INotificationsService => {
 
   const priceChanged = async (
     args: PriceChangedArgs,
-  ): Promise<void | NotificationsServiceError> => {
+  ): Promise<true | NotificationsServiceError> => {
     try {
       const req = new HandleNotificationEventRequest()
       const event = new NotificationEvent()
@@ -26,6 +26,7 @@ export const NotificationsService = (): INotificationsService => {
       event.setPrice(priceChangedEvent)
       req.setEvent(event)
       await grpcClient.handleNotificationEvent(req)
+      return true
     } catch (err) {
       if (err instanceof Error) {
         return new NotificationsServiceError(err.message)
