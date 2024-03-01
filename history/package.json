@@ -19,7 +19,8 @@
     "db:migrate": "knex --knexfile ./src/config/database.ts migrate:latest",
     "db:rollback": "knex --knexfile ./src/config/database.ts migrate:rollback",
     "db:create:seed": "knex --knexfile ./src/config/database.ts seed:make -x ts",
-    "db:seed": "knex --knexfile ./src/config/database.ts seed:run"
+    "db:seed": "knex --knexfile ./src/config/database.ts seed:run",
+    "codegen:notifications": "cd src/services/notifications/proto && buf generate"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.12",
@@ -39,6 +40,7 @@
     "ajv": "^8.12.0",
     "ccxt": "^4.1.70",
     "dotenv": "^16.0.3",
+    "google-protobuf": "^3.21.2",
     "grpc-health-check": "^2.0.0",
     "js-yaml": "^4.1.0",
     "knex": "^3.0.1",
@@ -46,5 +48,10 @@
     "node-cron": "^3.0.3",
     "pg": "^8.11.0",
     "pino": "^8.16.2"
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.12.4",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "protoc-gen-js": "^3.21.2"
   }
 }
