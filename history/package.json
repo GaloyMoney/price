@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "src/servers/history/run.ts",
   "scripts": {
-    "build": "tsc -p tsconfig-build.json --skipLibCheck && cp -R src/servers/protos dist/servers/ && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "build": "tsc -p tsconfig-build.json --skipLibCheck && cp -R src/servers/protos dist/servers/ && cp -R src/services/notifications/proto dist/services/notifications/proto && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "ci:test:unit": "LOGLEVEL=warn yarn jest --config ./test/jest-unit.config.js --ci --bail",
     "client": "ts-node --files -r tsconfig-paths/register test/examples/client-test.ts",
     "eslint-check": "eslint \"{src,test}/**/*.ts\"",
