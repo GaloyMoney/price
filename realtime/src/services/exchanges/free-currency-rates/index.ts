@@ -25,7 +25,8 @@ export const FreeCurrencyRatesExchangeService = async ({
   const { baseUrl, fallbackUrl, timeout, cacheSeconds } = config
 
   const url =
-    baseUrl || "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/"
+    baseUrl ||
+    "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies"
   const cacheKey = `${CacheKeys.CurrentTicker}:freecurrencyrates:${base}:*`
   const cacheTtlSecs = Number(cacheSeconds)
 
