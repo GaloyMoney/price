@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "dist",
+    "allowJs": true,
     "paths": {
       "@app": ["src/app/index"],
       "@config": ["src/config/index"],
