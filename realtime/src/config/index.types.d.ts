@@ -9,7 +9,7 @@ type RawExchangeConfig = {
   config: { [key: string]: string | number | boolean }
 }
 
-type ExchangeConfig = {
+type PartialExchangeConfig = {
   name: string
   base: string
   quote: string
@@ -17,5 +17,12 @@ type ExchangeConfig = {
   excludedQuotes: string[]
   provider: string
   cron: string
+}
+
+type ExchangeConfig = PartialExchangeConfig & {
   config: { [key: string]: string | number | boolean }
+}
+
+type DevExchangeConfig = PartialExchangeConfig & {
+  config: MockedConfig
 }

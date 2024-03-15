@@ -6,12 +6,19 @@ import { ExchangeRateHostService } from "./exchangeratehost"
 import { CurrencyBeaconExchangeService } from "./currencybeacon"
 import { ExchangeRatesAPIExchangeService } from "./exchange-rates-api"
 import { FreeCurrencyRatesExchangeService } from "./free-currency-rates"
+import { MockedExchangeService } from "./mocked"
 
 const exchanges: { [key: string]: IExchangeService } = {}
 
+const isDevExchangeConfig = (
+  config: ExchangeConfig | DevExchangeConfig,
+): config is DevExchangeConfig => {
+  return "devMockPrice" in config.config
+}
+
 export const ExchangeFactory = (): ExchangeFactory => {
   const create = async (
-    config: ExchangeConfig,
+    config: DevExchangeConfig | ExchangeConfig,
   ): Promise<IExchangeService | ExchangeServiceError> => {
     const { provider, name, base, quote } = config
     const key = `${provider}:${name}:${base}:${quote}`
@@ -20,6 +27,13 @@ export const ExchangeFactory = (): ExchangeFactory => {
 
     let service: IExchangeService | ExchangeServiceError =
       new InvalidExchangeProviderError()
+    if (isDevExchangeConfig(config)) {
+      service = await createDev(config)
+      if (service instanceof Error) return service
+      exchanges[key] = service
+      return exchanges[key]
+    }
+
     switch (provider) {
       case "ccxt":
         service = await createCcxt(config)
@@ -40,7 +54,6 @@ export const ExchangeFactory = (): ExchangeFactory => {
         service = await createYadio(config)
         break
     }
-
     if (service instanceof Error) return service
     exchanges[key] = service
     return exchanges[key]
@@ -48,6 +61,8 @@ export const ExchangeFactory = (): ExchangeFactory => {
 
   return { create }
 }
+
+const createDev = MockedExchangeService
 
 const createCcxt = async (config: ExchangeConfig) => {
   const { name, base, quote } = config
