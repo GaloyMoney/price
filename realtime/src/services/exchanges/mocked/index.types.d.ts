@@ -9,5 +9,5 @@ type MockedConfig = {
 type MockedExchangeServiceArgs = {
   base: string
   quote: string
-  config?: MockedConfig
+  config?: ExchangeConfig["config"] | MockedConfig
 }

@@ -11,9 +11,14 @@ export const MockedExchangeService = async ({
   config,
 }: MockedExchangeServiceArgs): Promise<IExchangeService | ExchangeServiceError> => {
   const devMockPrice = config?.devMockPrice
-  if (!(devMockPrice && Object.keys(devMockPrice).includes(base))) {
+  if (!(devMockPrice && typeof devMockPrice === "object")) {
+    return new InvalidExchangeConfigError(`Bad dev config passed`)
+  }
+
+  if (!Object.keys(devMockPrice).includes(base)) {
     return new InvalidExchangeConfigError(`Config missing base '${base}'`)
   }
+
   if (!Object.keys(devMockPrice[base]).includes(quote)) {
     return new InvalidExchangeConfigError(
       `Config base missing quote '${quote}' for base '${base}'`,
