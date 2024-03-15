@@ -67,6 +67,11 @@ export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
 export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
 
 export const getExchangesConfig = (): ExchangeConfig[] => {
+  // Set dev mode if dev config is present
+  if (yamlConfig.exchanges.find((e) => e.provider === "dev-mock")) {
+    yamlConfig.exchanges = yamlConfig.exchanges.filter((e) => e.provider === "dev-mock")
+  }
+
   const enabledRawExchangesConfig: RawExchangeConfig[] = yamlConfig.exchanges
     .filter((e) => !!e.enabled)
     .map((e) => {

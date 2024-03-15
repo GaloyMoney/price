@@ -44,6 +44,7 @@ export const configSchema = {
           provider: {
             type: "string",
             enum: [
+              "dev-mock",
               "ccxt",
               "free-currency-rates",
               "currencybeacon",
