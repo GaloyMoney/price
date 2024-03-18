@@ -38,7 +38,7 @@
     "dotenv": "^16.0.3",
     "grpc-health-check": "^2.0.0",
     "js-yaml": "^4.1.0",
-    "lodash.merge": "^4.6.2",
+    "lodash.mergewith": "^4.6.2",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
     "pino": "^8.16.2"
