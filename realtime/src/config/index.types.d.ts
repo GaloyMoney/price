@@ -6,7 +6,7 @@ type RawExchangeConfig = {
   quoteAlias: string[]
   provider: string
   cron: string
-  config: { [key: string]: string | number | boolean }
+  config: { [key: string]: string | number | boolean } | MockedConfig
 }
 
 type PartialExchangeConfig = {

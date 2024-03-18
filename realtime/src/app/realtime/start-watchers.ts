@@ -25,7 +25,7 @@ const startWatcher = async ({
   callback,
 }: {
   currency: CurrencyCode
-  exchange: ExchangeConfig
+  exchange: DevExchangeConfig | ExchangeConfig
   callback?: RefreshDataCallback
 }): Promise<ScheduledTask> => {
   const task = async () => {

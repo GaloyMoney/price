@@ -69,7 +69,7 @@ export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => 
 export const defaultBaseCurrency: CurrencyCode = yamlConfig.base
 export const defaultQuoteCurrency: FiatCurrency = supportedCurrencies[0]
 
-export const getExchangesConfig = (): ExchangeConfig[] => {
+export const getExchangesConfig = (): (DevExchangeConfig | ExchangeConfig)[] => {
   // Set dev mode if dev config is present
   if (yamlConfig.exchanges.find((e) => e.provider === "dev-mock")) {
     yamlConfig.exchanges = yamlConfig.exchanges.filter((e) => e.provider === "dev-mock")
@@ -98,19 +98,27 @@ export const getExchangesConfig = (): ExchangeConfig[] => {
       }
     })
 
-  const rawExchangesConfig: ExchangeConfig[] = []
+  const rawExchangesConfig: (DevExchangeConfig | ExchangeConfig)[] = []
   for (const config of enabledRawExchangesConfig) {
     const newConfig = config.quote
-      .map<ExchangeConfig>((q, i) => ({
-        ...config,
-        quote: q,
-        quoteAlias: config.quoteAlias[i],
-      }))
+      .map<DevExchangeConfig | ExchangeConfig>((q, i) =>
+        typeof config.config === "object" && "devMockPrice" in config.config
+          ? ({
+              ...config,
+              quote: q,
+              quoteAlias: config.quoteAlias[i],
+            } as DevExchangeConfig)
+          : ({
+              ...config,
+              quote: q,
+              quoteAlias: config.quoteAlias[i],
+            } as ExchangeConfig),
+      )
       .filter((c) => c.base !== c.quote)
     rawExchangesConfig.push(...newConfig)
   }
 
-  const exchangesConfig: ExchangeConfig[] = []
+  const exchangesConfig: (DevExchangeConfig | ExchangeConfig)[] = []
   for (const config of rawExchangesConfig) {
     let newConfigs = [config]
     if (config.quote === "*" || config.quoteAlias === "*") {
