@@ -16,5 +16,7 @@ interface IExchangeService {
 }
 
 type ExchangeFactory = {
-  create(config: ExchangeConfig): Promise<IExchangeService | ExchangeServiceError>
+  create(
+    config: DevExchangeConfig | ExchangeConfig,
+  ): Promise<IExchangeService | ExchangeServiceError>
 }

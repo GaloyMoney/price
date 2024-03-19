@@ -1,6 +1,6 @@
 type RefreshRealtimeDataArgs = {
   currency: CurrencyCode
-  exchange: ExchangeConfig
+  exchange: DevExchangeConfig | ExchangeConfig
 }
 
 type RefreshDataCallbackArgs = {

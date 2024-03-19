@@ -12,6 +12,7 @@
     "monitoring": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run-monitoring.ts",
     "start": "ts-node --files -r tsconfig-paths/register src/servers/realtime/run.ts",
     "test:unit": "jest --config ./test/jest-unit.config.js --bail --verbose $TEST | yarn pino-pretty -c -l",
+    "test:watch-unit": "LOGLEVEL=warn jest --config ./test/jest-unit.config.js --bail --verbose --watch $TEST",
     "tsc-check": "tsc --noEmit -p tsconfig.d.json && tsc --noEmit --skipLibCheck",
     "watch-compile": "tsc --watch  --noEmit --skipLibCheck"
   },
@@ -37,7 +38,7 @@
     "dotenv": "^16.0.3",
     "grpc-health-check": "^2.0.0",
     "js-yaml": "^4.1.0",
-    "lodash.merge": "^4.6.2",
+    "lodash.mergewith": "^4.6.2",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
     "pino": "^8.16.2"
