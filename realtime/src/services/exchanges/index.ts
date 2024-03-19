@@ -13,7 +13,7 @@ const exchanges: { [key: string]: IExchangeService } = {}
 const isDevExchangeConfig = (
   config: ExchangeConfig | DevExchangeConfig,
 ): config is DevExchangeConfig => {
-  return "devMockPrice" in config.config
+  return typeof config.config === "object" && "devMockPrice" in config.config
 }
 
 export const ExchangeFactory = (): ExchangeFactory => {
