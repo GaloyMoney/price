@@ -64,6 +64,17 @@ class SpanProcessorWrapper extends SimpleSpanProcessor {
     }
     super.onStart(span, parentContext)
   }
+
+  onEnd(span: SdkSpan) {
+    if (tracingConfig.enableFilter) {
+      const errorLevel = span.attributes["error.level"]
+      if (!errorLevel || errorLevel === ErrorLevel.Info) {
+        return // Ignore the span if it has no error or if error is info level
+      }
+    }
+
+    super.onEnd(span)
+  }
 }
 
 provider.addSpanProcessor(new SpanProcessorWrapper(new OTLPTraceExporter()))
