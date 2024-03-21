@@ -11,6 +11,7 @@ for (const subModule in allFunctions) {
     allFunctions[subModule][fn] = wrapAsyncToRunInSpan({
       namespace: `app.${subModule.toLowerCase()}`,
       fn: allFunctions[subModule][fn],
+      root: true,
     })
   }
 }
