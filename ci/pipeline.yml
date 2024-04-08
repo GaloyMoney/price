@@ -57,16 +57,22 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: vito/oci-build-task
+          repository: gcr.io/kaniko-project/executor
+          tag: debug
       inputs:
       - name: repo
       outputs:
       - name: image
-      params:
-        CONTEXT: repo
-        DOCKERFILE: "repo/realtime/Dockerfile"
       run:
-        path: build
+        path: /kaniko/executor
+        args:
+          - --dockerfile=Dockerfile
+          - --context=repo
+          - --use-new-run
+          - --single-snapshot
+          - --cache=false
+          - --no-push
+          - --tar-path=image/image.tar
   - put: edge-image
     params:
       image: image/image.tar
