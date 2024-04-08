@@ -35,6 +35,8 @@ Code diff contained in this image:
 https://github.com/GaloyMoney/price/compare/${old_ref}...${ref}
 EOF
 
+export GH_TOKEN="$(ghtoken generate -b "${GH_APP_PRIVATE_KEY}" -i "${GH_APP_ID}" | jq -r '.token')"
+
 gh pr close ${BOT_BRANCH} || true
 gh pr create \
   --title "chore(deps): bump-price-image-${ref}" \
