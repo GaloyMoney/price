@@ -24,6 +24,31 @@ source:
   repository: #@ pipeline_image()
 #@ end
 
+#@ def build_task(dockerfile_path):
+task: build
+config:
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: gcr.io/kaniko-project/executor
+      tag: debug
+  inputs:
+  - name: repo
+  outputs:
+  - name: image
+  run:
+    path: /kaniko/executor
+    args:
+      - #@ "--dockerfile=" + dockerfile_path
+      - --context=repo
+      - --use-new-run
+      - --single-snapshot
+      - --cache=false
+      - --no-push
+      - --tar-path=image/image.tar
+#@ end
+
 groups:
 - name: price
   jobs:
@@ -50,23 +75,7 @@ jobs:
       - name: repo
       run:
         path: pipeline-tasks/ci/tasks/prepare-docker-build.sh
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: repo
-      outputs:
-      - name: image
-      params:
-        CONTEXT: repo
-        DOCKERFILE: "repo/realtime/Dockerfile"
-      run:
-        path: build
+  - #@ build_task("realtime/Dockerfile")
   - put: edge-image
     params:
       image: image/image.tar
@@ -88,23 +97,7 @@ jobs:
       - name: repo
       run:
         path: pipeline-tasks/ci/tasks/prepare-docker-build.sh
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: repo
-      outputs:
-      - name: image
-      params:
-        CONTEXT: repo
-        DOCKERFILE: "repo/history/Dockerfile"
-      run:
-        path: build
+  - #@ build_task("history/Dockerfile")
   - put: history-edge-image
     params:
       image: image/image.tar
@@ -113,23 +106,7 @@ jobs:
   serial: true
   plan:
   - { get: repo, trigger: true }
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: repo
-      outputs:
-      - name: image
-      params:
-        CONTEXT: repo
-        DOCKERFILE: "repo/history/Dockerfile-migrate"
-      run:
-        path: build
+  - #@ build_task("history/Dockerfile-migrate")
   - put: history-migrate-edge-image
     params:
       image: image/image.tar
