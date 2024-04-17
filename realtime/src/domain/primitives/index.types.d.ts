@@ -9,4 +9,5 @@ type FiatCurrency = {
   readonly name: string
   readonly flag: string
   readonly fractionDigits: number
+  readonly countryCodes: CountryCode[]
 }
