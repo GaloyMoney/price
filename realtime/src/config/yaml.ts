@@ -5,6 +5,8 @@ import mergeWith from "lodash.mergewith"
 import * as cron from "node-cron"
 import Ajv from "ajv"
 
+import countryToCurrency from "@domain/country-to-currency"
+
 import { baseLogger } from "@services/logger"
 
 import { ConfigError } from "./error"
@@ -55,6 +57,15 @@ export const getFractionDigits = ({
 
 export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => {
   const code = q.code.toUpperCase()
+
+  const countryCodes: CountryCode[] = []
+  let key: CountryCode
+  for (key in countryToCurrency) {
+    if (countryToCurrency[key] === code) {
+      countryCodes.push(key)
+    }
+  }
+
   return {
     code,
     symbol: q.symbol,
@@ -64,6 +75,7 @@ export const supportedCurrencies: FiatCurrency[] = yamlConfig.quotes.map((q) => 
       currency: code,
       fractionDigits: q.fractionDigits,
     }),
+    countryCodes,
   }
 })
 export const defaultBaseCurrency: CurrencyCode = yamlConfig.base

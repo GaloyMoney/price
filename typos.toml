@@ -1,6 +1,7 @@
 files.extend-exclude = [
   "dev",
-  "test/postman/*.json"
+  "test/postman/*.json",
+  "realtime/src/domain/country-to-currency/index.ts"
 ]
 
 [default.extend-words]
