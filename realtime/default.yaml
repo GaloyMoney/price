@@ -3,32 +3,56 @@ base: "BTC"
 # the default is the first currency
 quotes:
   - { code: "USD", symbol: "$", name: "US Dollar", flag: "🇺🇸" }
+  # - { code: "JMD", symbol: "J$", name: "Jamaican Dollar", flag: "🇯🇲" }
   - { code: "EUR", symbol: "€", name: "Euro", flag: "🇪🇺" }
+  # - { code: "GBP", symbol: "£", name: "British Pound", flag: "🇬🇧" }
+  # - { code: "HTG", symbol: "G", name: "Haitian Gourde", flag: "🇭🇹" }
 
+  ### NOT SUPPORTED BY IBEX (or at least names do not match)
+  # - { code: "XCD", symbol: "$", name: "East Caribbean Dollar", flag: "🇦🇬" }
+  # - { code: "ANG", symbol: "ƒ", name: "Netherlands Antillean Guilder", flag: "🇨🇼" }
+  # - { code: "BSD", symbol: "$", name: "Bahamian Dollar", flag: "🇧🇸" }
+  # - { code: "BBD", symbol: "$", name: "Barbadian Dollar", flag: "🇧🇧" }
+  # - { code: "BZD", symbol: "BZ$", name: "Belize Dollar", flag: "🇧🇿" }
+  # - { code: "KYD", symbol: "$", name: "Cayman Islands Dollar", flag: "🇰🇾" }
+  # - { code: "CUP", symbol: "$", name: "Cuban Peso", flag: "🇨🇺" }
+  # - { code: "DOP", symbol: "RD$", name: "Dominican Peso", flag: "🇩🇴" }
+  # - { code: "TTD", symbol: "TT$", name: "Trinidad and Tobago Dollar", flag: "🇹🇹" }
 exchanges:
-  - name: "bitfinex2"
+  - name: "Ibex"
     enabled: true
+    quoteAlias: "USD"
+    base: "BTC"
+    quote: "USD"
+    provider: "ibex"
+    cron: "*/15 * * * * *"
+    config:
+      cacheSeconds: 180
+  - name: "bitfinex2"
+    enabled: false
     quoteAlias: "USD"
     base: "BTC"
     quote: "USD"
     provider: "ccxt"
     cron: "*/15 * * * * *"
   - name: "kraken"
-    enabled: true
+    enabled: false
     quoteAlias: "USD"
     base: "BTC"
-    quote: "USD"
+    quote: "*"
+    excludedQuotes: ["USD"]
     provider: "ccxt"
     cron: "*/20 * * * * *"
   - name: "bitstamp"
     enabled: true
     quoteAlias: "USD"
     base: "BTC"
-    quote: "USD"
+    quote: "*"
+    excludedQuotes: ["USD"]
     provider: "ccxt"
     cron: "*/15 * * * * *"
   - name: "free-currency-rates-usd"
-    enabled: true
+    enabled: false
     quoteAlias: "*"
     base: "USD"
     quote: "*"

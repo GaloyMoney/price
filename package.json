@@ -36,5 +36,6 @@
     "ts-node-dev": "^2.0.0",
     "tscpaths": "^0.0.9",
     "typescript": "^5.3.2"
-  }
+  },
+  "dependencies": {}
 }

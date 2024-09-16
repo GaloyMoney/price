@@ -7,6 +7,7 @@ import { CurrencyBeaconExchangeService } from "./currencybeacon"
 import { ExchangeRatesAPIExchangeService } from "./exchange-rates-api"
 import { FreeCurrencyRatesExchangeService } from "./free-currency-rates"
 import { MockedExchangeService } from "./mocked"
+import { IbexExchangeService } from "./ibex"
 
 const exchanges: { [key: string]: IExchangeService } = {}
 
@@ -52,6 +53,9 @@ export const ExchangeFactory = (): ExchangeFactory => {
         break
       case "yadio":
         service = await createYadio(config)
+        break
+      case "ibex":
+        service = await createIbex(config)
         break
     }
     if (service instanceof Error) return service
@@ -119,6 +123,16 @@ const createYadio = async (config: ExchangeConfig) => {
   const { base, quote } = config
   const defaultConfig = { timeout: 5000 }
   return YadioExchangeService({
+    base: base,
+    quote: quote,
+    config: { ...defaultConfig, ...config.config },
+  })
+}
+
+const createIbex = async (config: ExchangeConfig) => {
+  const { base, quote } = config
+  const defaultConfig = { timeout: 5000 }
+  return IbexExchangeService({
     base: base,
     quote: quote,
     config: { ...defaultConfig, ...config.config },

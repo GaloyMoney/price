@@ -1,0 +1,22 @@
+{
+  "name": "ibex-client",
+  "version": "1.0.1-dev",
+  "description": "Library to interact with the IbexHub API",
+  "main": "dist/index.js",
+  "types": "dist/index.types.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Benjamin Hindman",
+  "license": "MIT",
+  "dependencies": {
+    "api": "^6.1.2",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "type": "module"
+}
