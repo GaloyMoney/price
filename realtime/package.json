@@ -37,7 +37,7 @@
     "ccxt": "^4.1.70",
     "dotenv": "^16.0.3",
     "grpc-health-check": "^2.0.0",
-    "ibex-client": "./ibex-client-1.0.1.tgz",
+    "ibex-client": "^1.0.1",
     "js-yaml": "^4.1.0",
     "lodash.mergewith": "^4.6.2",
     "node-cache": "^5.1.2",

@@ -5,9 +5,7 @@ RUN apk update && apk add python3 make g++
 WORKDIR /app
 COPY ./*.json ./yarn.lock ./
 COPY ./realtime ./realtime/
-## COPY ./ibex-client-1.0.1.tgz ./realtime
 
-RUN cd ./realtime && yarn add ./ibex-client-1.0.1.tgz
 RUN yarn install 
 RUN yarn workspace realtime build
 

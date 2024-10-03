@@ -32,7 +32,6 @@ export const IbexExchangeService = async ({
     }
   );
 
-  console.log(`Ibex = ${JSON.stringify(Ibex)}`)
   const cacheKey = `${CacheKeys.CurrentTicker}:Ibex:${base}:${quote}`
   const cacheTtlSecs = Number(cacheSeconds)
   const cacheKeyStatus = `${cacheKey}:status`
